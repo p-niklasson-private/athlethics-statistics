@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
+  <title>Google Spreadsheets</title>
+
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+
+  google.load("visualization", "1");
+  google.charts.load('current', {'packages':['table']});
+
+  var doc;
+  var data;
+  var table;
+
+  function fetch_data() {
+    var docNo = seasonForm.seasonList.selectedIndex;
+    if (docNo == 0) {
+      doc = "";
+      //document.getElementById('data').src = "about:blank";
+    } else {
+      doc = seasonForm.seasonList.options[docNo].value;
+      var queryString = encodeURIComponent('SELECT A,B,C,D,E,F,G,H');
+      var queryUrl = "https://docs.google.com/spreadsheets/d/" + doc + "/gviz/tq?headers=1&tq=" + queryString;
+      var query = new google.visualization.Query(queryUrl);
+      query.send(handleQueryResponse);
+    }
+  }
+
+  function handleQueryResponse(response) {
+    if (response.isError()) {
+      alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+      return;
+    }
+    data = response.getDataTable();
+    events = data.getDistinctValues(0);
+    var eventsAsString = "";
+    for(var i = 0; i < events.length; i++) {
+      eventsAsString += "<option>" + events[i] + "</option>";
+      //console.log(events[i]);
+    }
+    //$( 'select[name="eventList"]' ).append( eventsAsString );
+    names = data.getDistinctValues(1);
+    classes = data.getDistinctValues(2);
+    
+    var table = new google.visualization.Table(document.getElementById('table_div'));
+    table.draw(data, {showRowNumber: false, width: '100%', height: '100%'});
+
+    google.visualization.events.addListener(table, 'select',
+            function() {
+              var selectedItem = table.getSelection();
+              var cell = event.target;
+              var column = cell.cellIndex;
+              var value = data.getValue(selectedItem[0].row, column);
+              console.log(value, column);
+            });
+
+  }
+
+  function filter_data() {
+    var event, name, klass, sort;
+    var eventNo = eventForm.eventList.selectedIndex;
+    if (eventNo == 0) {
+       event = " A matches '.*'";
+       sort = " ORDER BY G,E,A,B "; // Sortera på Datum
+    } else {
+       var eventStr = eventForm.eventList.options[eventNo].text;
+       event = " A = '" + eventStr + "'";
+       //if (eventStr.includes("meter") {
+         //sort = " ORDER BY D";
+       //} else  {
+         sort = " ORDER BY D DESC";
+       //}
+    }
+    var nameNo = nameForm.nameList.selectedIndex;
+    if (nameNo == 0) {
+       name = ""; 
+    } else {
+       name = " AND B = '" + nameForm.nameList.options[nameNo].text + "'";
+    }
+    var classNo = classForm.classList.selectedIndex;
+    if (classNo == 0) {
+       klass = ""; 
+    } else {
+       klass = " AND E = '" + classForm.classList.options[classNo].text + "'";
+    }    
+    var queryString = encodeURIComponent("SELECT A,B,C,D,E,F,G,H WHERE " + event + name + klass + sort);
+    var url = "https://docs.google.com/spreadsheets/d/" + doc + "/gviz/tq?tqx=out:html&headers=1&tq=" + queryString;
+    document.getElementById('data').src = url;
+  }
+  </script>
+</head>
+
+<html>
+   <body>
+
+      <h1>Testar data från Google Spreadsheet</h1>
+         <table width="600">
+           <tr>
+    <td><b>Säsong:</b></td>
+    <td>
+      <form name="seasonForm">
+        <select name="seasonList" onChange="fetch_data()">
+          <option>- Välj säsong -
+          <option value="1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto">Utomhus 2016</option>
+          <option value="1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8">Inomhus 2015-2016</option>
+        </select>
+      </form>
+    </td>
+  </tr>
+  <tr>
+    <td><b>Gren:</b></td>
+    <td>
+      <form name="eventForm">
+        <select name="eventList" onChange="filter_data()">
+          <option>- Alla Grenar -
+          <option>Kula 2kg
+          <option>Kula 3kg
+          <option>Höjdhopp
+          <option>Spjut 400g
+          <option>800 meter
+          <option>60 meter
+        </select>
+      </form>
+    </td>
+    <td><b>Namn:</b></td>
+    <td>
+      <form name="nameForm">
+        <select name="nameList" onChange="filter_data()">
+          <option>- Alla Namn -
+          <option>Oscar Niklasson
+          <option>Ebba Lind
+          <option>Felicia Johansson
+          <option>Thea Katsoulaki
+          <option>Adam Eriksson
+        </select>
+      </form>
+    </td>
+    <td><b>Klass:</b></td>
+    <td>
+      <form name="classForm">
+        <select name="classList" onChange="filter_data()">
+          <option>- Alla Klasser -
+          <option>F10
+          <option>F11
+          <option>F12
+          <option>F13
+          <option>P10
+          <option>P11
+          <option>P12
+          <option>P13
+        </select>
+      </form>
+    </td>
+  </tr>
+</table>    
+
+<div id="table_div"></div>
+<!--iframe id="data" height="1000" width="100%" frameborder="0" src="about:blank"></iframe-->
+
+</body>
+</html>
