@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
   <title>Google Spreadsheets</title>
@@ -8,19 +8,23 @@
   <script type="text/javascript">
 
   google.load("visualization", "1");
+  google.charts.load('current', {'packages':['corechart']});
   google.charts.load('current', {'packages':['table']});
+  google.charts.setOnLoadCallback(fetch_data);
 
   var doc;
   var data;
+  var view;
+  var filterList = [];
   var table;
 
   function fetch_data() {
     var docNo = seasonForm.seasonList.selectedIndex;
     if (docNo == 0) {
-      doc = "";
-      //document.getElementById('data').src = "about:blank";
+      data = google.visualization.arrayToDataTable([['', { role: 'annotation' }],['', '']]);
+      filter_data();
     } else {
-      doc = seasonForm.seasonList.options[docNo].value;
+      var doc = seasonForm.seasonList.options[docNo].value;
       var queryString = encodeURIComponent('SELECT A,B,C,D,E,F,G,H');
       var queryUrl = "https://docs.google.com/spreadsheets/d/" + doc + "/gviz/tq?headers=1&tq=" + queryString;
       var query = new google.visualization.Query(queryUrl);
@@ -34,76 +38,82 @@
       return;
     }
     data = response.getDataTable();
-    events = data.getDistinctValues(0);
-    var eventsAsString = "";
-    for(var i = 0; i < events.length; i++) {
-      eventsAsString += "<option>" + events[i] + "</option>";
-      //console.log(events[i]);
-    }
-    //$( 'select[name="eventList"]' ).append( eventsAsString );
-    names = data.getDistinctValues(1);
-    classes = data.getDistinctValues(2);
-    
-    var table = new google.visualization.Table(document.getElementById('table_div'));
-    table.draw(data, {showRowNumber: false, width: '100%', height: '100%'});
-
-    google.visualization.events.addListener(table, 'select',
-            function() {
-              var selectedItem = table.getSelection();
-              var cell = event.target;
-              var column = cell.cellIndex;
-              var value = data.getValue(selectedItem[0].row, column);
-              console.log(value, column);
-            });
-
+    filter_data();
   }
 
+  function populate_selections() {
+    var events = view.getDistinctValues(0);
+    var eventSelectionList=document.getElementById("eventList");
+    // Remove all selections except the first
+    for(var i = 1; i < eventSelectionList.length; i++) {
+        eventSelectionList.remove(eventSelectionList.length-1);
+    }
+    // Add new selections based on the view
+    for(var i = 0; i < events.length; i++) {
+        eventSelectionList.add(new Option(events[i], events[i]));
+    }
+    
+    var names = view.getDistinctValues(1);
+    var namesAsString = "";
+    for(var i = 0; i < names.length; i++) {
+      namesAsString += "<option>" + names[i] + "</option>\n";
+    }
+    console.log("\nNames: " + namesAsString);
+
+    var classes = view.getDistinctValues(4);
+    var classesAsString = "";
+    for(var i = 0; i < classes.length; i++) {
+      classesAsString += "<option>" + classes[i] + "</option>\n";
+    }
+    console.log("\nClasses: " + classesAsString);
+
+  }
+  
   function filter_data() {
-    var event, name, klass, sort;
+    view = new google.visualization.DataView(data);
+    table = new google.visualization.Table(document.getElementById('table_div'));
+    filterList = [];
+    
+    // Filter on events in column '0'
     var eventNo = eventForm.eventList.selectedIndex;
-    if (eventNo == 0) {
-       event = " A matches '.*'";
-       sort = " ORDER BY G,E,A,B "; // Sortera på Datum
-    } else {
-       var eventStr = eventForm.eventList.options[eventNo].text;
-       event = " A = '" + eventStr + "'";
-       //if (eventStr.includes("meter") {
-         //sort = " ORDER BY D";
-       //} else  {
-         sort = " ORDER BY D DESC";
-       //}
+    if (eventNo) {
+        filterList.push({column:0, value:eventForm.eventList.options[eventNo].text})
     }
+    
+    // Filter on names in column 1
     var nameNo = nameForm.nameList.selectedIndex;
-    if (nameNo == 0) {
-       name = ""; 
-    } else {
-       name = " AND B = '" + nameForm.nameList.options[nameNo].text + "'";
+    if (nameNo) {
+       filterList.push({column:1, value:nameForm.nameList.options[nameNo].text});
     }
+    
+    // Filter on class in column 4
     var classNo = classForm.classList.selectedIndex;
-    if (classNo == 0) {
-       klass = ""; 
-    } else {
-       klass = " AND E = '" + classForm.classList.options[classNo].text + "'";
+    if (classNo) {
+        filterList.push({column:4, value:classForm.classList.options[classNo].text});
     }    
-    var queryString = encodeURIComponent("SELECT A,B,C,D,E,F,G,H WHERE " + event + name + klass + sort);
-    var url = "https://docs.google.com/spreadsheets/d/" + doc + "/gviz/tq?tqx=out:html&headers=1&tq=" + queryString;
-    document.getElementById('data').src = url;
+
+    // Apply the filter, and draw the table
+    if(filterList.length > 0){
+      view.setRows(view.getFilteredRows(filterList));
+    }
+    table.draw(view, {showRowNumber: false, width: '100%', height: '100%'});
+    populate_selections();
   }
   </script>
 </head>
 
 <html>
-   <body>
+<body>
 
-      <h1>Testar data från Google Spreadsheet</h1>
-         <table width="600">
-           <tr>
+<h1>Testar data från Google Spreadsheet</h1>
+<table width="800">
+  <tr>
     <td><b>Säsong:</b></td>
     <td>
       <form name="seasonForm">
         <select name="seasonList" onChange="fetch_data()">
           <option>- Välj säsong -
-          <option value="1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto">Utomhus 2016</option>
+          <option value="1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto" selected>Utomhus 2016</option>
           <option value="1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8">Inomhus 2015-2016</option>
         </select>
       </form>
@@ -113,14 +123,8 @@
     <td><b>Gren:</b></td>
     <td>
       <form name="eventForm">
-        <select name="eventList" onChange="filter_data()">
+        <select name="eventList" id="eventList" onChange="filter_data()">
           <option>- Alla Grenar -
-          <option>Kula 2kg
-          <option>Kula 3kg
-          <option>Höjdhopp
-          <option>Spjut 400g
-          <option>800 meter
-          <option>60 meter
         </select>
       </form>
     </td>
@@ -153,11 +157,10 @@
         </select>
       </form>
     </td>
-  </tr>
+</tr>
 </table>    
 
 <div id="table_div"></div>
-<!--iframe id="data" height="1000" width="100%" frameborder="0" src="about:blank"></iframe-->
 
 </body>
 </html>
