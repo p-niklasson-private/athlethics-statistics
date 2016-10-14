@@ -21,8 +21,9 @@
   function fetch_data() {
     var docNo = seasonForm.seasonList.selectedIndex;
     if (docNo == 0) {
-      data = google.visualization.arrayToDataTable([['', { role: 'annotation' }],['', '']]);
-      filter_data();
+        document.getElementById('table_div').innerHTML = '';
+      //data = google.visualization.arrayToDataTable([['', { role: 'annotation' }],['', '']]);
+      //filter_data();
     } else {
       var doc = seasonForm.seasonList.options[docNo].value;
       var queryString = encodeURIComponent('SELECT A,B,C,D,E,F,G,H');
@@ -41,34 +42,6 @@
     filter_data();
   }
 
-  function populate_selections() {
-    var events = view.getDistinctValues(0);
-    var eventSelectionList=document.getElementById("eventList");
-    // Remove all selections except the first
-    for(var i = 1; i < eventSelectionList.length; i++) {
-        eventSelectionList.remove(eventSelectionList.length-1);
-    }
-    // Add new selections based on the view
-    for(var i = 0; i < events.length; i++) {
-        eventSelectionList.add(new Option(events[i], events[i]));
-    }
-    
-    var names = view.getDistinctValues(1);
-    var namesAsString = "";
-    for(var i = 0; i < names.length; i++) {
-      namesAsString += "<option>" + names[i] + "</option>\n";
-    }
-    console.log("\nNames: " + namesAsString);
-
-    var classes = view.getDistinctValues(4);
-    var classesAsString = "";
-    for(var i = 0; i < classes.length; i++) {
-      classesAsString += "<option>" + classes[i] + "</option>\n";
-    }
-    console.log("\nClasses: " + classesAsString);
-
-  }
-  
   function filter_data() {
     view = new google.visualization.DataView(data);
     table = new google.visualization.Table(document.getElementById('table_div'));
@@ -77,7 +50,7 @@
     // Filter on events in column '0'
     var eventNo = eventForm.eventList.selectedIndex;
     if (eventNo) {
-        filterList.push({column:0, value:eventForm.eventList.options[eventNo].text})
+        filterList.push({column:0, value:eventForm.eventList.options[eventNo].text});
     }
     
     // Filter on names in column 1
@@ -90,6 +63,12 @@
     var classNo = classForm.classList.selectedIndex;
     if (classNo) {
         filterList.push({column:4, value:classForm.classList.options[classNo].text});
+    }
+    
+    // Filter on competition in column 5
+    var competitionNo = competitionForm.competitionList.selectedIndex;
+    if (competitionNo) {
+        filterList.push({column:5, value:competitionForm.competitionList.options[competitionNo].text});
     }    
 
     // Apply the filter, and draw the table
@@ -98,6 +77,71 @@
     }
     table.draw(view, {showRowNumber: false, width: '100%', height: '100%'});
     populate_selections();
+  }
+  
+  function populate_selections() {
+    // Populating Names
+    // Get the index number for the selected value
+    var eventNo = eventForm.eventList.selectedIndex;
+
+    // Empty the selection list
+    var eventSelectionList=document.getElementById('eventList');
+    eventSelectionList.innerHTML = '';
+    
+    // Populate the selection list with values from the filtered data
+    var events = view.getDistinctValues(0);
+    eventSelectionList.add(new Option("- Alla grenar -", 'all'));
+    for(var i = 0; i < events.length; i++) {
+        eventSelectionList.add(new Option(events[i], events[i]));
+    }
+    
+    // Set the selected value. Remember that a selected value filters out everything except 2 values
+    if (eventSelectionList.length == 2){
+        if (eventNo) eventSelectionList.options.selectedIndex = 1;
+        else eventSelectionList.options.selectedIndex = 0;
+    }
+    
+    // Populating Names
+    var nameNo = nameForm.nameList.selectedIndex;
+    var nameSelectionList=document.getElementById('nameList');
+    nameSelectionList.innerHTML = '';
+    var names = view.getDistinctValues(1);
+    nameSelectionList.add(new Option("- Alla namn -", 'all'));
+    for(var i = 0; i < names.length; i++) {
+        nameSelectionList.add(new Option(names[i], names[i]));
+    }
+    if (nameSelectionList.length == 2){
+        if (nameNo) nameSelectionList.options.selectedIndex = 1;
+        else nameSelectionList.options.selectedIndex = 0;
+    }
+
+    // Populating Classes
+    var classNo = classForm.classList.selectedIndex;
+    var classSelectionList=document.getElementById('classList');
+    classSelectionList.innerHTML = '';
+    var classes = view.getDistinctValues(4);
+    classSelectionList.add(new Option("- Alla klasser -", 'all'));
+    for(var i = 0; i < classes.length; i++) {
+        classSelectionList.add(new Option(classes[i], classes[i]));
+    }
+    if (classSelectionList.length == 2){
+        if (classNo) classSelectionList.options.selectedIndex = 1;
+        else classSelectionList.options.selectedIndex = 0;
+    }
+    
+    // Populating Competitions
+    var competitionNo = competitionForm.competitionList.selectedIndex;
+    var competitionSelectionList=document.getElementById('competitionList');
+    competitionSelectionList.innerHTML = '';
+    var competitions = view.getDistinctValues(5);
+    competitionSelectionList.add(new Option("- Alla tävlingar -", 'all'));
+    for(var i = 0; i < competitions.length; i++) {
+        competitionSelectionList.add(new Option(competitions[i], competitions[i]));
+    }
+    if (competitionSelectionList.length == 2){
+        if (competitionNo) competitionSelectionList.options.selectedIndex = 1;
+        else competitionSelectionList.options.selectedIndex = 0;
+    }
   }
   </script>
 </head>
@@ -123,43 +167,38 @@
     <td><b>Gren:</b></td>
     <td>
       <form name="eventForm">
-        <select name="eventList" id="eventList" onChange="filter_data()">
-          <option>- Alla Grenar -
+        <select id="eventList" name="eventList" onChange="filter_data()">
+            <option>- Alla grenar -
         </select>
       </form>
     </td>
     <td><b>Namn:</b></td>
     <td>
       <form name="nameForm">
-        <select name="nameList" onChange="filter_data()">
-          <option>- Alla Namn -
-          <option>Oscar Niklasson
-          <option>Ebba Lind
-          <option>Felicia Johansson
-          <option>Thea Katsoulaki
-          <option>Adam Eriksson
+        <select id="nameList" name="nameList" onChange="filter_data()">
+          <option>- Alla namn -
         </select>
       </form>
     </td>
     <td><b>Klass:</b></td>
     <td>
       <form name="classForm">
-        <select name="classList" onChange="filter_data()">
-          <option>- Alla Klasser -
-          <option>F10
-          <option>F11
-          <option>F12
-          <option>F13
-          <option>P10
-          <option>P11
-          <option>P12
-          <option>P13
+        <select id="classList" name="classList" onChange="filter_data()">
+          <option>- Alla klasser -
+        </select>
+      </form>
+    </td>
+    <td><b>Tävling:</b></td>
+    <td>
+      <form name="competitionForm">
+        <select id="competitionList" name="competitionList" onChange="filter_data()">
+          <option>- Alla tävlingar -
         </select>
       </form>
     </td>
 </tr>
 </table>    
-
+<p></p>
 <div id="table_div"></div>
 
 </body>
