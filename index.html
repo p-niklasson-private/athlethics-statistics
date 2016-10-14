@@ -22,9 +22,8 @@
     var docNo = seasonForm.seasonList.selectedIndex;
     if (docNo == 0) {
         document.getElementById('table_div').innerHTML = '';
-      //data = google.visualization.arrayToDataTable([['', { role: 'annotation' }],['', '']]);
-      //filter_data();
-    } else {
+    }
+    else {
       var doc = seasonForm.seasonList.options[docNo].value;
       var queryString = encodeURIComponent('SELECT A,B,C,D,E,F,G,H');
       var queryUrl = "https://docs.google.com/spreadsheets/d/" + doc + "/gviz/tq?headers=1&tq=" + queryString;
