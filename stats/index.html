@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <title>Hanviken Friidrott - Statistik</title>
+  <link rel="icon" href="http://friidrott.niklassons.net/favicon.jpg" type="image/jpg" />
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDo0DbHrfNufjlT0En0v91B8mbyjiFXxP8&callback=initMap" type="text/javascript"></script>
+  <script type="text/javascript">
+
+  google.load('visualization', '1', { packages : [ 'corechart', 'map', 'table' ] });
+  google.charts.setOnLoadCallback(initiateData);
+
+  var docList = ["1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto", // Utomhus 2016
+                 "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8", // Inomhus 2015-2016
+                 "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
+                ];
+  var data;
+  var dataList = [];
+  var view;
+  var filterList = [];
+  var table;
+  
+  function initMap() {
+      // Do nothing...
+  }
+  
+  function initiateData() {
+    var queryString = encodeURIComponent('SELECT *');
+    for (i = 0; i < docList.length; i++) { 
+        var queryUrl = "https://docs.google.com/spreadsheets/d/" + docList[i] + "/gviz/tq?headers=1&tq=" + queryString;
+        var query = new google.visualization.Query(queryUrl);
+        query.send(handleQueryResponse);
+        console.log(docList[i]);
+    }
+  }
+
+  function handleQueryResponse(response) {
+    if (response.isError()) {
+      alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+      return;
+    }
+    dataList.push(response.getDataTable());
+    finished();
+  }
+
+  function finished() {
+    if (dataList.length != docList.length) {
+        //do nothing if data tables are not fully ready
+        return;
+    }
+    var json = JSON.parse(dataList[0].toJSON());
+    for (i = 1; i < dataList.length; i++) { 
+        var json2 = JSON.parse(dataList[i].toJSON());
+        var mergedRows = json.rows.concat(json2.rows);
+        json.rows = mergedRows;
+    }
+    data = new google.visualization.DataTable(json);
+    console.log(json);
+
+    displayChart();
+  }
+
+  function displayChart() {
+    var result = google.visualization.data.group(data, [7], [{'column': 1, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
+    result.sort({column: 1, desc: true, unique: true}); 
+    
+    var options = {
+          title: 'Antalet starter per klass',
+          is3D: true,
+          pieSliceText: 'value',
+        };
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+    chart.draw(result, options);
+    
+    table = new google.visualization.Table(document.getElementById('table_div'));
+    table.draw(result, {showRowNumber: true, width: '1000', height: '100%'});
+  }
+  
+  </script>
+</head>
+
+<html>
+<body>
+
+<h1>Statistik för Hanvikens SK Friidrott</h1>
+<div id="chart_div" style="width: 900px; height: 500px;"></div>
+<p></p>
+<div id="table_div"></div>
+
+</body>
+</html>
