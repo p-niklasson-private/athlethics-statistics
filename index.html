@@ -1,18 +1,19 @@
 <!DOCTYPE HTML>
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <title>Google Spreadsheets</title>
-
+  <title>Hanviken friidrott - Resultat</title>
+  <link rel="icon" href="http://friidrott.niklassons.net/favicon.jpg" type="image/jpg" />
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
 
   google.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
-  google.charts.setOnLoadCallback(initiate_data);
+  google.charts.setOnLoadCallback(initiateData);
 
   var docList = ["1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto", // Utomhus 2016
                  "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8", // Inomhus 2015-2016
                  "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
+                 "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
                 ];
   var data;
   var dataList = [];
@@ -20,7 +21,7 @@
   var filterList = [];
   var table;
   
-  function initiate_data() {
+  function initiateData() {
     var queryString = encodeURIComponent('SELECT *');
     for (i = 0; i < docList.length; i++) { 
         var queryUrl = "https://docs.google.com/spreadsheets/d/" + docList[i] + "/gviz/tq?headers=1&tq=" + queryString;
@@ -52,10 +53,11 @@
     }
     data = new google.visualization.DataTable(json);
     console.log(json);
-    filter_data();
+
+    filterData();
   }
 
-  function filter_data() {
+  function filterData() {
     view = new google.visualization.DataView(data);
     table = new google.visualization.Table(document.getElementById('table_div'));
     filterList = [];
@@ -99,11 +101,11 @@
     if(filterList.length > 0){
       view.setRows(view.getFilteredRows(filterList));
     }
-    table.draw(view, {showRowNumber: false, width: '1800', height: '100%'});
-    populate_selections();
+    table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
+    populateSelections();
   }
   
-  function populate_selections() {
+  function populateSelections() {
     // Populating Names
     // Get the index number for the selected value
     var eventNo = eventForm.eventList.selectedIndex;
@@ -195,6 +197,7 @@
         else seasonSelectionList.options.selectedIndex = 0;
     }
   }
+  
   </script>
 </head>
 
@@ -207,7 +210,7 @@
     <td><b>Säsong:</b></td>
     <td>
       <form name="seasonForm">
-        <select id="seasonList" name="seasonList" onChange="filter_data()">
+        <select id="seasonList" name="seasonList" onChange="filterData()">
           <option>- Alla säsonger -
         </select>
       </form>
@@ -215,7 +218,7 @@
     <td><b>Tävling:</b></td>
     <td>
       <form name="competitionForm">
-        <select id="competitionList" name="competitionList" onChange="filter_data()">
+        <select id="competitionList" name="competitionList" onChange="filterData()">
           <option>- Alla tävlingar -
         </select>
       </form>
@@ -223,7 +226,7 @@
     <td><b>Gren:</b></td>
     <td>
       <form name="eventForm">
-        <select id="eventList" name="eventList" onChange="filter_data()">
+        <select id="eventList" name="eventList" onChange="filterData()">
             <option>- Alla grenar -
         </select>
       </form>
@@ -233,7 +236,7 @@
     <td><b>Namn:</b></td>
     <td>
       <form name="nameForm">
-        <select id="nameList" name="nameList" onChange="filter_data()">
+        <select id="nameList" name="nameList" onChange="filterData()">
           <option>- Alla namn -
         </select>
       </form>
@@ -241,7 +244,7 @@
     <td><b>Född:</b></td>
     <td>
       <form name="yearForm">
-        <select id="yearList" name="yearList" onChange="filter_data()">
+        <select id="yearList" name="yearList" onChange="filterData()">
           <option>- Alla födelseår -
         </select>
       </form>
@@ -249,13 +252,14 @@
     <td><b>Klass:</b></td>
     <td>
       <form name="classForm">
-        <select id="classList" name="classList" onChange="filter_data()">
+        <select id="classList" name="classList" onChange="filterData()">
           <option>- Alla klasser -
         </select>
       </form>
     </td>
 </tr>
-</table>    
+</table>
+<div id="status_div"></div>
 <p></p>
 <div id="table_div"></div>
 
