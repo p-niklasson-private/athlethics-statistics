@@ -5,6 +5,8 @@
   <link rel="icon" href="http://friidrott.niklassons.net/favicon.jpg" type="image/jpg" />
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <script type="text/javascript">
 
   google.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
@@ -202,9 +204,31 @@
 </head>
 
 <html>
-<body>
-
-<h1>Statistik för Hanvikens SK Friidrott</h1>
+  <body>
+      <!--header class="w3-container w3-round w3-light-grey w3-margin">
+        <h3>Hanviken SK Friidrott</h3>
+      </header-->
+      <ul class="w3-navbar w3-round w3-light-grey w3-medium w3-margin">
+        <li><a class="w3-green" href="#"><i class="fa fa-table"></i> Resultat</a></li>
+        <li class="w3-dropdown-hover">
+          <a href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>
+          <div class="w3-dropdown-content w3-white w3-card-4">
+            <a href="#">Link 1</a>
+            <a href="#">Link 2</a>
+            <a href="#">Link 3</a>
+          </div>
+        </li>    
+        <li><a href="#"><i class="fa fa-map-marker"></i> Karta</a></li>
+        <li class="w3-dropdown-hover">
+          <a href="#"><i class="fa fa-link"></i> Länkar <i class="fa fa-caret-down"></i></a>
+          <div class="w3-dropdown-content w3-white w3-card-4">
+            <a href="https://hanvikenssk.myclub.se/friidrott" target="_blank">Hanviken SK friidrott</a>
+            <a href="http://friidrott.se" target="_blank">Friidrott.se</a>
+          </div>
+        </li>
+      </ul>
+<div class="w3-container w3-round w3-light-grey w3-margin">
+<p></p>
 <table width="800">
   <tr>
     <td><b>Säsong:</b></td>
@@ -259,9 +283,9 @@
     </td>
 </tr>
 </table>
-<div id="status_div"></div>
 <p></p>
 <div id="table_div"></div>
-
+<p></p>
+</div>
 </body>
 </html>
