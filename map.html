@@ -14,7 +14,6 @@
   google.charts.setOnLoadCallback(initiateData);
 
   var docList = ["1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto", // Utomhus 2016
-                 "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8", // Inomhus 2015-2016
                 ];
   var data;
   var dataList = [];
@@ -67,7 +66,9 @@
     var geoData = google.visualization.arrayToDataTable([
           ['Lat', 'Lon', 'Name'],
           [59.2898365, 17.9276445, 'Brommaspelen - Sätra IP, Sätra'],
-          [57.706174, 11.986493, 'Världsungdomsspelen - Ullevi, Göteborg'],
+          [57.7059158,11.9870548, 'Världsungdomsspelen - Ullevi, Göteborg'],
+          [59.2255016,18.2197373, 'Tyresö ungdoms- och veteranspel - Trollbäckens IP, Tyresö'],
+          [59.620632, 17.8368365, 'Midgårdskastet - Midgårdsvallen, Märsta'],
           ]);
 
     var formatter = new google.visualization.NumberFormat({fractionDigits: 7});
@@ -78,6 +79,7 @@
       showTooltip: true,
       showInfoWindow: true,
       enableScrollWheel: true,
+      mapTypeControl: true,
     };
 
     var map = new google.visualization.Map(document.getElementById('map_div'));
@@ -129,7 +131,7 @@
         </li>
       </ul>
     <header class="w3-container w3-round w3-light-grey w3-margin">
-      <h3>Hanviken SK Friidrott - Tävlingar inomhus 2015-2016 och utomhus 2016</h3>
+      <h3>Hanviken SK Friidrott - Tävlingar utomhus 2016</h3>
     </header>
     <div class="w3-container w3-round w3-light-grey w3-margin">
       <p></p>
