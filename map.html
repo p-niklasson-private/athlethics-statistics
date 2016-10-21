@@ -13,10 +13,11 @@
   google.load('visualization', '1', { packages : [ 'corechart', 'map', 'table' ] });
   google.charts.setOnLoadCallback(initiateData);
 
-  var docList = ["1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto", // Utomhus 2016
-                ];
+  var docId = "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto"; // Utomhus 2016
+  var docGid = "977426029";                                   // The tab 'Tävlingar'
+  
   var data;
-  var dataList = [];
+  var competitions;
   var view;
   var filterList = [];
   var table;
@@ -26,13 +27,17 @@
   }
   
   function initiateData() {
+    // Fetch the result table
     var queryString = encodeURIComponent('SELECT *');
-    for (i = 0; i < docList.length; i++) { 
-        var queryUrl = "https://docs.google.com/spreadsheets/d/" + docList[i] + "/gviz/tq?headers=1&tq=" + queryString;
-        var query = new google.visualization.Query(queryUrl);
-        query.send(handleQueryResponse);
-        console.log(docList[i]);
-    }
+    var queryUrl = "https://docs.google.com/spreadsheets/d/" + docId + "/gviz/tq?headers=1&tq=" + queryString;
+    var query = new google.visualization.Query(queryUrl);
+    query.send(handleQueryResponse);
+    
+    // Fetch the 'Tävlingar' info
+    var queryString2 = encodeURIComponent('SELECT B,C,D,E,F,G');
+    var queryUrl2 = "https://docs.google.com/spreadsheets/d/" + docId + "/gviz/tq?gid=" + docGid + "&headers=1&tq=" + queryString2;
+    var query2 = new google.visualization.Query(queryUrl2);
+    query2.send(handleQueryResponse2);
   }
 
   function handleQueryResponse(response) {
@@ -40,66 +45,49 @@
       alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
       return;
     }
-    dataList.push(response.getDataTable());
-    finished();
+    data = response.getDataTable();
   }
 
-  function finished() {
-    if (dataList.length != docList.length) {
-        //do nothing if data tables are not fully ready
-        return;
+  function handleQueryResponse2(response2) {
+    if (response2.isError()) {
+      alert('Error in query: ' + response2.getMessage() + ' ' + response2.getDetailedMessage());
+      return;
     }
-    var json = JSON.parse(dataList[0].toJSON());
-    for (i = 1; i < dataList.length; i++) { 
-        var json2 = JSON.parse(dataList[i].toJSON());
-        var mergedRows = json.rows.concat(json2.rows);
-        json.rows = mergedRows;
-    }
-    data = new google.visualization.DataTable(json);
-    console.log(json);
-
-    // displayChart();
+    competitions = response2.getDataTable();
     displayMap();
   }
 
   function displayMap() {
-    var geoData = google.visualization.arrayToDataTable([
-          ['Lat', 'Lon', 'Name'],
-          [59.2898365, 17.9276445, 'Brommaspelen - Sätra IP, Sätra'],
-          [57.7059158,11.9870548, 'Världsungdomsspelen - Ullevi, Göteborg'],
-          [59.2255016,18.2197373, 'Tyresö ungdoms- och veteranspel - Trollbäckens IP, Tyresö'],
-          [59.620632, 17.8368365, 'Midgårdskastet - Midgårdsvallen, Märsta'],
-          ]);
+    var geoData = new google.visualization.DataView(competitions);
+    geoData.setColumns([1,2,3]);
 
-    var formatter = new google.visualization.NumberFormat({fractionDigits: 7});
-    formatter.format(geoData, 0);
-    formatter.format(geoData, 1);
+    var compData = new google.visualization.DataView(competitions);
+    compData.setColumns([0,3,4,5]);
 
     var options = {
       showTooltip: true,
       showInfoWindow: true,
       enableScrollWheel: true,
-      mapTypeControl: true,
-    };
+      };
 
     var map = new google.visualization.Map(document.getElementById('map_div'));
     map.draw(geoData, options);
     
-    table = new google.visualization.Table(document.getElementById('table_div'));
-    table.draw(geoData, {showRowNumber: true, width: '1000', height: '100%'});
+    var comp = new google.visualization.Table(document.getElementById('comp_div'));
+    comp.draw(compData, {showRowNumber: true, width: '900px', height: '100%'});
     
     // Set a 'select' event listener for the table.
-    // When the table is selected, we set the selection on the map.
-    google.visualization.events.addListener(table, 'select',
+    // When the comp is selected, we set the selection on the map.
+    google.visualization.events.addListener(comp, 'select',
         function() {
-          map.setSelection(table.getSelection());
+          map.setSelection(comp.getSelection());
         });
 
     // Set a 'select' event listener for the map.
-    // When the map is selected, we set the selection on the table.
+    // When the map is selected, we set the selection on the comp.
     google.visualization.events.addListener(map, 'select',
         function() {
-          table.setSelection(map.getSelection());
+          comp.setSelection(map.getSelection());
         });
   }
   
@@ -108,9 +96,6 @@
 
 <html>
   <body>
-    <!--header class="w3-container w3-round w3-light-grey w3-margin">
-      <h3>Hanviken SK Friidrott</h3>
-    </header-->
       <ul class="w3-navbar w3-round w3-light-grey w3-medium w3-margin">
         <li><a href="index.html"><i class="fa fa-table"></i> Resultat</a></li>
         <li class="w3-dropdown-hover">
@@ -130,15 +115,33 @@
           </div>
         </li>
       </ul>
-    <header class="w3-container w3-round w3-light-grey w3-margin">
-      <h3>Hanviken SK Friidrott - Tävlingar utomhus 2016</h3>
-    </header>
     <div class="w3-container w3-round w3-light-grey w3-margin">
+      <h3>Hanviken SK Friidrott - Tävlingar utomhus 2016</h3>
+    </div>
+      <table width="100%" height="100%">
+          <tr>
+              <td>
+              <div class="w3-container w3-round w3-light-grey w3-margin-left w3-margin-right">
+                <p></p>
+                <div id="map_div" style="width: 750px; height: 500px;"></div>
+                <p></p>
+              </div>
+              </td>
+              <td>
+              <div class="w3-container w3-round w3-light-grey w3-margin-right">
+                <p></p>
+                <div id="comp_div" style="width: 750px; height: 500px;"></div>
+                <p></p>
+              </div>
+              </td>
+          </tr>
+      </table>
       <p></p>
-      <div id="map_div" style="width: 900px; height: 500px;"></div>
-      <p></p>
-      <div id="table_div"></div>
-      <p></p>
+      <div class="w3-container w3-round w3-light-grey w3-margin-left w3-margin-right">
+        <p></p>
+        <div id="table_div"></div>
+        <p></p>
+      </div>
     </div>
   </body>
 </html>
