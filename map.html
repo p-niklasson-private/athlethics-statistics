@@ -9,12 +9,26 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDo0DbHrfNufjlT0En0v91B8mbyjiFXxP8&callback=initMap" type="text/javascript"></script>
   <script type="text/javascript">
+  
+  // Get the number of the map to display
+  var mapNo = findGetParameter('map');
 
   google.load('visualization', '1', { packages : [ 'corechart', 'map', 'table' ] });
   google.charts.setOnLoadCallback(initiateData);
 
-  var docId = "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto"; // Utomhus 2016
-  var docGid = "977426029";                                   // The tab 'Tävlingar'
+  var docId;
+  var docGid;
+  var pageHeader;
+  if (mapNo == 1) {
+    docId = "1WbKxsWGzVrk48C5YrZ_KS-Aw9To4RZA42c0mJy4sALk"; // Inomhus 2016-2017
+    docGid = "977426029";                                   // The tab 'Tävlingar'
+    pageHeader = "Hanviken SK Friidrott - Tävlingar inomhus 2016-2107";
+  }
+  if (mapNo == 2) {
+    docId = "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto"; // Utomhus 2016
+    docGid = "977426029";                                   // The tab 'Tävlingar'
+    pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2016";
+  }
   
   var data;
   var competitions;
@@ -30,17 +44,19 @@
   }
   
   function initiateData() {
-    // Fetch the result table
-    var queryString = encodeURIComponent('SELECT *');
-    var queryUrl = "https://docs.google.com/spreadsheets/d/" + docId + "/gviz/tq?headers=1&tq=" + queryString;
-    var query = new google.visualization.Query(queryUrl);
-    query.send(handleQueryResponse);
+    if (docId) {
+      // Fetch the result table
+      var queryString = encodeURIComponent('SELECT *');
+      var queryUrl = "https://docs.google.com/spreadsheets/d/" + docId + "/gviz/tq?headers=1&tq=" + queryString;
+      var query = new google.visualization.Query(queryUrl);
+      query.send(handleQueryResponse);
     
-    // Fetch the 'Tävlingar' info
-    var queryString2 = encodeURIComponent('SELECT B,C,D,E,F,G');
-    var queryUrl2 = "https://docs.google.com/spreadsheets/d/" + docId + "/gviz/tq?gid=" + docGid + "&headers=1&tq=" + queryString2;
-    var query2 = new google.visualization.Query(queryUrl2);
-    query2.send(handleQueryResponse2);
+      // Fetch the 'Tävlingar' info
+      var queryString2 = encodeURIComponent('SELECT B,C,D,E,F,G');
+      var queryUrl2 = "https://docs.google.com/spreadsheets/d/" + docId + "/gviz/tq?gid=" + docGid + "&headers=1&tq=" + queryString2;
+      var query2 = new google.visualization.Query(queryUrl2);
+      query2.send(handleQueryResponse2);
+    }
   }
 
   function handleQueryResponse(response) {
@@ -62,10 +78,10 @@
 
   function displayMap() {
     var geoData = new google.visualization.DataView(competitions);
-    geoData.setColumns([1,2,3]);
+    geoData.setColumns([2,3,1]);
 
     compData = new google.visualization.DataView(competitions);
-    compData.setColumns([0,3,4,5]);
+    compData.setColumns([0,1,4,5]);
 
     var options = {
       showTooltip: true,
@@ -74,6 +90,8 @@
       useMapTypeControl: true,
       };
 
+    page_header.innerText = pageHeader;
+      
     map = new google.visualization.Map(document.getElementById('map_div'));
     map.draw(geoData, options);
     
@@ -115,6 +133,18 @@
       table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
     }
   }
+  
+  function findGetParameter(parameterName) {
+    var result = null,
+        tmp = [];
+    var items = location.search.substr(1).split("&");
+    for (var index = 0; index < items.length; index++) {
+        tmp = items[index].split("=");
+        if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+    }
+    return result;
+  }
+
   </script>
 </head>
 
@@ -130,7 +160,13 @@
             <a href="#">Link 3</a>
           </div>
         </li>    
-        <li><a class="w3-green" href="map.html"><i class="fa fa-map-marker"></i> Karta</a></li>
+        <li class="w3-dropdown-hover">
+          <a class="w3-green" href="#"><i class="fa fa-map"></i> Kartor <i class="fa fa-caret-down"></i></a>
+          <div class="w3-dropdown-content w3-white w3-card-4">
+              <a href="map.html?map=1"><i class="fa fa-map-marker"></i> Inomhustävlingar 2016-2017</a>
+              <a href="map.html?map=2"><i class="fa fa-map-marker"></i> Utomhustävlingar 2016</a>
+          </div>
+        </li>
         <li class="w3-dropdown-hover">
           <a href="#"><i class="fa fa-link"></i> Länkar <i class="fa fa-caret-down"></i></a>
           <div class="w3-dropdown-content w3-white w3-card-4">
@@ -140,7 +176,7 @@
         </li>
       </ul>
     <div class="w3-container w3-round w3-light-grey w3-margin">
-      <h3>Hanviken SK Friidrott - Tävlingar utomhus 2016</h3>
+      <h3 id="page_header"></h3>
     </div>
       <table width="100%" height="100%">
           <tr>

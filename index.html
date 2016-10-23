@@ -12,7 +12,9 @@
   google.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
   google.charts.setOnLoadCallback(initiateData);
 
-  var docList = ["1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto", // Utomhus 2016
+  var docList = [
+                 "1WbKxsWGzVrk48C5YrZ_KS-Aw9To4RZA42c0mJy4sALk", // Inomhus 2016-2017
+                 "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto", // Utomhus 2016
                  "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8", // Inomhus 2015-2016
                  "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
                  "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
@@ -218,7 +220,13 @@
             <a href="#">Link 3</a>
           </div>
         </li>    
-        <li><a href="map.html"><i class="fa fa-map-marker"></i> Karta</a></li>
+        <li class="w3-dropdown-hover">
+          <a href="#"><i class="fa fa-map"></i> Kartor <i class="fa fa-caret-down"></i></a>
+          <div class="w3-dropdown-content w3-white w3-card-4">
+            <a href="map.html?map=1"><i class="fa fa-map-marker"></i> Inomhustävlingar 2016-2017</a>
+            <a href="map.html?map=2"><i class="fa fa-map-marker"></i> Utomhustävlingar 2016</a>
+          </div>
+        </li>
         <li class="w3-dropdown-hover">
           <a href="#"><i class="fa fa-link"></i> Länkar <i class="fa fa-caret-down"></i></a>
           <div class="w3-dropdown-content w3-white w3-card-4">
