@@ -18,6 +18,9 @@
   
   var data;
   var competitions;
+  var comp;
+  var compData;
+  var map;
   var view;
   var filterList = [];
   var table;
@@ -61,19 +64,20 @@
     var geoData = new google.visualization.DataView(competitions);
     geoData.setColumns([1,2,3]);
 
-    var compData = new google.visualization.DataView(competitions);
+    compData = new google.visualization.DataView(competitions);
     compData.setColumns([0,3,4,5]);
 
     var options = {
       showTooltip: true,
       showInfoWindow: true,
       enableScrollWheel: true,
+      useMapTypeControl: true,
       };
 
-    var map = new google.visualization.Map(document.getElementById('map_div'));
+    map = new google.visualization.Map(document.getElementById('map_div'));
     map.draw(geoData, options);
     
-    var comp = new google.visualization.Table(document.getElementById('comp_div'));
+    comp = new google.visualization.Table(document.getElementById('comp_div'));
     comp.draw(compData, {showRowNumber: true, width: '900px', height: '100%'});
     
     // Set a 'select' event listener for the table.
@@ -81,6 +85,7 @@
     google.visualization.events.addListener(comp, 'select',
         function() {
           map.setSelection(comp.getSelection());
+          filterData();
         });
 
     // Set a 'select' event listener for the map.
@@ -88,9 +93,28 @@
     google.visualization.events.addListener(map, 'select',
         function() {
           comp.setSelection(map.getSelection());
+          filterData();
         });
   }
   
+  function filterData() {
+    view = new google.visualization.DataView(data);
+    table = new google.visualization.Table(document.getElementById('table_div'));
+    filterList = [];
+    
+    var row = comp.getSelection()[0].row;
+    
+    var competition = compData.getValue(row,0);
+    console.log(competition);
+    filterList.push({column:8, value:competition});
+    
+    // Apply the filter, and draw the table
+    if(filterList.length > 0){
+      view.setRows(view.getFilteredRows(filterList));
+      header.innerText = competition;
+      table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
+    }
+  }
   </script>
 </head>
 
@@ -139,6 +163,7 @@
       <p></p>
       <div class="w3-container w3-round w3-light-grey w3-margin-left w3-margin-right">
         <p></p>
+        <h3 id="header"></h3>
         <div id="table_div"></div>
         <p></p>
       </div>
