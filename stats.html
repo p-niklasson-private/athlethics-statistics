@@ -83,10 +83,7 @@
 
 <html>
   <body>
-    <!--header class="w3-container w3-round w3-light-grey w3-margin">
-      <h3>Hanviken SK Friidrott</h3>
-    </header-->
-      <ul class="w3-navbar w3-round w3-light-grey w3-medium w3-margin">
+      <ul class="w3-navbar w3-round-large w3-light-grey w3-medium w3-margin">
         <li><a href="index.html"><i class="fa fa-table"></i> Resultat</a></li>
         <li class="w3-dropdown-hover">
           <a class="w3-green" href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>
@@ -111,15 +108,26 @@
           </div>
         </li>
       </ul>
-    <header class="w3-container w3-round w3-light-grey w3-margin">
-      <h3>Hanviken SK Friidrott - Statistik</h3>
-    </header>
-    <div class="w3-container w3-round w3-light-grey w3-margin">
-      <p></p>
-      <div id="chart_div" style="width: 900px; height: 500px;"></div>
-      <p></p>
-      <div id="table_div"></div>
-      <p></p>
+    <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
+      <h3 id="page_header">Hanviken SK Friidrott - Statistik</h3>
     </div>
+      <table width="100%" height="100%">
+          <tr>
+              <td>
+              <div class="w3-container w3-round-large w3-light-grey w3-margin-left w3-margin-right">
+                <p></p>
+                <div id="chart_div" style="width: 750px; height: 500px; margin: auto;"></div>
+                <p></p>
+              </div>
+              </td>
+              <td>
+              <div class="w3-container w3-round-large w3-light-grey w3-margin-right">
+                <p></p>
+                <div id="table_div" style="width: 750px; height: 500px; margin: auto;"></div>
+                <p></p>
+              </div>
+              </td>
+          </tr>
+      </table>
   </body>
 </html>
