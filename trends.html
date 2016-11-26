@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <title>Hanviken friidrott - Resultat</title>
+  <title>Hanviken friidrott - Trender</title>
   <link rel="icon" href="http://friidrott.niklassons.net/favicon.jpg" type="image/jpg" />
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -13,7 +13,7 @@
   google.charts.setOnLoadCallback(initiateData);
 
   var docList = [
-//                 "1uAU9FptFO_GopSXXvJ9XZZyDps5rKnlYyKHdNeE6s8Y", // Development data
+//               "1uAU9FptFO_GopSXXvJ9XZZyDps5rKnlYyKHdNeE6s8Y", // Development data
                  "1WbKxsWGzVrk48C5YrZ_KS-Aw9To4RZA42c0mJy4sALk", // Inomhus 2016-2017
                  "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto", // Utomhus 2016
                  "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8", // Inomhus 2015-2016
@@ -25,6 +25,7 @@
   var view;
   var filterList = [];
   var table;
+  var chart;
   
   function initiateData() {
     var queryString = encodeURIComponent('SELECT *');
@@ -57,62 +58,75 @@
         json.rows = mergedRows;
     }
     data = new google.visualization.DataTable(json);
+    data.sort([{column: 9},{column: 1}]);
     console.log(json);
 
     filterData();
   }
 
   function filterData() {
-    view = new google.visualization.DataView(data);
-    table = new google.visualization.Table(document.getElementById('table_div'));
-    
-    // Format the Time column
-    var formatter = new google.visualization.NumberFormat({pattern:'#.##,##'});
-    formatter.format(view, 3);
+    var event = '';
+    var name = '';
 
+    chartView = new google.visualization.DataView(data);
+    resultView = new google.visualization.DataView(data);
+    
     filterList = [];
     
     // Filter on events in column '0'
     var eventNo = eventForm.eventList.selectedIndex;
     if (eventNo) {
-        filterList.push({column:0, value:eventForm.eventList.options[eventNo].text});
+        event = eventForm.eventList.options[eventNo].text;
+        filterList.push({column:0, value:event});
     }
     
     // Filter on names in column 1
     var nameNo = nameForm.nameList.selectedIndex;
     if (nameNo) {
-       filterList.push({column:1, value:nameForm.nameList.options[nameNo].text});
+       name = nameForm.nameList.options[nameNo].text;
+       filterList.push({column:1, value:name});
     }
+    
     // Filter on birth year in column 2
     var yearNo = yearForm.yearList.selectedIndex;
     if (yearNo) {
        filterList.push({column:2, value:yearForm.yearList.options[yearNo].text});
     }
-    
-    // Filter on class in column 7
-    var classNo = classForm.classList.selectedIndex;
-    if (classNo) {
-        filterList.push({column:7, value:classForm.classList.options[classNo].text});
-    }
-    
-    // Filter on competition in column 8
-    var competitionNo = competitionForm.competitionList.selectedIndex;
-    if (competitionNo) {
-        filterList.push({column:8, value:competitionForm.competitionList.options[competitionNo].text});
-    }    
 
-    // Filter on season in column 10
-    var seasonNo = seasonForm.seasonList.selectedIndex;
-    if (seasonNo) {
-        filterList.push({column:10, value:seasonForm.seasonList.options[seasonNo].text});
-    }    
-
-    // Apply the filter, and draw the table
+    // Apply the filter
     if(filterList.length > 0){
-      view.setRows(view.getFilteredRows(filterList));
+      chartView.setRows(chartView.getFilteredRows(filterList));
     }
-    table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
+
     populateSelections();
+
+    var options = {
+      title: event + ' ' + name,
+      legend: 'none',
+      pointSize: 10,
+      pointShape: 'diamond',
+      hAxis: { title: 'Datum', showTextEvery: '1'},
+      vAxis: { title: 'Resultat'},
+    };
+    if (event) {
+        table = new google.visualization.Table(document.getElementById('table_div'));    
+        table.draw(chartView, {showRowNumber: true, width: '1800', height: '100%'});
+        
+        if (! name) {
+            tooltip_column = 1;
+        }
+        else {
+            tooltip_column = 8;
+        }
+        
+        chartView.setColumns([9,4,
+                      {calc: "stringify", sourceColumn: 4, role: "annotation", type: "string"},
+                      {sourceColumn: tooltip_column, role: "tooltip"}
+                     ]);
+                     
+        chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(chartView, options);
+    }
   }
   
   function populateSelections() {
@@ -125,10 +139,12 @@
     eventSelectionList.innerHTML = '';
     
     // Populate the selection list with values from the filtered data
-    var events = view.getDistinctValues(0);
+    var events = chartView.getDistinctValues(0);
     eventSelectionList.add(new Option("- Alla grenar -", 'all'));
     for(var i = 0; i < events.length; i++) {
-        eventSelectionList.add(new Option(events[i], events[i]));
+        if (!events[i].match(/meter|Stafett|Häck|Mångkamp/)){
+          eventSelectionList.add(new Option(events[i], events[i]));
+        }
     }
     
     // Set the selected value. Remember that a selected value filters out everything except 2 values
@@ -141,7 +157,7 @@
     var nameNo = nameForm.nameList.selectedIndex;
     var nameSelectionList=document.getElementById('nameList');
     nameSelectionList.innerHTML = '';
-    var names = view.getDistinctValues(1);
+    var names = chartView.getDistinctValues(1);
     nameSelectionList.add(new Option("- Alla namn -", 'all'));
     for(var i = 0; i < names.length; i++) {
         nameSelectionList.add(new Option(names[i], names[i]));
@@ -150,12 +166,12 @@
         if (nameNo) nameSelectionList.options.selectedIndex = 1;
         else nameSelectionList.options.selectedIndex = 0;
     }
-
+        
     // Populating Birth years
     var yearNo = yearForm.yearList.selectedIndex;
     var yearSelectionList=document.getElementById('yearList');
     yearSelectionList.innerHTML = '';
-    var years = view.getDistinctValues(2);
+    var years = chartView.getDistinctValues(2);
     yearSelectionList.add(new Option("- Alla födelseår -", 'all'));
     for(var i = 0; i < years.length; i++) {
         yearSelectionList.add(new Option(years[i], years[i]));
@@ -163,48 +179,6 @@
     if (yearSelectionList.length == 2){
         if (yearNo) yearSelectionList.options.selectedIndex = 1;
         else yearSelectionList.options.selectedIndex = 0;
-    }
-
-    // Populating Classes
-    var classNo = classForm.classList.selectedIndex;
-    var classSelectionList=document.getElementById('classList');
-    classSelectionList.innerHTML = '';
-    var classes = view.getDistinctValues(7);
-    classSelectionList.add(new Option("- Alla klasser -", 'all'));
-    for(var i = 0; i < classes.length; i++) {
-        classSelectionList.add(new Option(classes[i], classes[i]));
-    }
-    if (classSelectionList.length == 2){
-        if (classNo) classSelectionList.options.selectedIndex = 1;
-        else classSelectionList.options.selectedIndex = 0;
-    }
-    
-    // Populating Competitions
-    var competitionNo = competitionForm.competitionList.selectedIndex;
-    var competitionSelectionList=document.getElementById('competitionList');
-    competitionSelectionList.innerHTML = '';
-    var competitions = view.getDistinctValues(8);
-    competitionSelectionList.add(new Option("- Alla tävlingar -", 'all'));
-    for(var i = 0; i < competitions.length; i++) {
-        competitionSelectionList.add(new Option(competitions[i], competitions[i]));
-    }
-    if (competitionSelectionList.length == 2){
-        if (competitionNo) competitionSelectionList.options.selectedIndex = 1;
-        else competitionSelectionList.options.selectedIndex = 0;
-    }
-    
-    // Populating Seasons
-    var seasonNo = seasonForm.seasonList.selectedIndex;
-    var seasonSelectionList=document.getElementById('seasonList');
-    seasonSelectionList.innerHTML = '';
-    var seasons = view.getDistinctValues(10);
-    seasonSelectionList.add(new Option("- Alla säsonger -", 'all'));
-    for(var i = 0; i < seasons.length; i++) {
-        seasonSelectionList.add(new Option(seasons[i], seasons[i]));
-    }
-    if (seasonSelectionList.length == 2){
-        if (seasonNo) seasonSelectionList.options.selectedIndex = 1;
-        else seasonSelectionList.options.selectedIndex = 0;
     }
   }
   
@@ -214,12 +188,12 @@
 <html>
   <body>
       <ul class="w3-navbar w3-round-large w3-light-grey w3-medium w3-margin">
-        <li><a class="w3-green" href="#"><i class="fa fa-table"></i> Resultat</a></li>
+        <li><a href="index.html"><i class="fa fa-table"></i> Resultat</a></li>
         <li class="w3-dropdown-hover">
-          <a href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>
+          <a class="w3-green href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>
           <div class="w3-dropdown-content w3-white w3-card-4">
             <a href="stats.html?graph=1"><i class="fa fa-pie-chart"></i> Antal starter per klass</a>
-            <a href="trends.html"><i class="fa fa-line-chart"></i> Resultat, trender per tävlande och gren</a>
+            <a class="w3-green href="trends.html"><i class="fa fa-line-chart"></i> Resultat, trender per tävlande och gren</a>
             <a href="#">Link 2</a>
             <a href="#">Link 3</a>
           </div>
@@ -243,37 +217,11 @@
 <p></p>
 <table width="1000" align="center">
   <tr>
-    <td><b>Säsong:</b></td>
-    <td>
-      <form name="seasonForm">
-        <select id="seasonList" name="seasonList" onChange="filterData()">
-          <option>- Alla säsonger -
-        </select>
-      </form>
-    </td>
-    <td><b>Tävling:</b></td>
-    <td>
-      <form name="competitionForm">
-        <select id="competitionList" name="competitionList" onChange="filterData()">
-          <option>- Alla tävlingar -
-        </select>
-      </form>
-    </td>
     <td><b>Gren:</b></td>
     <td>
       <form name="eventForm">
         <select id="eventList" name="eventList" onChange="filterData()">
             <option>- Alla grenar -
-        </select>
-      </form>
-    </td>
-  </tr>
-  <tr>
-    <td><b>Namn:</b></td>
-    <td>
-      <form name="nameForm">
-        <select id="nameList" name="nameList" onChange="filterData()">
-          <option>- Alla namn -
         </select>
       </form>
     </td>
@@ -285,16 +233,18 @@
         </select>
       </form>
     </td>
-    <td><b>Klass:</b></td>
+    <td><b>Namn:</b></td>
     <td>
-      <form name="classForm">
-        <select id="classList" name="classList" onChange="filterData()">
-          <option>- Alla klasser -
+      <form name="nameForm">
+        <select id="nameList" name="nameList" onChange="filterData()">
+          <option>- Alla namn -
         </select>
       </form>
     </td>
 </tr>
 </table>
+<p></p>
+<div id="chart_div" class="w3-center"></div>
 <p></p>
 <div id="table_div" class="w3-center"></div>
 <p></p>

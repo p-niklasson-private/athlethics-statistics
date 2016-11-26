@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <script type="text/javascript">
+  
+  // Get the number of the graph to display
+  var graphNo = findGetParameter('graph');
 
   google.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
   google.charts.setOnLoadCallback(initiateData);
@@ -19,6 +22,14 @@
                  "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
                  "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
                 ];
+                
+  if (graphNo == 1) {
+    pageHeader = "Hanviken SK Friidrott - Antal starter per klass";
+  }
+  if (graphNo == 2) {
+    pageHeader = "Hanviken SK Friidrott - Trender, resultat per tävlande";
+  }
+  
   var data;
   var dataList = [];
   var view;
@@ -70,12 +81,25 @@
           is3D: true,
           pieSliceText: 'value',
         };
+        
+    page_header.innerText = pageHeader;
 
     var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
     chart.draw(result, options);
     
     table = new google.visualization.Table(document.getElementById('table_div'));
     table.draw(result, {showRowNumber: true, width: '1000', height: '100%'});
+  }
+
+  function findGetParameter(parameterName) {
+    var result = null,
+        tmp = [];
+    var items = location.search.substr(1).split("&");
+    for (var index = 0; index < items.length; index++) {
+        tmp = items[index].split("=");
+        if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+    }
+    return result;
   }
   
   </script>
@@ -88,8 +112,8 @@
         <li class="w3-dropdown-hover">
           <a class="w3-green" href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>
           <div class="w3-dropdown-content w3-white w3-card-4">
-            <a class="w3-green" href="stats.html"><i class="fa fa-pie-chart"></i> Antal starter per klass</a>
-            <a href="#">Link 2</a>
+            <a href="stats.html?graph=1"><i class="fa fa-pie-chart"></i> Antal starter per klass</a>
+            <a href="trends.html"><i class="fa fa-line-chart"></i> Resultat, trender per tävlande och gren</a>
             <a href="#">Link 3</a>
           </div>
         </li>    
@@ -109,7 +133,7 @@
         </li>
       </ul>
     <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
-      <h3 id="page_header">Hanviken SK Friidrott - Statistik</h3>
+      <h3 id="page_header"></h3>
     </div>
       <table width="100%" height="100%">
           <tr>
