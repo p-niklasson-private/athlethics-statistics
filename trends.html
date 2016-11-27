@@ -13,7 +13,6 @@
   google.charts.setOnLoadCallback(initiateData);
 
   var docList = [
-//               "1uAU9FptFO_GopSXXvJ9XZZyDps5rKnlYyKHdNeE6s8Y", // Development data
                  "1WbKxsWGzVrk48C5YrZ_KS-Aw9To4RZA42c0mJy4sALk", // Inomhus 2016-2017
                  "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto", // Utomhus 2016
                  "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8", // Inomhus 2015-2016
@@ -59,7 +58,11 @@
     }
     data = new google.visualization.DataTable(json);
     data.sort([{column: 9},{column: 1}]);
+    //data.setColumnProperty(3, 'type', 'number');
+    //var formatter = new google.visualization.NumberFormat();
+    //formatter.format(data, 3);
     console.log(json);
+    console.log(data.getColumnProperties(3));
 
     filterData();
   }
@@ -79,7 +82,7 @@
         event = eventForm.eventList.options[eventNo].text;
         filterList.push({column:0, value:event});
     }
-    
+
     // Filter on names in column 1
     var nameNo = nameForm.nameList.selectedIndex;
     if (nameNo) {
@@ -119,14 +122,45 @@
             tooltip_column = 8;
         }
         
-        chartView.setColumns([9,4,
-                      {calc: "stringify", sourceColumn: 4, role: "annotation", type: "string"},
-                      {sourceColumn: tooltip_column, role: "tooltip"}
-                     ]);
-                     
+        if (event.match(/Mångkamp/)){
+            result_column = 5;
+        }
+        else if (event.match(/meter|Stafett|Häck/)){
+            result_column = 3;
+        }
+        else {
+            result_column = 4;
+        }
+        
+        chartView.setColumns([9,result_column,
+                              {calc: "stringify", sourceColumn: result_column, role: "annotation", type: "string"},
+                              {sourceColumn: tooltip_column, role: "tooltip"}
+                             ]);
+
         chart = new google.visualization.LineChart(document.getElementById('chart_div'));
         chart.draw(chartView, options);
+        
+        if (! name){
+            google.visualization.events.addListener(chart, 'select', selectHandler);
+        }
     }
+  }
+  
+  function selectHandler() {
+    // Get the 'name' value of the selected chart point
+    var selectedItem = chart.getSelection()[0];
+    var selectedName = chartView.getValue(selectedItem.row, 3);
+    console.log(selectedName);
+
+    // Set the name as selected in the drop down box
+    var nameSelectionList=document.getElementById('nameList');
+    nameSelectionList.innerHTML = '';
+    nameSelectionList.add(new Option("- Alla namn -", 'all'));
+    nameSelectionList.add(new Option(selectedName, selectedName));
+    nameSelectionList.options.selectedIndex = 1;
+    
+    /// Run it through the filterData()
+    filterData();
   }
   
   function populateSelections() {
