@@ -24,10 +24,10 @@
                 ];
                 
   if (graphNo == 1) {
-    pageHeader = "Hanviken SK Friidrott - Antal starter per klass";
+    pageHeader = "Hanviken SK Friidrott - Antal starter per födelseår";
   }
   if (graphNo == 2) {
-    pageHeader = "Hanviken SK Friidrott - Trender, resultat per tävlande";
+    pageHeader = "TBD";
   }
   
   var data;
@@ -73,11 +73,11 @@
   }
 
   function displayChart() {
-    var result = google.visualization.data.group(data, [7], [{'column': 1, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
+    var result = google.visualization.data.group(data, [2], [{'column': 1, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
     result.sort({column: 1, desc: true, unique: true}); 
     
     var options = {
-          title: 'Antalet starter per klass',
+          title: 'Antalet starter per födelseår',
           is3D: true,
           pieSliceText: 'value',
         };
@@ -112,7 +112,7 @@
         <li class="w3-dropdown-hover">
           <a class="w3-green" href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>
           <div class="w3-dropdown-content w3-white w3-card-4">
-            <a href="stats.html?graph=1"><i class="fa fa-pie-chart"></i> Antal starter per klass</a>
+            <a href="stats.html?graph=1"><i class="fa fa-pie-chart"></i> Antal starter per födelseår</a>
             <a href="trends.html"><i class="fa fa-line-chart"></i> Resultat, trender per tävlande och gren</a>
             <a href="#">Link 3</a>
           </div>
