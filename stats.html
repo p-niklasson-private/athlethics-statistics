@@ -22,14 +22,7 @@
                  "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
                  "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
                 ];
-                
-  if (graphNo == 1) {
-    pageHeader = "Hanviken SK Friidrott - Antal starter per födelseår";
-  }
-  if (graphNo == 2) {
-    pageHeader = "TBD";
-  }
-  
+
   var data;
   var dataList = [];
   var view;
@@ -69,10 +62,12 @@
     data = new google.visualization.DataTable(json);
     console.log(json);
 
-    displayChart();
+    if (graphNo == 1) { displayChart1(); }
+    if (graphNo == 2) { displayChart2(); }
   }
 
-  function displayChart() {
+  function displayChart1() {
+    page_header.innerText = "Hanviken SK Friidrott - Antal starter per födelseår";
     var result = google.visualization.data.group(data, [2], [{'column': 1, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
     result.sort({column: 1, desc: true, unique: true}); 
     
@@ -81,14 +76,16 @@
           is3D: true,
           pieSliceText: 'value',
         };
-        
-    page_header.innerText = pageHeader;
 
     var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
     chart.draw(result, options);
     
     table = new google.visualization.Table(document.getElementById('table_div'));
     table.draw(result, {showRowNumber: true, width: '1000', height: '100%'});
+  }
+  
+  function displayChart2() {
+    page_header.innerText = "Hanviken SK Friidrott - TBD";
   }
 
   function findGetParameter(parameterName) {
