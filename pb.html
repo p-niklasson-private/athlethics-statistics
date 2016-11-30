@@ -1,16 +1,13 @@
 <!DOCTYPE HTML>
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <title>Hanviken Friidrott - Statistik</title>
-  <link rel="icon" href="http://hanviken.niklassons.net/favicon.jpg" type="image/jpg" />
+  <title>Hanviken friidrott - Personbästa</title>
+  <link rel="icon" href="http://friidrott.niklassons.net/favicon.jpg" type="image/jpg" />
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <script type="text/javascript">
-  
-  // Get the number of the graph to display
-  var graphNo = findGetParameter('graph');
 
   google.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
   google.charts.setOnLoadCallback(initiateData);
@@ -22,12 +19,12 @@
                  "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
                  "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
                 ];
-
   var data;
   var dataList = [];
   var view;
   var filterList = [];
   var table;
+  var chart;
   
   function initiateData() {
     var queryString = encodeURIComponent('SELECT *');
@@ -60,43 +57,69 @@
         json.rows = mergedRows;
     }
     data = new google.visualization.DataTable(json);
+    data.sort([{column: 0},{column: 3, type: 'number'},{column: 4, desc: true},{column: 5, desc: true}]);
     console.log(json);
 
-    if (graphNo == 1) { displayChart1(); }
-    if (graphNo == 2) { displayChart2(); }
+    filterData();
   }
 
-  function displayChart1() {
-    page_header.innerText = "Hanviken SK Friidrott - Antal starter per födelseår";
-    var result = google.visualization.data.group(data, [2], [{'column': 1, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
-    result.sort({column: 1, desc: true, unique: true}); 
+  function filterData() {
+    var name = '';
+
+    view = new google.visualization.DataView(data);
+
+    filterList = [];
     
-    var options = {
-          title: 'Antalet starter per födelseår',
-          is3D: true,
-          pieSliceText: 'value',
-        };
-
-    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-    chart.draw(result, options);
-    
-    table = new google.visualization.Table(document.getElementById('table_div'));
-    table.draw(result, {showRowNumber: true, width: '1000', height: '100%'});
-  }
-  
-  function displayChart2() {
-    page_header.innerText = "Hanviken SK Friidrott - TBD";
-  }
-
-  function findGetParameter(parameterName) {
-    var result = null,
-        tmp = [];
-    var items = location.search.substr(1).split("&");
-    for (var index = 0; index < items.length; index++) {
-        tmp = items[index].split("=");
-        if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+    // Filter on names in column 1
+    var nameNo = nameForm.nameList.selectedIndex;
+    if (nameNo) {
+       name = nameForm.nameList.options[nameNo].text;
+       filterList.push({column:1, value:name});
     }
-    return result;
+
+    if (name) {
+        var pb_rows = [];
+        var rows = view.getFilteredRows(filterList);
+        var current_event = 'start';
+        var first_result = true;
+        for(var i = 0; i < rows.length; i++) {
+            var event = view.getValue(rows[i],0);
+            if (current_event != event) {
+                // First time we see this event. The first row will contain the PB!
+                pb_rows.push(rows[i]);
+                current_event = event;
+            }
+        }
+
+        // Filter out all the PB rows that we collected
+        view.setRows(pb_rows);
+        populateSelections();   
+        table = new google.visualization.Table(document.getElementById('table_div'));    
+        table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
+    }
+    else {
+        populateSelections();
+        view.setRows([]);
+        table = new google.visualization.Table(document.getElementById('table_div'));
+        table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
+    }
+  }
+
+  function populateSelections() {
+
+    // Populating Names
+    var nameNo = nameForm.nameList.selectedIndex;
+    var nameSelectionList=document.getElementById('nameList');
+    nameSelectionList.innerHTML = '';
+    var names = view.getDistinctValues(1);
+    nameSelectionList.add(new Option("- Alla namn -", 'all'));
+    for(var i = 0; i < names.length; i++) {
+        nameSelectionList.add(new Option(names[i], names[i]));
+    }
+    if (nameSelectionList.length == 2){
+        if (nameNo) nameSelectionList.options.selectedIndex = 1;
+        else nameSelectionList.options.selectedIndex = 0;
+    }
   }
   
   </script>
@@ -106,12 +129,13 @@
   <body>
       <ul class="w3-navbar w3-round-large w3-light-grey w3-medium w3-margin">
         <li><a href="index.html"><i class="fa fa-table"></i> Resultat</a></li>
-        <li><a href="pb.html"><i class="fa fa-table"></i> Personbästa</a></li>
+        <li><a class="w3-green" href="pb.html"><i class="fa fa-table"></i> Personbästa</a></li>
         <li class="w3-dropdown-hover">
-          <a class="w3-green" href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>
+          <a href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>
           <div class="w3-dropdown-content w3-white w3-card-4">
             <a href="stats.html?graph=1"><i class="fa fa-pie-chart"></i> Antal starter per födelseår</a>
             <a href="trends.html"><i class="fa fa-line-chart"></i> Resultat, trender per tävlande och gren</a>
+            <a href="#">Link 2</a>
             <a href="#">Link 3</a>
           </div>
         </li>    
@@ -130,26 +154,29 @@
           </div>
         </li>
       </ul>
-    <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
-      <h3 id="page_header"></h3>
-    </div>
-      <table width="100%" height="100%">
-          <tr>
-              <td>
-              <div class="w3-container w3-round-large w3-light-grey w3-margin-left w3-margin-right">
-                <p></p>
-                <div id="chart_div" style="width: 750px; height: 500px; margin: auto;"></div>
-                <p></p>
-              </div>
-              </td>
-              <td>
-              <div class="w3-container w3-round-large w3-light-grey w3-margin-right">
-                <p></p>
-                <div id="table_div" style="width: 750px; height: 500px; margin: auto;"></div>
-                <p></p>
-              </div>
-              </td>
-          </tr>
-      </table>
-  </body>
+<div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
+  <h3 id="page_header">Personbästalista per tävlande</h3>
+  <p>
+    <b>Notera:</b> Sorteringen för löpgrenar är inte OK än. Sorteras som strängar, inte som nummer...
+  </p>
+</div>
+<div class="w3-container w3-round-large w3-light-grey w3-margin">
+<p></p>
+<table width="1000" align="center">
+  <tr>
+    <td><b>Namn:</b></td>
+    <td>
+      <form name="nameForm">
+        <select id="nameList" name="nameList" onChange="filterData()">
+          <option>- Alla namn -
+        </select>
+      </form>
+    </td>
+</tr>
+</table>
+<p></p>
+<div id="table_div" class="w3-center"></div>
+<p></p>
+</div>
+</body>
 </html>

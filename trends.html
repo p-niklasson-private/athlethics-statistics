@@ -144,6 +144,16 @@
             google.visualization.events.addListener(chart, 'select', selectHandler);
         }
     }
+    else {
+        chartView.setRows([]);
+        chartView.setColumns([9,4]);
+        
+        table = new google.visualization.Table(document.getElementById('table_div'));    
+        table.draw(chartView, {showRowNumber: true, width: '1800', height: '100%'});
+        
+        chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(chartView, options);
+    }
   }
   
   function selectHandler() {
@@ -223,6 +233,7 @@
   <body>
       <ul class="w3-navbar w3-round-large w3-light-grey w3-medium w3-margin">
         <li><a href="index.html"><i class="fa fa-table"></i> Resultat</a></li>
+        <li><a href="pb.html"><i class="fa fa-table"></i> Personbästa</a></li>
         <li class="w3-dropdown-hover">
           <a class="w3-green" href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>
           <div class="w3-dropdown-content w3-white w3-card-4">
@@ -247,8 +258,12 @@
           </div>
         </li>
       </ul>
-<div class="w3-container w3-round-large w3-light-grey w3-margin">
 <p></p>
+<div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
+  <h3 id="page_header">Resultat och trender per tävlande och gren</h3>
+</div>
+<div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
+<p></p> 
 <table width="1000" align="center">
   <tr>
     <td><b>Gren:</b></td>
