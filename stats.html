@@ -64,6 +64,7 @@
 
     if (graphNo == 1) { displayChart1(); }
     if (graphNo == 2) { displayChart2(); }
+    if (graphNo == 3) { displayChart3(); }
   }
 
   function displayChart1() {
@@ -85,7 +86,39 @@
   }
   
   function displayChart2() {
-    page_header.innerText = "Hanviken SK Friidrott - TBD";
+    page_header.innerText = "Hanviken SK Friidrott - Populära grenar";
+    var result = google.visualization.data.group(data, [0], [{'column': 1, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
+    result.sort({column: 1, desc: true, unique: true}); 
+    
+    var options = {
+          title: 'Antalet starter per gren',
+          is3D: true,
+          pieSliceText: 'value',
+        };
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+    chart.draw(result, options);
+    
+    table = new google.visualization.Table(document.getElementById('table_div'));
+    table.draw(result, {showRowNumber: true, width: '1000', height: '100%'});
+  }
+  
+  function displayChart3() {
+    page_header.innerText = "Hanviken SK Friidrott - Populära tävlingar";
+    var result = google.visualization.data.group(data, [8], [{'column': 1, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
+    result.sort({column: 1, desc: true, unique: true}); 
+    
+    var options = {
+          title: 'Antalet starter per tävling',
+          is3D: true,
+          pieSliceText: 'value',
+        };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+    chart.draw(result, options);
+    
+    table = new google.visualization.Table(document.getElementById('table_div'));
+    table.draw(result, {showRowNumber: true, width: '100%', height: '100%'});
   }
 
   function findGetParameter(parameterName) {
@@ -110,9 +143,10 @@
         <li class="w3-dropdown-hover">
           <a class="w3-green" href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>
           <div class="w3-dropdown-content w3-white w3-card-4">
-            <a href="stats.html?graph=1"><i class="fa fa-pie-chart"></i> Antal starter per födelseår</a>
             <a href="trends.html"><i class="fa fa-line-chart"></i> Resultat, trender per tävlande och gren</a>
-            <a href="#">Link 3</a>
+            <a href="stats.html?graph=1"><i class="fa fa-pie-chart"></i> Födelseår</a>
+            <a href="stats.html?graph=2"><i class="fa fa-pie-chart"></i> Populära grenar</a>
+            <a href="stats.html?graph=3"><i class="fa fa-pie-chart"></i> Populära tävlingar</a>
           </div>
         </li>    
         <li class="w3-dropdown-hover">
@@ -138,14 +172,14 @@
               <td>
               <div class="w3-container w3-round-large w3-light-grey w3-margin-left w3-margin-right">
                 <p></p>
-                <div id="chart_div" style="width: 750px; height: 500px; margin: auto;"></div>
+                <div id="chart_div" style="width: 900px; height: 500px; margin: auto;"></div>
                 <p></p>
               </div>
               </td>
               <td>
               <div class="w3-container w3-round-large w3-light-grey w3-margin-right">
                 <p></p>
-                <div id="table_div" style="width: 750px; height: 500px; margin: auto;"></div>
+                <div id="table_div" style="width: 450px; height: 500px; margin: auto;"></div>
                 <p></p>
               </div>
               </td>
