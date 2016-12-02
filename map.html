@@ -5,6 +5,8 @@
   <link rel="icon" href="http://hanviken.niklassons.net/favicon.jpg" type="image/jpg" />
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" src="includes/athletics-stats.js"></script>
+ 
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDo0DbHrfNufjlT0En0v91B8mbyjiFXxP8&callback=initMap" type="text/javascript"></script>
@@ -14,7 +16,7 @@
   var mapNo = findGetParameter('map');
 
   google.load('visualization', '1', { packages : [ 'corechart', 'map', 'table' ] });
-  google.charts.setOnLoadCallback(initiateData);
+  google.charts.setOnLoadCallback(initiateMapData);
 
   var docId;
   var docGid;
@@ -39,17 +41,13 @@
   var filterList = [];
   var table;
   
-  function initMap() {
-      // Do nothing...
-  }
-  
-  function initiateData() {
+  function initiateMapData() {
     if (docId) {
       // Fetch the result table
       var queryString = encodeURIComponent('SELECT *');
       var queryUrl = "https://docs.google.com/spreadsheets/d/" + docId + "/gviz/tq?headers=1&tq=" + queryString;
       var query = new google.visualization.Query(queryUrl);
-      query.send(handleQueryResponse);
+      query.send(handleQueryResponse1);
     
       // Fetch the 'Tävlingar' info
       var queryString2 = encodeURIComponent('SELECT B,C,D,E,F,G');
@@ -59,12 +57,12 @@
     }
   }
 
-  function handleQueryResponse(response) {
-    if (response.isError()) {
-      alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+  function handleQueryResponse1(response1) {
+    if (response1.isError()) {
+      alert('Error in query: ' + response1.getMessage() + ' ' + response1.getDetailedMessage());
       return;
     }
-    data = response.getDataTable();
+    data = response1.getDataTable();
   }
 
   function handleQueryResponse2(response2) {
@@ -132,17 +130,6 @@
       header.innerText = competition;
       table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
     }
-  }
-  
-  function findGetParameter(parameterName) {
-    var result = null,
-        tmp = [];
-    var items = location.search.substr(1).split("&");
-    for (var index = 0; index < items.length; index++) {
-        tmp = items[index].split("=");
-        if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
-    }
-    return result;
   }
 
   </script>
