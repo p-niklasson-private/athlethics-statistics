@@ -22,14 +22,14 @@
   var docGid;
   var pageHeader;
   if (mapNo == 1) {
+    pageHeader = "Hanviken SK Friidrott - Tävlingar inomhus 2016-2107";
     docId = "1WbKxsWGzVrk48C5YrZ_KS-Aw9To4RZA42c0mJy4sALk"; // Inomhus 2016-2017
     docGid = "977426029";                                   // The tab 'Tävlingar'
-    pageHeader = "Hanviken SK Friidrott - Tävlingar inomhus 2016-2107";
   }
   if (mapNo == 2) {
+    pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2016";
     docId = "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto"; // Utomhus 2016
     docGid = "977426029";                                   // The tab 'Tävlingar'
-    pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2016";
   }
   
   var data;
@@ -40,6 +40,18 @@
   var view;
   var filterList = [];
   var table;
+  
+  function initMap() {
+    // Do nothing...
+  }
+  function myMenu() {
+     if (mapNo == 1) {
+      menu('4','41');
+    }
+    if (mapNo == 2) {
+      menu('4','42');
+    }
+  }
   
   function initiateMapData() {
     if (docId) {
@@ -87,6 +99,15 @@
       enableScrollWheel: true,
       useMapTypeControl: true,
       };
+
+    if (mapNo == 1) {
+      pageHeader = "Hanviken SK Friidrott - Tävlingar inomhus 2016-2107";
+      menu('4','41');
+    }
+    if (mapNo == 2) {
+      pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2016";
+      menu('4','42');
+    }
 
     page_header.innerText = pageHeader;
       
@@ -136,34 +157,8 @@
 </head>
 
 <html>
-  <body>
-      <ul class="w3-navbar w3-round-large w3-light-grey w3-medium w3-margin">
-        <li><a href="index.html"><i class="fa fa-table"></i> Resultat</a></li>
-        <li><a href="pb.html"><i class="fa fa-table"></i> Personbästa</a></li>
-        <li class="w3-dropdown-hover">
-          <a href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>
-          <div class="w3-dropdown-content w3-white w3-card-4">
-            <a href="trends.html"><i class="fa fa-line-chart"></i> Resultat, trender per tävlande och gren</a>
-            <a href="stats.html?graph=1"><i class="fa fa-pie-chart"></i> Födelseår</a>
-            <a href="stats.html?graph=2"><i class="fa fa-pie-chart"></i> Populära grenar</a>
-            <a href="stats.html?graph=3"><i class="fa fa-pie-chart"></i> Populära tävlingar</a>
-          </div>
-        </li>    
-        <li class="w3-dropdown-hover">
-          <a class="w3-green" href="#"><i class="fa fa-map"></i> Kartor <i class="fa fa-caret-down"></i></a>
-          <div class="w3-dropdown-content w3-white w3-card-4">
-              <a href="map.html?map=1"><i class="fa fa-map-marker"></i> Inomhustävlingar 2016-2017</a>
-              <a href="map.html?map=2"><i class="fa fa-map-marker"></i> Utomhustävlingar 2016</a>
-          </div>
-        </li>
-        <li class="w3-dropdown-hover">
-          <a href="#"><i class="fa fa-link"></i> Länkar <i class="fa fa-caret-down"></i></a>
-          <div class="w3-dropdown-content w3-white w3-card-4">
-            <a href="https://hanvikenssk.myclub.se/friidrott" target="_blank">Hanviken SK friidrott</a>
-            <a href="http://friidrott.se" target="_blank">Friidrott.se</a>
-          </div>
-        </li>
-      </ul>
+  <body onload="myMenu()">
+    <div id="menu"></div>
     <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
       <h3 id="page_header"></h3>
     </div>

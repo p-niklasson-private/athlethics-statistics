@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <script type="text/javascript">
-
+  
   google.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
   google.charts.setOnLoadCallback(initiateData);
 
@@ -21,6 +21,7 @@
   var filterList = [];
   var table;
   var chart;
+  var bookmarkUrl;
   
   function finished() {
     data.sort([{column: 0},{column: 3, type: 'number'},{column: 4, desc: true},{column: 5, desc: true}]);
@@ -31,11 +32,12 @@
     var name = '';
     view = new google.visualization.DataView(data);
     filterList = [];
+    bookmarkUrl = window.location.href.split("?")[0];
     
-    // Filter on names in column 1
     var nameNo = nameForm.nameList.selectedIndex;
     if (nameNo) {
        name = nameForm.nameList.options[nameNo].text;
+       bookmarkUrl = updateUrl(bookmarkUrl,'name',name); 
        filterList.push({column:1, value:name});
     }
 
@@ -52,23 +54,20 @@
                 current_event = event;
             }
         }
-
-        // Filter out all the PB rows that we collected
         view.setRows(pb_rows);
-        populateSelections();   
-        table = new google.visualization.Table(document.getElementById('table_div'));    
-        table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
+        populateSelections();
     }
     else {
         populateSelections();
         view.setRows([]);
-        table = new google.visualization.Table(document.getElementById('table_div'));
-        table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
     }
+    document.getElementById('bookmarkUrl').innerHTML = '<a href="' + bookmarkUrl + '">' + bookmarkUrl + '</a>';
+    table = new google.visualization.Table(document.getElementById('table_div'));
+    table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
+
   }
 
   function populateSelections() {
-
     // Populating Names
     var nameNo = nameForm.nameList.selectedIndex;
     var nameSelectionList=document.getElementById('nameList');
@@ -88,59 +87,32 @@
 </head>
 
 <html>
-  <body>
-      <ul class="w3-navbar w3-round-large w3-light-grey w3-medium w3-margin">
-        <li><a href="index.html"><i class="fa fa-table"></i> Resultat</a></li>
-        <li><a class="w3-green" href="pb.html"><i class="fa fa-table"></i> Personbästa</a></li>
-        <li class="w3-dropdown-hover">
-          <a href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>
-          <div class="w3-dropdown-content w3-white w3-card-4">
-            <a href="trends.html"><i class="fa fa-line-chart"></i> Resultat, trender per tävlande och gren</a>
-            <a href="stats.html?graph=1"><i class="fa fa-pie-chart"></i> Födelseår</a>
-            <a href="stats.html?graph=2"><i class="fa fa-pie-chart"></i> Populära grenar</a>
-            <a href="stats.html?graph=3"><i class="fa fa-pie-chart"></i> Populära tävlingar</a>
-          </div>
-        </li>    
-        <li class="w3-dropdown-hover">
-          <a href="#"><i class="fa fa-map"></i> Kartor <i class="fa fa-caret-down"></i></a>
-          <div class="w3-dropdown-content w3-white w3-card-4">
-            <a href="map.html?map=1"><i class="fa fa-map-marker"></i> Inomhustävlingar 2016-2017</a>
-            <a href="map.html?map=2"><i class="fa fa-map-marker"></i> Utomhustävlingar 2016</a>
-          </div>
-        </li>
-        <li class="w3-dropdown-hover">
-          <a href="#"><i class="fa fa-link"></i> Länkar <i class="fa fa-caret-down"></i></a>
-          <div class="w3-dropdown-content w3-white w3-card-4">
-            <a href="https://hanvikenssk.myclub.se/friidrott" target="_blank">Hanviken SK friidrott</a>
-            <a href="http://friidrott.se" target="_blank">Friidrott.se</a>
-          </div>
-        </li>
-      </ul>
-<div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
-  <h3 id="page_header">Personbästalista per tävlande</h3>
-  <p>
-    <b>Notera:</b> Sorteringen för löpgrenar är inte OK än. Sorteras som strängar, inte som nummer...
-  </p>
-</div>
-<div class="w3-container w3-round-large w3-light-grey w3-margin">
-<p></p>
-<table width="1000" align="center">
-  <tr>
-    <td align="right"><b>Namn: </b></td>
-      <td align="left">
-      <form name="nameForm">
-        <select id="nameList" name="nameList" onChange="filterData()">
-          <option>- Alla namn -
-        </select>
-      </form>
-    </td>
-    <td> </td>
-    <td> </td>
-</tr>
-</table>
-<p></p>
-<div id="table_div" class="w3-center"></div>
-<p></p>
-</div>
-</body>
+  <body onload="menu('2')">
+    <div id="menu"></div>
+    <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
+      <h3 id="page_header">Personbästalista per tävlande</h3>
+      <p>
+        <b>Notera:</b> Sorteringen för löpgrenar är inte OK än. Sorteras som strängar, inte som nummer...
+      </p>
+    </div>
+    <div class="w3-container w3-round-large w3-light-grey w3-margin">
+      <p></p>
+      <table width="1000" align="center">
+        <tr align="left">
+          <td align="right"><b>Namn: </b></td>
+          <td align="left">
+            <form name="nameForm">
+              <select id="nameList" name="nameList" onChange="filterData()">
+                <option>- Alla namn -
+              </select>
+            </form>
+          </td>
+        </tr>
+      </table>
+      <p></p>
+      <div id="bookmarkUrl" class="w3-tiny w3-right-align"></div>
+      <div id="table_div" class="w3-center"></div>
+      <p></p>
+    </div>
+  </body>
 </html>
