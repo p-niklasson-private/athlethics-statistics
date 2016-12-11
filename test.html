@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart','table']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table, 
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+
+      // Create the data table.
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Name');
+      data.addColumn('string', 'Resultat [m.s,h]');
+      data.addColumn('string', 'Kommentar');
+      data.addRows([
+        ['Oscar Niklasson', '9,10', 'Manuell'],
+        ['Adam Eriksson', '10,90', ''],
+        ['Ebba Lind', '59.10', ''], 
+        ['Felicia Johansson', '1.00,10', ''],
+        ['Thea Katsoulaki', '2.01,10', '']
+      ]);
+      
+      data.insertColumn(2, 'number', 'Tid [s.h]');
+      
+      var formatter = new google.visualization.NumberFormat({pattern:'###,##'});  
+      formatter.format(data, 2);
+      
+      var rows = data.getNumberOfRows();
+      var time;
+      for(var i = 0; i < rows; i++) {
+            var time_string = data.getValue(i,1);
+            var time_array = time_string.split(/[,.]/);
+            if (time_array.length == 3) {
+                time = Number(time_array[0])*60 + Number(time_array[1]) + Number(time_array[2])/100; 
+            }
+            else {
+                time = Number(time_array[0]) + Number(time_array[1])/100;
+            }
+            console.log(time, time_array);
+            data.setValue(i,2,time);
+      }
+
+      var table = new google.visualization.Table(document.getElementById('table_div'));
+      table.draw(data, {showRowNumber: true, width: '1800', height: '100%'});
+    }
+    </script>
+  </head>
+
+  <body>
+    <div id="table_div" style="width:400; height:300"></div>
+  </body>
+</html>

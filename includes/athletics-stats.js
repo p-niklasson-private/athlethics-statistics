@@ -38,7 +38,31 @@ function collectData() {
     }
     data = new google.visualization.DataTable(json);
     console.log(json);
+    addTimeColumn();
     finished();
+}
+
+function addTimeColumn() {
+    data.insertColumn(4, 'number', 'Tid [s,h]');
+      
+    var formatter = new google.visualization.NumberFormat({pattern:'###,##'});  
+    formatter.format(data, 2);
+      
+    var rows = data.getNumberOfRows();
+    var time;
+    for(var i = 0; i < rows; i++) {
+        if (data.getValue(i,3)) {
+            var time_string = data.getValue(i,3);
+            var time_array = time_string.split(/[,.]/);
+            if (time_array.length == 3) {
+                time = Number(time_array[0])*60 + Number(time_array[1]) + Number(time_array[2])/100;
+            }
+            else {
+                time = Number(time_array[0]) + Number(time_array[1])/100;
+            }
+            data.setValue(i,4,time);
+        }
+    }
 }
 
 function findGetParameter(parameterName) {

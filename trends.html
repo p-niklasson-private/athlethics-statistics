@@ -24,7 +24,7 @@
   var bookmarkUrl;
   
   function finished() {
-    data.sort([{column: 9},{column: 1}]);
+    data.sort([{column: 10},{column: 1}]);
     filterData();
   }
 
@@ -76,6 +76,8 @@
       pointShape: 'diamond',
       hAxis: { title: 'Datum', showTextEvery: '1'},
       vAxis: { title: 'Resultat'},
+      width: '1800', 
+      height: '400',
     };
     if (event) {
         table = new google.visualization.Table(document.getElementById('table_div'));    
@@ -85,20 +87,20 @@
             tooltip_column = 1;
         }
         else {
-            tooltip_column = 8;
+            tooltip_column = 9;
         }
         
         if (event.match(/Mångkamp/)){
-            result_column = 5;
+            result_column = 6;
         }
         else if (event.match(/meter|Stafett|Häck/)){
-            result_column = 3;
-        }
-        else {
             result_column = 4;
         }
+        else {
+            result_column = 5;
+        }
         
-        chartView.setColumns([9,result_column,
+        chartView.setColumns([10,result_column,
                               {calc: "stringify", sourceColumn: result_column, role: "annotation", type: "string"},
                               {sourceColumn: tooltip_column, role: "tooltip"}
                              ]);
@@ -117,7 +119,7 @@
         table = new google.visualization.Table(document.getElementById('table_div'));    
         table.draw(chartView, {showRowNumber: true, width: '1800', height: '100%'});
 
-        chartView.setColumns([9,4]);
+        chartView.setColumns([10,5]);
         chart = new google.visualization.LineChart(document.getElementById('chart_div'));
         chart.draw(chartView, options);
     }
@@ -153,7 +155,7 @@
     var events = chartView.getDistinctValues(0);
     eventSelectionList.add(new Option("- Alla grenar -", 'all'));
     for(var i = 0; i < events.length; i++) {
-        if (!events[i].match(/meter|Stafett|Häck|Mångkamp/)){
+        if (!events[i].match(/Mångkamp/)){
           eventSelectionList.add(new Option(events[i], events[i]));
         }
     }

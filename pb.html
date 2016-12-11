@@ -24,7 +24,7 @@
   var bookmarkUrl;
   
   function finished() {
-    data.sort([{column: 0},{column: 3, type: 'number'},{column: 4, desc: true},{column: 5, desc: true}]);
+    data.sort([{column: 0},{column: 4},{column: 5, desc: true},{column: 6, desc: true}]);
     filterData();
   }
 
@@ -91,9 +91,6 @@
     <div id="menu"></div>
     <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
       <h3 id="page_header">Personbästalista per tävlande</h3>
-      <p>
-        <b>Notera:</b> Sorteringen för löpgrenar är inte OK än. Sorteras som strängar, inte som nummer...
-      </p>
     </div>
     <div class="w3-container w3-round-large w3-light-grey w3-margin">
       <p></p>
