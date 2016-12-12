@@ -39,6 +39,7 @@ function collectData() {
     data = new google.visualization.DataTable(json);
     console.log(json);
     addTimeColumn();
+    addGenderColumn();
     finished();
 }
 
@@ -65,6 +66,26 @@ function addTimeColumn() {
     }
 }
 
+function addGenderColumn() {
+    data.insertColumn(9, 'string', 'Kön');
+    var rows = data.getNumberOfRows();
+    var gender;
+    for(var i = 0; i < rows; i++) {
+        if (data.getValue(i,8)) {
+            if (data.getValue(i,8).match(/P\/F/)) {
+                gender = 'Mixed';
+            }
+            else if (data.getValue(i,8).match(/P|M/)) {
+                gender = 'Män';
+            }
+            else if (data.getValue(i,8).match(/F|K/)) {
+                gender = 'Kvinnor';
+            }
+            data.setValue(i,9,gender);
+        }
+    }    
+}
+
 function findGetParameter(parameterName) {
     var result = null,
         tmp = [];
@@ -84,6 +105,7 @@ function menu () {
     var option_32 = ''; // Födelseår
     var option_33 = ''; // Grenar
     var option_34 = ''; // Tävlingar
+    var option_35 = ''; // Könsfördelning
     var option_4 = '';  // Kartor
     var option_41 = ''; // Inomhus 2016-2017
     var option_42 = ''; // Utomhus 2016
@@ -97,6 +119,7 @@ function menu () {
         if (arguments[i] == '32') { option_32 = active; }
         if (arguments[i] == '33') { option_33 = active; }
         if (arguments[i] == '34') { option_34 = active; }
+        if (arguments[i] == '35') { option_35 = active; }
         if (arguments[i] == '4') { option_4 = active; }
         if (arguments[i] == '41') { option_41 = active; }
         if (arguments[i] == '42') { option_42 = active; }
@@ -113,6 +136,7 @@ function menu () {
             '<a ' + option_32 + 'href="stats.html?graph=1"><i class="fa fa-pie-chart"></i> Födelseår</a>' +
             '<a ' + option_33 + 'href="stats.html?graph=2"><i class="fa fa-pie-chart"></i> Populära grenar</a>' +
             '<a ' + option_34 + 'href="stats.html?graph=3"><i class="fa fa-pie-chart"></i> Populära tävlingar</a>' +
+            '<a ' + option_35 + 'href="stats.html?graph=4"><i class="fa fa-pie-chart"></i> Könsfördelning</a>' +
           '</div>' +
         '</li>' +    
         '<li class="w3-dropdown-hover">' +

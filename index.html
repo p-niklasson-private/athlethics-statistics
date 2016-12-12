@@ -24,7 +24,7 @@
   google.charts.setOnLoadCallback(initiateData);
 
   function finished() {
-    data.sort([{column: 10},{column: 1}]);
+    data.sort([{column: 11},{column: 1}]);
     filterData();
   }
   
@@ -32,10 +32,6 @@
     view = new google.visualization.DataView(data);
     table = new google.visualization.Table(document.getElementById('table_div'));
     
-    // Format the Time column
-    //var formatter = new google.visualization.NumberFormat({pattern:'#.##,##'});
-    //formatter.format(view, 3);
-
     filterList = [];
     bookmarkUrl = window.location.href.split("?")[0];
     
@@ -69,14 +65,14 @@
     // Filter on competition in column 9
     var competitionNo = competitionForm.competitionList.selectedIndex;
     if (competitionNo) {
-        filterList.push({column:9, value:competitionForm.competitionList.options[competitionNo].text});
+        filterList.push({column:10, value:competitionForm.competitionList.options[competitionNo].text});
         bookmarkUrl = updateUrl(bookmarkUrl,'competition',competitionForm.competitionList.options[competitionNo].text);
     }    
 
     // Filter on season in column 11
     var seasonNo = seasonForm.seasonList.selectedIndex;
     if (seasonNo) {
-        filterList.push({column:11, value:seasonForm.seasonList.options[seasonNo].text});
+        filterList.push({column:12, value:seasonForm.seasonList.options[seasonNo].text});
         bookmarkUrl = updateUrl(bookmarkUrl,'season',seasonForm.seasonList.options[seasonNo].text);
     }    
 
@@ -144,7 +140,7 @@
     var classNo = classForm.classList.selectedIndex;
     var classSelectionList=document.getElementById('classList');
     classSelectionList.innerHTML = '';
-    var classes = view.getDistinctValues(7);
+    var classes = view.getDistinctValues(8);
     classSelectionList.add(new Option("- Alla klasser -", 'all'));
     for(var i = 0; i < classes.length; i++) {
         classSelectionList.add(new Option(classes[i], classes[i]));
@@ -158,7 +154,7 @@
     var competitionNo = competitionForm.competitionList.selectedIndex;
     var competitionSelectionList=document.getElementById('competitionList');
     competitionSelectionList.innerHTML = '';
-    var competitions = view.getDistinctValues(8);
+    var competitions = view.getDistinctValues(10);
     competitionSelectionList.add(new Option("- Alla tävlingar -", 'all'));
     for(var i = 0; i < competitions.length; i++) {
         competitionSelectionList.add(new Option(competitions[i], competitions[i]));
@@ -172,7 +168,7 @@
     var seasonNo = seasonForm.seasonList.selectedIndex;
     var seasonSelectionList=document.getElementById('seasonList');
     seasonSelectionList.innerHTML = '';
-    var seasons = view.getDistinctValues(10);
+    var seasons = view.getDistinctValues(12);
     seasonSelectionList.add(new Option("- Alla säsonger -", 'all'));
     for(var i = 0; i < seasons.length; i++) {
         seasonSelectionList.add(new Option(seasons[i], seasons[i]));

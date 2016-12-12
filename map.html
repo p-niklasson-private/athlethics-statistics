@@ -76,6 +76,7 @@
     }
     data = response1.getDataTable();
     addTimeColumn();
+    addGenderColumn();
   }
 
   function handleQueryResponse2(response2) {
@@ -144,7 +145,7 @@
     
     var competition = compData.getValue(row,0);
     console.log(competition);
-    filterList.push({column:9, value:competition});
+    filterList.push({column:10, value:competition});
     
     // Apply the filter, and draw the table
     if(filterList.length > 0){
