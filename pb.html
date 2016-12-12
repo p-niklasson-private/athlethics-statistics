@@ -24,50 +24,85 @@
   var bookmarkUrl;
   
   function finished() {
-    data.sort([{column: 0},{column: 4},{column: 5, desc: true},{column: 6, desc: true}]);
+    data.sort([{column: 1},{column: 0},{column: 4},{column: 5, desc: true},{column: 6, desc: true}]);
     filterData();
   }
 
   function filterData() {
     var name = '';
+    var event = '';
+    var year = '';
     view = new google.visualization.DataView(data);
     filterList = [];
     bookmarkUrl = window.location.href.split("?")[0];
     
+    // Filter on events in column '0'
+    var eventNo = eventForm.eventList.selectedIndex;
+    if (eventNo) {
+        event = eventForm.eventList.options[eventNo].text;
+        filterList.push({column:0, value:event});
+        bookmarkUrl = updateUrl(bookmarkUrl,'event',event);
+    }
+
+    // Filter on names in column 1
     var nameNo = nameForm.nameList.selectedIndex;
     if (nameNo) {
        name = nameForm.nameList.options[nameNo].text;
        bookmarkUrl = updateUrl(bookmarkUrl,'name',name); 
        filterList.push({column:1, value:name});
     }
+    
+    // Filter on birth year in column 2
+    var yearNo = yearForm.yearList.selectedIndex;
+    if (yearNo) {
+        year = yearForm.yearList.options[yearNo].text;
+        filterList.push({column:2, value:year});
+        bookmarkUrl = updateUrl(bookmarkUrl,'year',year);
+    }
 
-    if (name) {
+    if (event || name || year) {
         var pb_rows = [];
         var rows = view.getFilteredRows(filterList);
         var current_event = 'start';
-        var first_result = true;
+        var current_name = 'start';
         for(var i = 0; i < rows.length; i++) {
             var event = view.getValue(rows[i],0);
-            if (current_event != event) {
-                // First time we see this event. The first row will contain the PB!
+            var name = view.getValue(rows[i],1);
+            if (current_event != event || current_name != name) {
+                // First time we see this event or name. The first row will contain the PB!
                 pb_rows.push(rows[i]);
                 current_event = event;
+                current_name = name;
             }
         }
         view.setRows(pb_rows);
         populateSelections();
     }
     else {
-        populateSelections();
+        populateSelections();   
         view.setRows([]);
     }
+
     document.getElementById('bookmarkUrl').innerHTML = '<a href="' + bookmarkUrl + '">' + bookmarkUrl + '</a>';
     table = new google.visualization.Table(document.getElementById('table_div'));
     table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
-
   }
 
   function populateSelections() {
+    // Populating events
+    var eventNo = eventForm.eventList.selectedIndex;
+    var eventSelectionList=document.getElementById('eventList');
+    eventSelectionList.innerHTML = '';
+    var events = view.getDistinctValues(0);
+    eventSelectionList.add(new Option("- Alla grenar -", 'all'));
+    for(var i = 0; i < events.length; i++) {
+      eventSelectionList.add(new Option(events[i], events[i]));
+    }
+    if (eventSelectionList.length == 2){
+        if (eventNo) eventSelectionList.options.selectedIndex = 1;
+        else eventSelectionList.options.selectedIndex = 0;
+    }  
+      
     // Populating Names
     var nameNo = nameForm.nameList.selectedIndex;
     var nameSelectionList=document.getElementById('nameList');
@@ -81,6 +116,20 @@
         if (nameNo) nameSelectionList.options.selectedIndex = 1;
         else nameSelectionList.options.selectedIndex = 0;
     }
+    
+    // Populating Birth years
+    var yearNo = yearForm.yearList.selectedIndex;
+    var yearSelectionList=document.getElementById('yearList');
+    yearSelectionList.innerHTML = '';
+    var years = view.getDistinctValues(2);
+    yearSelectionList.add(new Option("- Alla födelseår -", 'all'));
+    for(var i = 0; i < years.length; i++) {
+        yearSelectionList.add(new Option(years[i], years[i]));
+    }
+    if (yearSelectionList.length == 2){
+        if (yearNo) yearSelectionList.options.selectedIndex = 1;
+        else yearSelectionList.options.selectedIndex = 0;
+    }
   }
   
   </script>
@@ -90,20 +139,36 @@
   <body onload="menu('2')">
     <div id="menu"></div>
     <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
-      <h3 id="page_header">Personbästalista per tävlande</h3>
+      <h3 id="page_header">Personbästa per åldersgrupp, tävlande och gren</h3>
     </div>
     <div class="w3-container w3-round-large w3-light-grey w3-margin">
       <p></p>
       <table width="1000" align="center">
-        <tr align="left">
-          <td align="right"><b>Namn: </b></td>
-          <td align="left">
+        <tr>
+        <td><b>Gren:</b></td>
+        <td>
+            <form name="eventForm">
+              <select id="eventList" name="eventList" onChange="filterData()">
+                <option>- Alla grenar -
+              </select>
+            </form>
+          </td>
+        <td><b>Född:</b></td>
+        <td>
+            <form name="yearForm">
+              <select id="yearList" name="yearList" onChange="filterData()">
+                <option>- Alla födelseår -
+              </select>
+            </form>
+        </td>
+        <td><b>Namn:</b></td>
+        <td>
             <form name="nameForm">
               <select id="nameList" name="nameList" onChange="filterData()">
                 <option>- Alla namn -
               </select>
             </form>
-          </td>
+        </td>
         </tr>
       </table>
       <p></p>
