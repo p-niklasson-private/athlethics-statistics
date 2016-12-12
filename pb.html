@@ -85,7 +85,7 @@
 
     document.getElementById('bookmarkUrl').innerHTML = '<a href="' + bookmarkUrl + '">' + bookmarkUrl + '</a>';
     table = new google.visualization.Table(document.getElementById('table_div'));
-    table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
+    table.draw(view, {showRowNumber: true, width: '100%', height: '100%'});
   }
 
   function populateSelections() {
@@ -143,7 +143,7 @@
     </div>
     <div class="w3-container w3-round-large w3-light-grey w3-margin">
       <p></p>
-      <table width="1000" align="center">
+      <table width="90%" align="center">
         <tr>
         <td><b>Gren:</b></td>
         <td>
@@ -169,6 +169,7 @@
               </select>
             </form>
         </td>
+        <td><button class="w3-right w3-btn w3-white w3-border w3-border-green w3-round-xlarge" onClick="clearFilter('clear')">Rensa alla filter</button></td>
         </tr>
       </table>
       <p></p>

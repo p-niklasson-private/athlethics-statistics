@@ -32,9 +32,8 @@
     var event = '';
     var name = '';
 
-    chartView = new google.visualization.DataView(data);
-    resultView = new google.visualization.DataView(data);
-    
+    view = new google.visualization.DataView(data);
+
     filterList = [];
     bookmarkUrl = window.location.href;
     
@@ -64,7 +63,7 @@
 
     // Apply the filter
     if(filterList.length > 0){
-      chartView.setRows(chartView.getFilteredRows(filterList));
+      view.setRows(view.getFilteredRows(filterList));
     }
 
     populateSelections();
@@ -76,12 +75,12 @@
       pointShape: 'diamond',
       hAxis: { title: 'Datum', showTextEvery: '1'},
       vAxis: { title: 'Resultat'},
-      width: '1800', 
+      width: '100%', 
       height: '400',
     };
     if (event) {
         table = new google.visualization.Table(document.getElementById('table_div'));    
-        table.draw(chartView, {showRowNumber: true, width: '1800', height: '100%'});
+        table.draw(view, {showRowNumber: true, width: '100%', height: '100%'});
         
         if (! name) {
             tooltip_column = 1;
@@ -100,35 +99,35 @@
             result_column = 5;
         }
         
-        chartView.setColumns([11,result_column,
-                              {calc: "stringify", sourceColumn: result_column, role: "annotation", type: "string"},
-                              {sourceColumn: tooltip_column, role: "tooltip"}
-                             ]);
+        view.setColumns([11,result_column,
+                         {calc: "stringify", sourceColumn: result_column, role: "annotation", type: "string"},
+                         {sourceColumn: tooltip_column, role: "tooltip"}
+                        ]);
 
         document.getElementById('bookmarkUrl').innerHTML = '<a href="' + bookmarkUrl + '">' + bookmarkUrl + '</a>';
         chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chart.draw(chartView, options);
+        chart.draw(view, options);
         
         if (! name){
             google.visualization.events.addListener(chart, 'select', selectHandler);
         }
     }
     else {
-        chartView.setRows([]);
+        view.setRows([]);
         
         table = new google.visualization.Table(document.getElementById('table_div'));    
-        table.draw(chartView, {showRowNumber: true, width: '1800', height: '100%'});
+        table.draw(view, {showRowNumber: true, width: '100%', height: '100%'});
 
-        chartView.setColumns([11,5]);
+        view.setColumns([11,5]);
         chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chart.draw(chartView, options);
+        chart.draw(view, options);
     }
   }
   
   function selectHandler() {
     // Get the 'name' value of the selected chart point
     var selectedItem = chart.getSelection()[0];
-    var selectedName = chartView.getValue(selectedItem.row, 3);
+    var selectedName = view.getValue(selectedItem.row, 3);
     console.log(selectedName);
 
     // Set the name as selected in the drop down box
@@ -152,7 +151,7 @@
     eventSelectionList.innerHTML = '';
     
     // Populate the selection list with values from the filtered data
-    var events = chartView.getDistinctValues(0);
+    var events = view.getDistinctValues(0);
     eventSelectionList.add(new Option("- Alla grenar -", 'all'));
     for(var i = 0; i < events.length; i++) {
         if (!events[i].match(/Mångkamp/)){
@@ -170,7 +169,7 @@
     var nameNo = nameForm.nameList.selectedIndex;
     var nameSelectionList=document.getElementById('nameList');
     nameSelectionList.innerHTML = '';
-    var names = chartView.getDistinctValues(1);
+    var names = view.getDistinctValues(1);
     nameSelectionList.add(new Option("- Alla namn -", 'all'));
     for(var i = 0; i < names.length; i++) {
         nameSelectionList.add(new Option(names[i], names[i]));
@@ -184,7 +183,7 @@
     var yearNo = yearForm.yearList.selectedIndex;
     var yearSelectionList=document.getElementById('yearList');
     yearSelectionList.innerHTML = '';
-    var years = chartView.getDistinctValues(2);
+    var years = view.getDistinctValues(2);
     yearSelectionList.add(new Option("- Alla födelseår -", 'all'));
     for(var i = 0; i < years.length; i++) {
         yearSelectionList.add(new Option(years[i], years[i]));
@@ -207,7 +206,7 @@
   </div>
   <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
   <p></p> 
-  <table width="1000" align="center">
+  <table width="90%" align="center">
     <tr>
       <td><b>Gren:</b></td>
       <td>
@@ -233,6 +232,7 @@
           </select>
         </form>
       </td>
+      <td><button class="w3-right w3-btn w3-white w3-border w3-border-green w3-round-xlarge" onClick="clearFilter('clear')">Rensa alla filter</button></td>
     </tr>
   </table>
   <p></p>

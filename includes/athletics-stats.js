@@ -85,7 +85,20 @@ function addGenderColumn() {
         }
     }    
 }
+  
+function clearFilter() {
+    view = new google.visualization.DataView(data);
+    table = new google.visualization.Table(document.getElementById('table_div'));
 
+    bookmarkUrl = window.location.href.split("?")[0];
+    document.getElementById('bookmarkUrl').innerHTML = '<a href="' + bookmarkUrl + '">' + bookmarkUrl + '</a>';
+    populateSelections();
+    if (arguments[0] == 'clear') {
+        view.setRows([]);   
+    }
+    table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
+}
+  
 function findGetParameter(parameterName) {
     var result = null,
         tmp = [];
