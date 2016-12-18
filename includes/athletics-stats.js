@@ -6,6 +6,7 @@ function initiateData() {
                "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8", // Inomhus 2015-2016
                "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
                "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
+//               "1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M", // Klubbrekord
               ];
     var queryString = encodeURIComponent('SELECT *');
     for (i = 0; i < docList.length; i++) { 
@@ -88,7 +89,6 @@ function addGenderColumn() {
   
 function clearFilter() {
     view = new google.visualization.DataView(data);
-    table = new google.visualization.Table(document.getElementById('table_div'));
 
     bookmarkUrl = window.location.href.split("?")[0];
     document.getElementById('bookmarkUrl').innerHTML = '<a href="' + bookmarkUrl + '">' + bookmarkUrl + '</a>';
@@ -96,6 +96,7 @@ function clearFilter() {
     if (arguments[0] == 'clear') {
         view.setRows([]);   
     }
+    table = new google.visualization.Table(document.getElementById('table_div'));
     table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
 }
   

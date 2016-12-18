@@ -5,7 +5,6 @@
   <link rel="icon" href="http://friidrott.niklassons.net/favicon.jpg" type="image/jpg" />
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  
   <script type="text/javascript" src="includes/athletics-stats.js"></script>
   
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
@@ -24,7 +23,7 @@
   google.charts.setOnLoadCallback(initiateData);
 
   function finished() {
-    data.sort([{column: 11},{column: 1}]);
+    data.sort([{column: 11, desc: true},{column: 1}]);
     filterData();
   }
 
@@ -62,14 +61,14 @@
         bookmarkUrl = updateUrl(bookmarkUrl,'class',classForm.classList.options[classNo].text);
     }
     
-    // Filter on competition in column 9
+    // Filter on competition in column 10
     var competitionNo = competitionForm.competitionList.selectedIndex;
     if (competitionNo) {
         filterList.push({column:10, value:competitionForm.competitionList.options[competitionNo].text});
         bookmarkUrl = updateUrl(bookmarkUrl,'competition',competitionForm.competitionList.options[competitionNo].text);
     }    
 
-    // Filter on season in column 11
+    // Filter on season in column 12
     var seasonNo = seasonForm.seasonList.selectedIndex;
     if (seasonNo) {
         filterList.push({column:12, value:seasonForm.seasonList.options[seasonNo].text});

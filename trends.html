@@ -31,6 +31,8 @@
   function filterData() {
     var event = '';
     var name = '';
+    var year = '';
+    var klass = '';
 
     view = new google.visualization.DataView(data);
 
@@ -59,6 +61,14 @@
         year = yearForm.yearList.options[yearNo].text;
        filterList.push({column:2, value:year});
        bookmarkUrl = updateUrl(bookmarkUrl,'year',year);
+    }
+    
+    // Filter on class in column 8
+    var classNo = classForm.classList.selectedIndex;
+    if (classNo) {
+        klass = classForm.classList.options[classNo].text;
+        filterList.push({column:8, value:klass});
+        bookmarkUrl = updateUrl(bookmarkUrl,'class',klass);
     }
 
     // Apply the filter
@@ -192,6 +202,20 @@
         if (yearNo) yearSelectionList.options.selectedIndex = 1;
         else yearSelectionList.options.selectedIndex = 0;
     }
+    
+    // Populating Classes
+    var classNo = classForm.classList.selectedIndex;
+    var classSelectionList=document.getElementById('classList');
+    classSelectionList.innerHTML = '';
+    var classes = view.getDistinctValues(8);
+    classSelectionList.add(new Option("- Alla klasser -", 'all'));
+    for(var i = 0; i < classes.length; i++) {
+        classSelectionList.add(new Option(classes[i], classes[i]));
+    }
+    if (classSelectionList.length == 2){
+        if (classNo) classSelectionList.options.selectedIndex = 1;
+        else classSelectionList.options.selectedIndex = 0;
+    }
   }
   
   </script>
@@ -221,6 +245,14 @@
         <form name="yearForm">
           <select id="yearList" name="yearList" onChange="filterData()">
             <option>- Alla födelseår -
+          </select>
+        </form>
+      </td>
+      <td><b>Klass:</b></td>
+      <td>
+        <form name="classForm">
+          <select id="classList" name="classList" onChange="filterData()">
+            <option>- Alla klasser -
           </select>
         </form>
       </td>

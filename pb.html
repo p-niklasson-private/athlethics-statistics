@@ -32,6 +32,7 @@
     var name = '';
     var event = '';
     var year = '';
+    var klass = '';
     view = new google.visualization.DataView(data);
     filterList = [];
     bookmarkUrl = window.location.href.split("?")[0];
@@ -59,8 +60,16 @@
         filterList.push({column:2, value:year});
         bookmarkUrl = updateUrl(bookmarkUrl,'year',year);
     }
+    
+    // Filter on klass in column 8
+    var classNo = classForm.classList.selectedIndex;
+    if (classNo) {
+        klass = classForm.classList.options[classNo].text;
+        filterList.push({column:8, value:klass});
+        bookmarkUrl = updateUrl(bookmarkUrl,'class',klass);
+    }
 
-    if (event || name || year) {
+    if (event || name || year || klass) {
         var pb_rows = [];
         var rows = view.getFilteredRows(filterList);
         var current_event = 'start';
@@ -130,6 +139,20 @@
         if (yearNo) yearSelectionList.options.selectedIndex = 1;
         else yearSelectionList.options.selectedIndex = 0;
     }
+    
+    // Populating Classes
+    var classNo = classForm.classList.selectedIndex;
+    var classSelectionList=document.getElementById('classList');
+    classSelectionList.innerHTML = '';
+    var classes = view.getDistinctValues(8);
+    classSelectionList.add(new Option("- Alla klasser -", 'all'));
+    for(var i = 0; i < classes.length; i++) {
+        classSelectionList.add(new Option(classes[i], classes[i]));
+    }
+    if (classSelectionList.length == 2){
+        if (classNo) classSelectionList.options.selectedIndex = 1;
+        else classSelectionList.options.selectedIndex = 0;
+    }
   }
   
   </script>
@@ -160,6 +183,14 @@
                 <option>- Alla födelseår -
               </select>
             </form>
+        </td>
+        <td><b>Klass:</b></td>
+        <td>
+          <form name="classForm">
+            <select id="classList" name="classList" onChange="filterData()">
+              <option>- Alla klasser -
+            </select>
+          </form>
         </td>
         <td><b>Namn:</b></td>
         <td>
