@@ -6,7 +6,7 @@ function initiateData() {
                "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8", // Inomhus 2015-2016
                "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
                "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
-//               "1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M", // Klubbrekord
+               "1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M", // Klubbrekord
               ];
     var queryString = encodeURIComponent('SELECT *');
     for (i = 0; i < docList.length; i++) { 
@@ -86,7 +86,113 @@ function addGenderColumn() {
         }
     }    
 }
-  
+
+function populateEventSelections() {
+    var eventNo = eventForm.eventList.selectedIndex;
+    var eventSelectionList=document.getElementById('eventList');
+    eventSelectionList.innerHTML = '';
+    var events = view.getDistinctValues(0); // Column 0 = events
+    eventSelectionList.add(new Option("- Alla grenar -", 'all'));
+    for(var i = 0; i < events.length; i++) {
+        eventSelectionList.add(new Option(events[i], events[i]));
+    }
+    if (eventSelectionList.length == 2){
+        if (eventNo) eventSelectionList.options.selectedIndex = 1;
+        else eventSelectionList.options.selectedIndex = 0;
+    }
+}
+
+function populateNameSelections() {
+    var nameNo = nameForm.nameList.selectedIndex;
+    var nameSelectionList=document.getElementById('nameList');
+    nameSelectionList.innerHTML = '';
+    var names = view.getDistinctValues(1); // Column 1 = names
+    nameSelectionList.add(new Option("- Alla namn -", 'all'));
+    for(var i = 0; i < names.length; i++) {
+        nameSelectionList.add(new Option(names[i], names[i]));
+    }
+    if (nameSelectionList.length == 2){
+        if (nameNo) nameSelectionList.options.selectedIndex = 1;
+        else nameSelectionList.options.selectedIndex = 0;
+    }
+}
+
+function populateYearSelections() {
+    var yearNo = yearForm.yearList.selectedIndex;
+    var yearSelectionList=document.getElementById('yearList');
+    yearSelectionList.innerHTML = '';
+    var years = view.getDistinctValues(2);
+    yearSelectionList.add(new Option("- Alla födelseår -", 'all'));
+    for(var i = 0; i < years.length; i++) {
+        yearSelectionList.add(new Option(years[i], years[i]));
+    }
+    if (yearSelectionList.length == 2){
+        if (yearNo) yearSelectionList.options.selectedIndex = 1;
+        else yearSelectionList.options.selectedIndex = 0;
+    }
+}
+
+function populateClassSelections() {
+    var classNo = classForm.classList.selectedIndex;
+    var classSelectionList=document.getElementById('classList');
+    classSelectionList.innerHTML = '';
+    var classes = view.getDistinctValues(8);
+    classSelectionList.add(new Option("- Alla klasser -", 'all'));
+    for(var i = 0; i < classes.length; i++) {
+        classSelectionList.add(new Option(classes[i], classes[i]));
+    }
+    if (classSelectionList.length == 2){
+        if (classNo) classSelectionList.options.selectedIndex = 1;
+        else classSelectionList.options.selectedIndex = 0;
+    }
+}
+
+function populateGenderSelections() {
+    var genderNo = genderForm.genderList.selectedIndex;
+    var genderSelectionList=document.getElementById('genderList');
+    genderSelectionList.innerHTML = '';
+    var genders = view.getDistinctValues(9);
+    genderSelectionList.add(new Option("- Alla kön -", 'all'));
+    for(var i = 0; i < genders.length; i++) {
+        genderSelectionList.add(new Option(genders[i], genders[i]));
+    }
+    if (genderSelectionList.length == 2){
+        if (genderNo) genderSelectionList.options.selectedIndex = 1;
+        else genderSelectionList.options.selectedIndex = 0;
+    }
+}
+
+function populateCompetitionSelections() {  
+    // Populating Competitions
+    var competitionNo = competitionForm.competitionList.selectedIndex;
+    var competitionSelectionList=document.getElementById('competitionList');
+    competitionSelectionList.innerHTML = '';
+    var competitions = view.getDistinctValues(10);
+    competitionSelectionList.add(new Option("- Alla tävlingar -", 'all'));
+    for(var i = 0; i < competitions.length; i++) {
+        competitionSelectionList.add(new Option(competitions[i], competitions[i]));
+    }
+    if (competitionSelectionList.length == 2){
+        if (competitionNo) competitionSelectionList.options.selectedIndex = 1;
+        else competitionSelectionList.options.selectedIndex = 0;
+    }
+}
+
+function populateSeasonSelections() {
+    var seasonNo = seasonForm.seasonList.selectedIndex;
+    var seasonSelectionList=document.getElementById('seasonList');
+    seasonSelectionList.innerHTML = '';
+    var seasons = view.getDistinctValues(12);
+    seasonSelectionList.add(new Option("- Alla säsonger -", 'all'));
+    for(var i = 0; i < seasons.length; i++) {
+        seasonSelectionList.add(new Option(seasons[i], seasons[i]));
+    }
+    if (seasonSelectionList.length == 2){
+        if (seasonNo) seasonSelectionList.options.selectedIndex = 1;
+        else seasonSelectionList.options.selectedIndex = 0;
+    }
+}
+
 function clearFilter() {
     view = new google.visualization.DataView(data);
 

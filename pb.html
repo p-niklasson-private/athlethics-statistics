@@ -98,61 +98,10 @@
   }
 
   function populateSelections() {
-    // Populating events
-    var eventNo = eventForm.eventList.selectedIndex;
-    var eventSelectionList=document.getElementById('eventList');
-    eventSelectionList.innerHTML = '';
-    var events = view.getDistinctValues(0);
-    eventSelectionList.add(new Option("- Alla grenar -", 'all'));
-    for(var i = 0; i < events.length; i++) {
-      eventSelectionList.add(new Option(events[i], events[i]));
-    }
-    if (eventSelectionList.length == 2){
-        if (eventNo) eventSelectionList.options.selectedIndex = 1;
-        else eventSelectionList.options.selectedIndex = 0;
-    }  
-      
-    // Populating Names
-    var nameNo = nameForm.nameList.selectedIndex;
-    var nameSelectionList=document.getElementById('nameList');
-    nameSelectionList.innerHTML = '';
-    var names = view.getDistinctValues(1);
-    nameSelectionList.add(new Option("- Alla namn -", 'all'));
-    for(var i = 0; i < names.length; i++) {
-        nameSelectionList.add(new Option(names[i], names[i]));
-    }
-    if (nameSelectionList.length == 2){
-        if (nameNo) nameSelectionList.options.selectedIndex = 1;
-        else nameSelectionList.options.selectedIndex = 0;
-    }
-    
-    // Populating Birth years
-    var yearNo = yearForm.yearList.selectedIndex;
-    var yearSelectionList=document.getElementById('yearList');
-    yearSelectionList.innerHTML = '';
-    var years = view.getDistinctValues(2);
-    yearSelectionList.add(new Option("- Alla födelseår -", 'all'));
-    for(var i = 0; i < years.length; i++) {
-        yearSelectionList.add(new Option(years[i], years[i]));
-    }
-    if (yearSelectionList.length == 2){
-        if (yearNo) yearSelectionList.options.selectedIndex = 1;
-        else yearSelectionList.options.selectedIndex = 0;
-    }
-    
-    // Populating Classes
-    var classNo = classForm.classList.selectedIndex;
-    var classSelectionList=document.getElementById('classList');
-    classSelectionList.innerHTML = '';
-    var classes = view.getDistinctValues(8);
-    classSelectionList.add(new Option("- Alla klasser -", 'all'));
-    for(var i = 0; i < classes.length; i++) {
-        classSelectionList.add(new Option(classes[i], classes[i]));
-    }
-    if (classSelectionList.length == 2){
-        if (classNo) classSelectionList.options.selectedIndex = 1;
-        else classSelectionList.options.selectedIndex = 0;
-    }
+    populateEventSelections();
+    populateNameSelections();
+    populateYearSelections();
+    populateClassSelections();
   }
   
   </script>
