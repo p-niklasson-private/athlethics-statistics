@@ -1,2 +1,2 @@
-# friidrott-statistik
-Repo för att utveckla websida för friidrottsstatistik
+# athletics-stats
+Repo for developing a statistics web site for the athletics club Hanvikens SK
