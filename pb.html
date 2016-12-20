@@ -22,6 +22,7 @@
   var table;
   var chart;
   var bookmarkUrl;
+
   
   function finished() {
     data.sort([{column: 1},{column: 0},{column: 4},{column: 5, desc: true},{column: 6, desc: true}]);
@@ -29,12 +30,13 @@
   }
 
   function filterData() {
-    var name = '';
-    var event = '';
-    var year = '';
-    var klass = '';
     view = new google.visualization.DataView(data);
+    var name;
+    var event;
+    var year;
+    var klass;
     filterList = [];
+
     bookmarkUrl = window.location.href.split("?")[0];
     
     // Filter on events in column '0'

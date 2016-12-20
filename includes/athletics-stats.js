@@ -229,6 +229,7 @@ function menu () {
     var option_4 = '';  // Kartor
     var option_41 = ''; // Inomhus 2016-2017
     var option_42 = ''; // Utomhus 2016
+    var option_5 = ''; // Utomhus 2016
     var active = 'class="w3-green"';
     
     for (i = 0; i < arguments.length; i++) {
@@ -243,12 +244,13 @@ function menu () {
         if (arguments[i] == '4') { option_4 = active; }
         if (arguments[i] == '41') { option_41 = active; }
         if (arguments[i] == '42') { option_42 = active; }
+        if (arguments[i] == '5') { option_5 = active; }
     }  
       
     var menuString = 
         '<ul class="w3-navbar w3-round-large w3-light-grey w3-medium w3-margin">' +
-        '<li><a ' + option_1 + 'href="index.html"><i class="fa fa-table"></i> Resultat</a></li>' +
-        '<li><a ' + option_2 + 'href="pb.html"><i class="fa fa-table"></i> Personbästa</a></li>' +
+        '<li><a ' + option_1 + 'href="index.html"><i class="fa fa-list"></i> Resultat</a></li>' +
+        '<li><a ' + option_2 + 'href="pb.html"><i class="fa fa-trophy"></i> Personbästa</a></li>' +
         '<li class="w3-dropdown-hover">' +
           '<a ' + option_3 + ' href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>' +
           '<div class="w3-dropdown-content w3-white w3-card-4">' +
@@ -260,17 +262,18 @@ function menu () {
           '</div>' +
         '</li>' +    
         '<li class="w3-dropdown-hover">' +
-          '<a ' + option_4 + 'href="#"><i class="fa fa-map"></i> Kartor <i class="fa fa-caret-down"></i></a>' +
+          '<a ' + option_4 + 'href="#"><i class="fa fa-map-o"></i> Kartor <i class="fa fa-caret-down"></i></a>' +
           '<div class="w3-dropdown-content w3-white w3-card-4">' +
             '<a ' + option_41 + 'href="map.html?map=1"><i class="fa fa-map-marker"></i> Inomhustävlingar 2016-2017</a>' +
             '<a ' + option_42 + 'href="map.html?map=2"><i class="fa fa-map-marker"></i> Utomhustävlingar 2016</a>' +
           '</div>' +
         '</li>' +
+        '<li><a ' + option_5 + 'href="names.html"><i class="fa fa-user"></i> Namnlista</a></li>' +
         '<li class="w3-dropdown-hover">' +
           '<a href="#"><i class="fa fa-link"></i> Länkar <i class="fa fa-caret-down"></i></a>' +
           '<div class="w3-dropdown-content w3-white w3-card-4">' +
-            '<a href="https://hanvikenssk.myclub.se/friidrott" target="_blank">Hanviken SK friidrott</a>' +
-            '<a href="http://friidrott.se" target="_blank">Friidrott.se</a>' +
+            '<a href="https://hanvikenssk.myclub.se/friidrott" target="_blank"><i class="fa fa-link"></i> Hanviken SK friidrott</a>' +
+            '<a href="http://friidrott.se" target="_blank"><i class="fa fa-link"></i> Friidrott.se</a>' +
           '</div>' +
         '</li>' +
       '</ul>';
