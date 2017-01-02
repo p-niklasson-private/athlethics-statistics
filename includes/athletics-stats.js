@@ -1,13 +1,25 @@
 function initiateData() {
     docList = [
-//               "1uAU9FptFO_GopSXXvJ9XZZyDps5rKnlYyKHdNeE6s8Y", // Development data
-               "1WbKxsWGzVrk48C5YrZ_KS-Aw9To4RZA42c0mJy4sALk", // Inomhus 2016-2017
-               "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto", // Utomhus 2016
-               "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8", // Inomhus 2015-2016
-               "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
-               "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
-               "1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M", // Klubbrekord
-              ];
+        "1WbKxsWGzVrk48C5YrZ_KS-Aw9To4RZA42c0mJy4sALk", // Inomhus 2016-2017
+        "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto", // Utomhus 2016
+        "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8", // Inomhus 2015-2016
+        "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
+        "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
+        "1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M", // Klubbrekord
+      ];
+
+    var queryString = encodeURIComponent('SELECT *');
+    for (i = 0; i < docList.length; i++) { 
+        var queryUrl = "https://docs.google.com/spreadsheets/d/" + docList[i] + "/gviz/tq?headers=1&tq=" + queryString;
+        var query = new google.visualization.Query(queryUrl);
+        query.send(handleQueryResponse);
+        console.log(docList[i]);
+    }
+}
+
+function initiateRecordData() {
+    docList = ["1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M"];
+
     var queryString = encodeURIComponent('SELECT *');
     for (i = 0; i < docList.length; i++) { 
         var queryUrl = "https://docs.google.com/spreadsheets/d/" + docList[i] + "/gviz/tq?headers=1&tq=" + queryString;
@@ -230,6 +242,7 @@ function menu () {
     var option_41 = ''; // Inomhus 2016-2017
     var option_42 = ''; // Utomhus 2016
     var option_5 = ''; // Utomhus 2016
+    var option_6 = ''; // Klubbrekord
     var active = 'class="w3-green"';
     
     for (i = 0; i < arguments.length; i++) {
@@ -245,12 +258,14 @@ function menu () {
         if (arguments[i] == '41') { option_41 = active; }
         if (arguments[i] == '42') { option_42 = active; }
         if (arguments[i] == '5') { option_5 = active; }
+        if (arguments[i] == '6') { option_6 = active; }
     }  
       
     var menuString = 
         '<ul class="w3-navbar w3-round-large w3-light-grey w3-medium w3-margin">' +
         '<li><a ' + option_1 + 'href="index.html"><i class="fa fa-list"></i> Resultat</a></li>' +
         '<li><a ' + option_2 + 'href="pb.html"><i class="fa fa-trophy"></i> Personbästa</a></li>' +
+        '<li><a ' + option_6 + 'href="records.html"><i class="fa fa-trophy"></i> Klubbrekord</a></li>' +
         '<li class="w3-dropdown-hover">' +
           '<a ' + option_3 + ' href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>' +
           '<div class="w3-dropdown-content w3-white w3-card-4">' +
@@ -272,6 +287,7 @@ function menu () {
         '<li class="w3-dropdown-hover">' +
           '<a href="#"><i class="fa fa-link"></i> Länkar <i class="fa fa-caret-down"></i></a>' +
           '<div class="w3-dropdown-content w3-white w3-card-4">' +
+            '<a href="m"><i class="fa fa-link"></i> Mobilversion</a>' +
             '<a href="https://hanvikenssk.myclub.se/friidrott" target="_blank"><i class="fa fa-link"></i> Hanviken SK friidrott</a>' +
             '<a href="http://friidrott.se" target="_blank"><i class="fa fa-link"></i> Friidrott.se</a>' +
           '</div>' +

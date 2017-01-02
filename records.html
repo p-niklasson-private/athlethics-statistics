@@ -20,10 +20,10 @@
   var bookmarkUrl;
   
   google.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
-  google.charts.setOnLoadCallback(initiateData);
+  google.charts.setOnLoadCallback(initiateRecordData);
 
   function finished() {
-    data.sort([{column: 11, desc: true},{column: 1}]);
+    data.sort([{column: 8},{column: 0}]);
     filterData();
   }
 
@@ -41,19 +41,6 @@
         bookmarkUrl = updateUrl(bookmarkUrl,'event',eventForm.eventList.options[eventNo].text);
     }
     
-    // Filter on names in column 1
-    var nameNo = nameForm.nameList.selectedIndex;
-    if (nameNo) {
-       filterList.push({column:1, value:nameForm.nameList.options[nameNo].text});
-       bookmarkUrl = updateUrl(bookmarkUrl,'name',nameForm.nameList.options[nameNo].text);
-    }
-    // Filter on birth year in column 2
-    var yearNo = yearForm.yearList.selectedIndex;
-    if (yearNo) {
-       filterList.push({column:2, value:yearForm.yearList.options[yearNo].text});
-       bookmarkUrl = updateUrl(bookmarkUrl,'year',yearForm.yearList.options[yearNo].text);
-    }
-    
     // Filter on class in column 8
     var classNo = classForm.classList.selectedIndex;
     if (classNo) {
@@ -61,13 +48,6 @@
         bookmarkUrl = updateUrl(bookmarkUrl,'class',classForm.classList.options[classNo].text);
     }
     
-    // Filter on competition in column 10
-    var competitionNo = competitionForm.competitionList.selectedIndex;
-    if (competitionNo) {
-        filterList.push({column:10, value:competitionForm.competitionList.options[competitionNo].text});
-        bookmarkUrl = updateUrl(bookmarkUrl,'competition',competitionForm.competitionList.options[competitionNo].text);
-    }    
-
     // Filter on season in column 12
     var seasonNo = seasonForm.seasonList.selectedIndex;
     if (seasonNo) {
@@ -87,10 +67,7 @@
   
   function populateSelections() {
     populateEventSelections();
-    populateNameSelections();
-    populateYearSelections();
     populateClassSelections();
-    populateCompetitionSelections();
     populateSeasonSelections();
   }
   
@@ -98,25 +75,17 @@
 </head>
 
 <html>
-  <body onload="menu('1')">
+  <body onload="menu('6')">
     <div id="menu"></div> 
 <div class="w3-container w3-round-large w3-light-grey w3-margin">
 <p></p>
 <table width="90%" align="center">
   <tr>
-    <td><b>Säsong:</b></td>
+    <td><b>Klass:</b></td>
     <td>
-      <form name="seasonForm">
-        <select id="seasonList" name="seasonList" title="Filtrera på Säsong" onChange="filterData()">
-          <option>- Alla säsonger -
-        </select>
-      </form>
-    </td>
-    <td><b>Tävling:</b></td>
-    <td>
-      <form name="competitionForm">
-        <select id="competitionList" name="competitionList" onChange="filterData()">
-          <option>- Alla tävlingar -
+      <form name="classForm">
+        <select id="classList" name="classList" onChange="filterData()">
+          <option>- Alla klasser -
         </select>
       </form>
     </td>
@@ -128,35 +97,16 @@
         </select>
       </form>
     </td>
+    <td><b>Säsong:</b></td>
+    <td>
+      <form name="seasonForm">
+        <select id="seasonList" name="seasonList" title="Filtrera på Säsong" onChange="filterData()">
+          <option>- Alla säsonger -
+        </select>
+      </form>
+    </td>
     <td rowspan="2"><button class="w3-right w3-btn w3-white w3-border w3-border-green w3-round-xlarge" onClick="clearFilter()">Rensa alla filter</button></td>
   </tr>
-  <tr>
-    <td><b>Namn:</b></td>
-    <td>
-      <form name="nameForm">
-        <select id="nameList" name="nameList" onChange="filterData()">
-          <option>- Alla namn -
-        </select>
-      </form>
-    </td>
-    <td><b>Född:</b></td>
-    <td>
-      <form name="yearForm">
-        <select id="yearList" name="yearList" onChange="filterData()">
-          <option>- Alla födelseår -
-        </select>
-      </form>
-    </td>
-    <td><b>Klass:</b></td>
-    <td>
-      <form name="classForm">
-        <select id="classList" name="classList" onChange="filterData()">
-          <option>- Alla klasser -
-        </select>
-      </form>
-    </td>
-    
-</tr>
 </table>
 <p></p>
 <div id="bookmarkUrl" class="w3-tiny w3-right-align"></div>
