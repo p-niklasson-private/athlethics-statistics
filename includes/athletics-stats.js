@@ -133,7 +133,8 @@ function populateYearSelections() {
     var yearNo = yearForm.yearList.selectedIndex;
     var yearSelectionList=document.getElementById('yearList');
     yearSelectionList.innerHTML = '';
-    var years = view.getDistinctValues(2);
+    var years = view.getDistinctValues(2).reverse();
+    
     yearSelectionList.add(new Option("- Alla födelseår -", 'all'));
     for(var i = 0; i < years.length; i++) {
         yearSelectionList.add(new Option(years[i], years[i]));
@@ -144,11 +145,14 @@ function populateYearSelections() {
     }
 }
 
-function populateClassSelections() {
+function populateClassSelections(column) {
+    if (! column) { 
+        column = 8;
+    }
     var classNo = classForm.classList.selectedIndex;
     var classSelectionList=document.getElementById('classList');
     classSelectionList.innerHTML = '';
-    var classes = view.getDistinctValues(8);
+    var classes = view.getDistinctValues(column);
     classSelectionList.add(new Option("- Alla klasser -", 'all'));
     for(var i = 0; i < classes.length; i++) {
         classSelectionList.add(new Option(classes[i], classes[i]));
@@ -190,11 +194,14 @@ function populateCompetitionSelections() {
     }
 }
 
-function populateSeasonSelections() {
+function populateSeasonSelections(column) {
+    if (! column) { 
+        column = 12;
+    }
     var seasonNo = seasonForm.seasonList.selectedIndex;
     var seasonSelectionList=document.getElementById('seasonList');
     seasonSelectionList.innerHTML = '';
-    var seasons = view.getDistinctValues(12);
+    var seasons = view.getDistinctValues(column);
     seasonSelectionList.add(new Option("- Alla säsonger -", 'all'));
     for(var i = 0; i < seasons.length; i++) {
         seasonSelectionList.add(new Option(seasons[i], seasons[i]));
@@ -243,7 +250,7 @@ function menu () {
     var option_42 = ''; // Utomhus 2016
     var option_5 = ''; // Utomhus 2016
     var option_6 = ''; // Klubbrekord
-    var active = 'class="w3-green"';
+    var active = 'class="w3-red"';
     
     for (i = 0; i < arguments.length; i++) {
         if (arguments[i] == '1') { option_1 = active; }
@@ -263,7 +270,7 @@ function menu () {
       
     var menuString = 
         '<ul class="w3-navbar w3-round-large w3-light-grey w3-medium w3-margin">' +
-        '<li><a ' + option_1 + 'href="index.html"><i class="fa fa-list"></i> Resultat</a></li>' +
+        '<li><a ' + option_1 + 'href="index.html"><i class="fa fa-list"></i> Alla resultat</a></li>' +
         '<li><a ' + option_2 + 'href="pb.html"><i class="fa fa-trophy"></i> Personbästa</a></li>' +
         '<li><a ' + option_6 + 'href="records.html"><i class="fa fa-trophy"></i> Klubbrekord</a></li>' +
         '<li class="w3-dropdown-hover">' +
@@ -294,6 +301,14 @@ function menu () {
         '</li>' +
       '</ul>';
     document.getElementById('menu').innerHTML = menuString;
+}
+
+function w3_open() {
+    document.getElementById("sidenav").style.display = "block";
+}
+
+function w3_close() {
+    document.getElementById("sidenav").style.display = "none";
 }
 
 function updateUrl(url,key,value){
