@@ -77,42 +77,46 @@
 
 <html>
   <body onload="menu('6')">
-    <div id="menu"></div> 
-<div class="w3-container w3-round-large w3-light-grey w3-margin">
-<p></p>
-<table width="90%" align="center">
-  <tr>
-    <td><b>Klass:</b></td>
-    <td>
-      <form name="classForm">
-        <select id="classList" name="classList" onChange="filterData()">
-          <option>- Alla klasser -
-        </select>
-      </form>
-    </td>
-    <td><b>Gren:</b></td>
-    <td>
-      <form name="eventForm">
-        <select id="eventList" name="eventList" onChange="filterData()">
-            <option>- Alla grenar -
-        </select>
-      </form>
-    </td>
-    <td><b>Säsong:</b></td>
-    <td>
-      <form name="seasonForm">
-        <select id="seasonList" name="seasonList" title="Filtrera på Säsong" onChange="filterData()">
-          <option>- Alla säsonger -
-        </select>
-      </form>
-    </td>
-    <td rowspan="2"><button class="w3-right w3-btn w3-white w3-border w3-border-green w3-round-xlarge" onClick="clearFilter()">Rensa alla filter</button></td>
-  </tr>
-</table>
-<p></p>
-<div id="bookmarkUrl" class="w3-tiny w3-right-align"></div>
-<div id="table_div" class="w3-center"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
-<p></p>
-</div>
-</body>
+    <div id="menu"></div>
+    <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
+      <h3 id="page_header">Klubbrekord</h3>
+    </div>
+
+    <div class="w3-container w3-round-large w3-light-grey w3-margin">
+    <p></p>
+    <table width="90%" align="center">
+      <tr>
+        <td><b>Klass:</b></td>
+        <td>
+          <form name="classForm">
+            <select id="classList" name="classList" onChange="filterData()">
+              <option>- Alla klasser -
+            </select>
+          </form>
+        </td>
+        <td><b>Gren:</b></td>
+        <td>
+          <form name="eventForm">
+            <select id="eventList" name="eventList" onChange="filterData()">
+              <option>- Alla grenar -
+            </select>
+          </form>
+        </td>
+        <td><b>Säsong:</b></td>
+        <td>
+          <form name="seasonForm">
+            <select id="seasonList" name="seasonList" title="Filtrera på Säsong" onChange="filterData()">
+              <option>- Alla säsonger -
+            </select>
+          </form>
+        </td>
+        <td rowspan="2"><button class="w3-right w3-btn w3-white w3-border w3-border-green w3-round-xlarge" onClick="clearFilter()">Rensa alla filter</button></td>
+      </tr>
+    </table>
+    <p></p>
+    <div id="bookmarkUrl" class="w3-tiny w3-right-align"></div>
+    <div id="table_div" class="w3-center"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
+    <p></p>
+    </div>
+  </body>
 </html>

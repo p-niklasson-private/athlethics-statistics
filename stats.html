@@ -15,17 +15,18 @@
   // Get the number of the graph to display
   var graphNo = findGetParameter('graph');
 
-  // Load the google visualization APIs
-  google.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
-  google.charts.setOnLoadCallback(initiateData);
-
   // Initiate variables
+  var docs = 'all';
   var docList;
   var data;
   var dataList = [];
   var view;
   var filterList = [];
   var table;
+  
+  // Load the google visualization APIs
+  google.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
+  google.charts.setOnLoadCallback(initiateData);
   
   // Optimized to load the menu as soon as possible
   function myMenu() {

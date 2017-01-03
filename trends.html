@@ -11,9 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <script type="text/javascript">
 
-  google.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
-  google.charts.setOnLoadCallback(initiateData);
-
+  var docs = 'all';
   var docList;
   var data;
   var dataList = [];
@@ -22,6 +20,9 @@
   var table;
   var chart;
   var bookmarkUrl;
+
+  google.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
+  google.charts.setOnLoadCallback(initiateData);
   
   function finished() {
     data.sort([{column: 11},{column: 1}]);
