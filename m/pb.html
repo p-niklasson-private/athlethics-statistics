@@ -12,10 +12,8 @@
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-red.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <script type="text/javascript">
-  
-  google.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
-  google.charts.setOnLoadCallback(initiateData);
 
+  var docs = 'seasons';
   var docList;
   var data;
   var dataList = [];
@@ -23,6 +21,9 @@
   var filterList = [];
   var table;
   var chart;
+    
+  google.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
+  google.charts.setOnLoadCallback(initiateData);
 
   function finished() {
     data.sort([{column: 1},{column: 0},{column: 4},{column: 5, desc: true},{column: 6, desc: true}]);
@@ -108,9 +109,10 @@
       <a href="../pb.html"><i class="fa fa-link"></i> Webversionen</a>
     </nav>
 
-    <div class="w3-container" style="margin-top:50px"> </div>
+    <div class="w3-container" style="margin-top:60px"> </div>
     
-    <header class="w3-display-container w3-red w3-top" style="height:50px;width:100%">
+    <header class="w3-display-container w3-red w3-top" style="height:60px;width:100%">
+      <div class="w3-padding w3-display-left"><img src="images/hanviken-rund.jpg" class="w3-circle" style="width:50px;height:50px;"></div>
       <div class="w3-padding w3-display-middle"><h3>Personbästa</h3></div>
       <div class="w3-padding w3-display-right"><h3><i class="w3-opennav fa fa-bars" onclick="w3_open()"></i></h3></div>
     </header> 

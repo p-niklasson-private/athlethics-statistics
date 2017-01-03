@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <script type="text/javascript">
 
+  var docs = 'records';
   var docList;    
   var data;
   var dataList = [];
@@ -20,7 +21,7 @@
   var bookmarkUrl;
   
   google.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
-  google.charts.setOnLoadCallback(initiateRecordData);
+  google.charts.setOnLoadCallback(initiateData);
 
   function finished() {
     data.sort([{column: 8},{column: 0}]);
