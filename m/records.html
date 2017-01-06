@@ -26,6 +26,9 @@
 
   function finished() {
     data.sort([{column: 8},{column: 0}]);
+    var formatter = new google.visualization.ColorFormat();
+    formatter.addRange('2016-10-01', '2017-12-31', 'white', 'red');
+    formatter.format(data, 11);
     filterData();
   }
 
@@ -58,7 +61,7 @@
     if(filterList.length > 0){
       view.setRows(view.getFilteredRows(filterList));
     }
-    table.draw(view);
+    table.draw(view, {allowHtml: true});
     populateSelections();
   }
   

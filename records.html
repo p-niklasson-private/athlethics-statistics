@@ -25,6 +25,9 @@
 
   function finished() {
     data.sort([{column: 8},{column: 0}]);
+    var formatter = new google.visualization.ColorFormat();
+    formatter.addRange('2016-10-01', '2017-12-31', 'white', 'red');
+    formatter.format(data, 11);
     filterData();
   }
 
@@ -62,7 +65,8 @@
       console.log(bookmarkUrl);
     }
     document.getElementById('bookmarkUrl').innerHTML = '<a href="' + bookmarkUrl + '">' + bookmarkUrl + '</a>';
-    table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
+    
+    table.draw(view, {allowHtml: true, showRowNumber: true, width: '1800', height: '100%'});
     populateSelections();
   }
   
