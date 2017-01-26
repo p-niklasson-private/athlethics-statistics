@@ -6,6 +6,7 @@
   <link rel="icon" href="images/favicon.jpg" type="image/jpg" />
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  
   <script type="text/javascript" src="includes/athletics-stats.js"></script>
   
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
@@ -22,6 +23,7 @@
   var table;
 
   google.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
+  //google.charts.setOnLoadCallback(getJsonData);
   google.charts.setOnLoadCallback(initiateData);
 
   function finished() {

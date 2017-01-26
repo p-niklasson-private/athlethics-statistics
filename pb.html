@@ -11,7 +11,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <script type="text/javascript">
   
-  var docs = 'seasons';
+  var docs;
+  var badges = findGetParameter('badges');
+  if (badges == 'true') {
+    docs = 'badges';
+  }
+  else {
+    docs = 'seasons';
+  }
   var docList;
   var data;
   var dataList = [];
@@ -26,6 +33,12 @@
   
   function finished() {
     data.sort([{column: 1},{column: 0},{column: 4},{column: 5, desc: true},{column: 6, desc: true}]);
+    var formatter = new google.visualization.ColorFormat();
+    formatter.addRange('Guld', 'Gulda', 'black', 'gold');
+    formatter.addRange('Silver', 'Silvera', 'black', 'silver');
+    formatter.addRange('Brons', 'Bronsa', 'black', 'peru');
+    formatter.format(data, 1);
+    console.log(formatter);
     filterData();
   }
 
@@ -96,7 +109,7 @@
 
     document.getElementById('bookmarkUrl').innerHTML = '<a href="' + bookmarkUrl + '">' + bookmarkUrl + '</a>';
     table = new google.visualization.Table(document.getElementById('table_div'));
-    table.draw(view, {showRowNumber: true, width: '100%', height: '100%'});
+    table.draw(view, {showRowNumber: true, allowHtml: true, width: '100%', height: '100%'});
   }
 
   function populateSelections() {
