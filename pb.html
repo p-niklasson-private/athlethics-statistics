@@ -17,7 +17,7 @@
     docs = 'badges';
   }
   else {
-    docs = 'seasons';
+    docs = 'all';
   }
   var docList;
   var data;
@@ -33,12 +33,14 @@
   
   function finished() {
     data.sort([{column: 1},{column: 0},{column: 4},{column: 5, desc: true},{column: 6, desc: true}]);
-    var formatter = new google.visualization.ColorFormat();
-    formatter.addRange('Guld', 'Gulda', 'black', 'gold');
-    formatter.addRange('Silver', 'Silvera', 'black', 'silver');
-    formatter.addRange('Brons', 'Bronsa', 'black', 'peru');
-    formatter.format(data, 1);
-    console.log(formatter);
+    var badgesFormatter = new google.visualization.ColorFormat();
+    badgesFormatter.addRange('Guld', 'Gulda', 'black', 'gold');
+    badgesFormatter.addRange('Silver', 'Silvera', 'black', 'silver');
+    badgesFormatter.addRange('Brons', 'Bronsa', 'black', 'peru');
+    badgesFormatter.format(data, 1);
+    var recordFormatter  = new google.visualization.ColorFormat();
+    recordFormatter.addRange('Klubbrekord','Klubbrekorda','black','gold');
+    recordFormatter.format(data, 12);
     filterData();
   }
 
@@ -92,7 +94,13 @@
         for(var i = 0; i < rows.length; i++) {
             var event = view.getValue(rows[i],0);
             var name = view.getValue(rows[i],1);
-            if (current_event != event || current_name != name) {
+            var season = view.getValue(rows[i],12);
+            if (~season.indexOf("Klubbrekord")) {
+                // Keep all Klubbrekord
+                pb_rows.push(rows[i]);
+                continue;
+            }
+            if (current_event != event || current_name != name)  {
                 // First time we see this event or name. The first row will contain the PB!
                 pb_rows.push(rows[i]);
                 current_event = event;
