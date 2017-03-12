@@ -26,7 +26,11 @@
   function finished() {
     data.sort([{column: 8},{column: 0}]);
     var formatter = new google.visualization.ColorFormat();
-    formatter.addRange('2016-10-01', '2017-12-31', 'white', 'red');
+
+    // Adding colors to the last 3 record seasons
+    formatter.addRange('2015-10-01', '2016-04-31', 'black', 'peru');
+    formatter.addRange('2016-05-01', '2016-09-30', 'black', 'silver');
+    formatter.addRange('2016-10-01', '2017-04-31', 'black', 'gold');
     formatter.format(data, 11);
     filterData();
   }
