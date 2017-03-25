@@ -1,5 +1,7 @@
 function initiateData() {
-    if (sessionStorage && sessionStorage.getItem(docs)) {
+    var today = new Date().toJSON().slice(0,10);
+    if (sessionStorage && (sessionStorage.getItem("date_" + docs) == today)) {
+        console.log("Session data for '" + docs + "' is up-to-date: " + sessionStorage.getItem("date_" + docs));
         var jsonData = sessionStorage.getItem(docs);
         data = new google.visualization.DataTable(jsonData);
         finished();
@@ -69,7 +71,10 @@ function getJsonData() {
 function sessionStoreJsonData() {
     // Store the json data in local sessionStorage
     if (sessionStorage) {
-        sessionStorage.setItem(docs, data.toJSON()); 
+        var today = new Date().toJSON().slice(0,10);
+        console.log("Storing new data for '" + docs + "' in sessionStorage: " + today)
+        sessionStorage.setItem(docs, data.toJSON());
+        sessionStorage.setItem("date_" + docs, today);
     }
 }
 
