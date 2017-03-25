@@ -294,6 +294,8 @@ function findGetParameter(parameterName) {
 
 function menu () {
     var option_1 = '';  // Resultat
+    var option_11 = ''; // Alla result v1
+    var option_12 = ''; // Alla result v2
     var option_2 = '';  // Personbästa
     var option_3 = '';  // Statistik
     var option_31 = ''; // Trender
@@ -310,6 +312,8 @@ function menu () {
     
     for (i = 0; i < arguments.length; i++) {
         if (arguments[i] == '1') { option_1 = active; }
+        if (arguments[i] == '11') { option_11 = active; }
+        if (arguments[i] == '12') { option_12 = active; }
         if (arguments[i] == '2') { option_2 = active; }
         if (arguments[i] == '3') { option_3 = active; }
         if (arguments[i] == '31') { option_31 = active; }
@@ -326,8 +330,15 @@ function menu () {
       
     var menuString = 
         '<ul class="w3-navbar w3-round-large w3-light-grey w3-medium w3-margin">' +
-        '<li><a ' + option_1 + 'href="index.html"><i class="fa fa-list"></i> Alla resultat</a></li>' +
-        '<li><a ' + option_2 + 'href="pb.html?badges=false"><i class="fa fa-trophy"></i> Personbästa</a></li>' +
+        '<li></li>' +
+        '<li class="w3-dropdown-hover">' +
+          '<a ' + option_1 + ' href="#"><i class="fa fa-list"></i> Alla resultat <i class="fa fa-caret-down"></i></a>' +
+          '<div class="w3-dropdown-content w3-white w3-card-4">' +
+            '<a ' + option_11 + 'href="index.html"><i class="fa fa-list"></i> Alla resultat v1</a>' +
+            '<a ' + option_12 + 'href="results.html"><i class="fa fa-list"></i> Alla resultat v2</a>' +
+          '</div>' +
+        '</li>' +         
+        '<li><a ' + option_2 + 'href="pb.html?badges=true"><i class="fa fa-trophy"></i> Personbästa</a></li>' +
         '<li><a ' + option_6 + 'href="records.html"><i class="fa fa-trophy"></i> Klubbrekord</a></li>' +
         '<li class="w3-dropdown-hover">' +
           '<a ' + option_3 + ' href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>' +
