@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <title>Hanviken friidrott - Redskapsvikter och höjder</title>
+  <link rel="icon" href="images/favicon.jpg" type="image/jpg" />
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" src="includes/athletics-stats.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="includes/athletics-stats.css">
+  <script type="text/javascript">
+
+  var docs = 'gear';
+  var docList;    
+  var data;
+  var dataList = [];
+  var view;
+  var bookmarkUrl;
+  
+  google.load('visualization', '1', { packages : [ 'corechart', 'table', 'controls' ] });
+  google.charts.setOnLoadCallback(initiateData);
+
+  function finished() {
+    data.sort([{column: 8}]);
+    view= new google.visualization.DataView(data);
+    view.setColumns([0,8,9]);
+    drawDashboard();
+  }
+
+  function drawDashboard() {
+    var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
+
+    var eventFilter = new google.visualization.ControlWrapper({
+          'controlType': 'CategoryFilter',
+          'containerId': 'event_filter',
+          'options': {
+            'filterColumnIndex': 0,
+            'ui': {'selectedValuesLayout': 'belowStacked', 'label': ''}
+          }
+        });
+
+   var classFilter = new google.visualization.ControlWrapper({
+          'controlType': 'CategoryFilter',
+          'containerId': 'class_filter',
+          'options': {
+            'filterColumnIndex': 1,
+            'ui': {'selectedValuesLayout': 'belowStacked', 'label': ''}
+          }
+        });
+        
+    var resultTable = new google.visualization.ChartWrapper({
+          'chartType': 'Table',
+          'containerId': 'table_div',
+          'options': { width: 800, height: '100%' }
+        });
+
+    dashboard.bind([eventFilter,  classFilter], resultTable); 
+    dashboard.draw(view);
+  }
+
+  </script>
+</head>
+
+<html>
+  <body onload="menu('7')">
+    <div id="menu"></div>
+    <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
+        <h3 id="page_header">Redskap, vikter och höjder</h3>
+    </div>
+    <div class="w3-container w3-round-large w3-light-grey w3-margin">
+      <div id="dashboard_div">
+        <p></p>
+        <table width="50%" align="center">
+          <tr valign="top"> 
+            <td>Gren:</td><td><div id="event_filter"></div></td>
+            <td>Klass:</td><td><div id="class_filter"></div></td>
+          </tr>
+        </table>
+        <p></p>
+        <div id="table_div" class="w3-center"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
+        <p></p>
+      </div>
+    </div>
+  </body>
+</html>

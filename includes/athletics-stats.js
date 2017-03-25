@@ -313,6 +313,7 @@ function menu () {
     var option_42 = ''; // Utomhus 2016
     var option_5 = ''; // Utomhus 2016
     var option_6 = ''; // Klubbrekord
+    var option_7 = ''; // Utrustning
     var active = 'class="w3-red"';
     
     for (i = 0; i < arguments.length; i++) {
@@ -331,6 +332,7 @@ function menu () {
         if (arguments[i] == '42') { option_42 = active; }
         if (arguments[i] == '5') { option_5 = active; }
         if (arguments[i] == '6') { option_6 = active; }
+        if (arguments[i] == '7') { option_7 = active; }
     }  
       
     var menuString = 
@@ -363,6 +365,7 @@ function menu () {
           '</div>' +
         '</li>' +
         '<li><a ' + option_5 + 'href="names.html"><i class="fa fa-user"></i> Namnlista</a></li>' +
+        '<li><a ' + option_7 + 'href="gear.html"><i class="fa fa-circle"></i> Utrustning</a></li>' +
         '<li class="w3-dropdown-hover">' +
           '<a href="#"><i class="fa fa-link"></i> Länkar <i class="fa fa-caret-down"></i></a>' +
           '<div class="w3-dropdown-content w3-white w3-card-4">' +
