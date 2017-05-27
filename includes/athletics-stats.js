@@ -1,6 +1,6 @@
 function initiateData() {
     var today = new Date().toJSON().slice(0,10);
-    if (false && sessionStorage && (sessionStorage.getItem("date_" + docs) == today)) {
+    if (sessionStorage && (sessionStorage.getItem("date_" + docs) == today)) {
         console.log("Session data for '" + docs + "' is up-to-date: " + sessionStorage.getItem("date_" + docs));
         var jsonData = sessionStorage.getItem(docs);
         data = new google.visualization.DataTable(jsonData);
