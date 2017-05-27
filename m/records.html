@@ -98,6 +98,16 @@
     <p></p>
     <table width="50%" align="center">
       <tr>
+        <td><b>Säsong:</b></td>
+        <td>
+          <form name="seasonForm">
+            <select id="seasonList" name="seasonList" title="Filtrera på Säsong" onChange="filterData()">
+              <option>- Alla säsonger -
+            </select>
+          </form>
+        </td>
+      </tr>
+      <tr>
         <td><b>Klass:</b></td>
         <td>
           <form name="classForm">
@@ -113,16 +123,6 @@
           <form name="eventForm">
             <select id="eventList" name="eventList" onChange="filterData()">
               <option>- Alla grenar -
-            </select>
-          </form>
-        </td>
-      </tr>
-      <tr>
-        <td><b>Säsong:</b></td>
-        <td>
-          <form name="seasonForm">
-            <select id="seasonList" name="seasonList" title="Filtrera på Säsong" onChange="filterData()">
-              <option>- Alla säsonger -
             </select>
           </form>
         </td>

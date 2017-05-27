@@ -9,6 +9,7 @@
   
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="includes/athletics-stats.css">
   <script type="text/javascript">
 
   var docs = 'records';
@@ -28,9 +29,9 @@
     var formatter = new google.visualization.ColorFormat();
 
     // Adding colors to the last 3 record seasons
-    formatter.addRange('2015-10-01', '2016-04-31', 'black', 'peru');
-    formatter.addRange('2016-05-01', '2016-09-30', 'black', 'silver');
-    formatter.addRange('2016-10-01', '2017-04-31', 'black', 'gold');
+    formatter.addRange('2016-05-01', '2016-09-30', 'black', 'peru');
+    formatter.addRange('2016-10-01', '2017-04-31', 'black', 'silver');
+    formatter.addRange('2017-05-01', '2017-09-30', 'black', 'gold');
     formatter.format(data, 11);
     filterData();
   }
