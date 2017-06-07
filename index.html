@@ -17,7 +17,7 @@
   var data;
   var dataList = [];
 
-  google.load('visualization', '1', { packages : [ 'corechart', 'table', 'controls' ] });
+  google.charts.load('visualization', '1', { packages : [ 'corechart', 'table', 'controls' ] });
   google.charts.setOnLoadCallback(initiateData);
 
   function finished() {
@@ -40,6 +40,14 @@
           'containerId': 'table_div',
           'options': { showRowNumber: true, width: '90%', height: '100%' }
         });
+
+    dashboard.bind(seasonFilter, [nameFilter, eventFilter, yearFilter, classFilter, competitionFilter]);
+    dashboard.bind(competitionFilter, [nameFilter, eventFilter, yearFilter, classFilter]);
+    dashboard.bind(eventFilter, [nameFilter, yearFilter, classFilter]);    
+    dashboard.bind(classFilter, [nameFilter,yearFilter]);
+    dashboard.bind(yearFilter, [nameFilter]);
+
+
 
     dashboard.bind([nameFilter, eventFilter,  seasonFilter, yearFilter, classFilter, competitionFilter], resultTable); 
     dashboard.draw(data);
@@ -72,9 +80,9 @@
             <td>Gren:</td><td><div id="event_filter"></div></td>
           </tr>
           <tr valign="top">
-            <td>Namn:</td><td><div id="name_filter"></div></td>
-            <td>Född:</td><td><div id="year_filter"></div></td>
             <td>Klass:</td><td><div id="class_filter"></div></td>
+            <td>Född:</td><td><div id="year_filter"></div></td>
+            <td>Namn:</td><td><div id="name_filter"></div></td>
           </tr>
         </table>
         <p></p>

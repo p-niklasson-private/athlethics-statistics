@@ -15,7 +15,7 @@
   // Get the number of the map to display
   var mapNo = findGetParameter('map');
 
-  google.load('visualization', '1', { packages : [ 'corechart', 'map', 'table' ] });
+  google.charts.load('visualization', '1', { packages : [ 'corechart', 'map', 'table' ] });
   google.charts.setOnLoadCallback(initiateMapData);
 
   var docId;
