@@ -173,7 +173,10 @@ function filter(container, column, name) {
           }
         });
     if (localStorage) {
-        filter.setState({'selectedValues': localStorage.getItem(name).split(",")});
+        var value = localStorage.getItem(name);
+        if (value) {
+            filter.setState({'selectedValues': value.split(",")});
+        }
     }
     return filter;
 }
