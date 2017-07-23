@@ -31,6 +31,12 @@
     docId = "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto"; // Utomhus 2016
     docGid = "977426029";                                   // The tab 'Tävlingar'
   }
+
+  if (mapNo == 3) {
+    pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2017";
+    docId = "1pW3Ca1YEfCC6Wa2Ugho_a2GOGlQGo4WalLwRyPyHFB8"; // Utomhus 2017
+    docGid = "977426029";                                   // The tab 'Tävlingar'
+  }
   
   var data;
   var competitions;
@@ -50,6 +56,9 @@
     }
     if (mapNo == 2) {
       menu('4','42');
+    }
+    if (mapNo == 3) {
+      menu('4','43');
     }
   }
   
@@ -109,6 +118,10 @@
     if (mapNo == 2) {
       pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2016";
       menu('4','42');
+    }
+    if (mapNo == 3) {
+      pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2017";
+      menu('4','43');
     }
 
     page_header.innerText = pageHeader;
