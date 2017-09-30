@@ -22,6 +22,8 @@ function initiateData() {
                 "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
                 "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
                 "1iVA7smot7jP2jgXbQws5n6gMpWPtuHV7IDyegFCqVsM", // Utomhus 2014
+                "1bVC4QJOLuRW5hk5lFeHO8UkqfL22kWwHX5MK2gAqBiI", // Inomhus 2013-2014
+                "1CyqLx3YNUci24r-McL4l4-YCYeXjGpGqN0b_Hk1d5bc", // Inomhus 2012-2013
                 "1CwBhPL13W4nqSMIZx_ZFhPcQXQm5LzpBQ6fTtj4po5Q", // Friidrottsmärken
                 "1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M", // Klubbrekord
             ];
@@ -35,6 +37,8 @@ function initiateData() {
                 "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
                 "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
                 "1iVA7smot7jP2jgXbQws5n6gMpWPtuHV7IDyegFCqVsM", // Utomhus 2014
+                "1bVC4QJOLuRW5hk5lFeHO8UkqfL22kWwHX5MK2gAqBiI", // Inomhus 2013-2014
+                "1CyqLx3YNUci24r-McL4l4-YCYeXjGpGqN0b_Hk1d5bc", // Inomhus 2012-2013
             ];
         }    
         else {
@@ -46,6 +50,8 @@ function initiateData() {
                 "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
                 "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
                 "1iVA7smot7jP2jgXbQws5n6gMpWPtuHV7IDyegFCqVsM", // Utomhus 2014
+                "1bVC4QJOLuRW5hk5lFeHO8UkqfL22kWwHX5MK2gAqBiI", // Inomhus 2013-2014
+                "1CyqLx3YNUci24r-McL4l4-YCYeXjGpGqN0b_Hk1d5bc", // Inomhus 2012-2013
                 "1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M", // Klubbrekord
             ];
         }
@@ -342,7 +348,7 @@ function menu () {
     var option_41 = ''; // Inomhus 2016-2017
     var option_42 = ''; // Utomhus 2016
     var option_43 = ''; // Utomhus 2017
-    var option_5 = ''; // Utomhus 2016
+    var option_5 = ''; // Namnlista
     var option_6 = ''; // Klubbrekord
     var option_7 = ''; // Utrustning
     var active = 'class="w3-red"';
