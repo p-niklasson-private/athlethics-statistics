@@ -1,14 +1,21 @@
 function initiateData() {
+    dbGetJsonData();
+    //sessionGetJsonData();
+}
+
+function getData(record){
     var today = new Date().toJSON().slice(0,10);
-    if (sessionStorage && (sessionStorage.getItem("date_" + docs) == today)) {
-        console.log("Session data for '" + docs + "' is up-to-date: " + sessionStorage.getItem("date_" + docs));
-        var jsonData = sessionStorage.getItem(docs);
-        data = new google.visualization.DataTable(jsonData);
+    if (record && record.date == today) {
+        console.log("Cached data for '" + docs + "' is up-to-date: " + record.date);
+        data = new google.visualization.DataTable(record.data);
         finished();
     }
     else {
         if (docs == 'records') {
-            docList = ["1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M"]; // Klubbrekord
+            docList = [
+                "1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M", // Klubbrekord
+                "172sxdPUTWsKsPebJA3fKb9WWxie-75bvItAei5FPGlE", // Slagna klubbrekord
+            ];
         }
         else if (docs == 'gear') {
             docList = ["1KZcvNjq7CPFxQuTS0lcHmFt1VmwQCYwo8Thk5Cvtiu0"]; // Redskap
@@ -72,37 +79,40 @@ function initiateData() {
     }
 }
 
-function getJsonData() {
-    // Get the generated json data file from disc. easiest to do in PHP...
-    var jsonData, result;
-    $.ajax({
-       url: "readDataFile.php",
-       dataType: "json",
-       async: true,
-       success: function(result) {
-           jsonData = result;
-           data = new google.visualization.DataTable(jsonData);
-           finished();
-       }
-    });
-}
 function sessionStoreJsonData() {
     // Store the json data in local sessionStorage
+    var today = new Date().toJSON().slice(0,10);
     if (sessionStorage) {
-        var today = new Date().toJSON().slice(0,10);
         console.log("Storing new data for '" + docs + "' in sessionStorage: " + today)
         sessionStorage.setItem(docs, data.toJSON());
         sessionStorage.setItem("date_" + docs, today);
     }
 }
 
-function fileStoreJsonData() {
-    // Store the json data in an external file
-    var jsonData = new FormData();
-    jsonData.append("data" , data.toJSON());
-    var xhr = new XMLHttpRequest();
-    xhr.open( 'post', 'writeDataFile.php', true );
-    xhr.send(jsonData);
+function sessionGetJsonData(){
+    // Get json data from local sessionStorage
+    record = {data: sessionStorage.getItem(docs), date: sessionStorage.getItem("date_" + docs)};
+    getData(record);
+}
+
+function dbStoreJsonData() {
+    // Store the json data in indexexedDB
+    var today = new Date().toJSON().slice(0,10);
+    console.log("Storing new data for '" + docs + "' in indexedDB Storage: " + today)
+    var db = new ydn.db.Storage('athletics-stats');
+    db.put('athletics-stats', {date: today, data: data.toJSON()}, docs);
+}
+
+function dbGetJsonData(){
+    // Get json data from indexedDB
+    var db = new ydn.db.Storage('athletics-stats');
+    var req = db.get('athletics-stats', docs);
+    req.done(function(record) {
+        getData(record);
+    });
+    req.fail(function(e) {
+        console.log(e.message);
+    });
 }
 
 function handleQueryResponse(response) {
@@ -130,7 +140,8 @@ function collectData() {
     addTimeColumn();
     addGenderColumn();
 
-    sessionStoreJsonData();
+    //sessionStoreJsonData();
+    dbStoreJsonData();
     
     finished();
 }

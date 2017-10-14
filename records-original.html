@@ -1,7 +1,6 @@
 <!DOCTYPE HTML>
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hanviken friidrott - Resultat</title>
   <link rel="icon" href="images/favicon.jpg" type="image/jpg" />
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -10,8 +9,8 @@
   <script type="text/javascript" src="includes/ydn.db-is-core-qry.js"></script>
   
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-red.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="includes/athletics-stats.css">
   <script type="text/javascript">
 
   var docs = 'records';
@@ -21,93 +20,81 @@
   var view;
   var filterList = [];
   var table;
-
+  var bookmarkUrl;
+  
   google.charts.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
   google.charts.setOnLoadCallback(initiateData);
 
   function finished() {
     data.sort([{column: 8},{column: 0}]);
     var formatter = new google.visualization.ColorFormat();
-    formatter.addRange('2016-10-01', '2017-12-31', 'white', 'red');
+
+    // Adding colors to the last 3 record seasons
+    formatter.addRange('2016-05-01', '2016-09-30', 'black', 'peru');
+    formatter.addRange('2016-10-01', '2017-04-31', 'black', 'silver');
+    formatter.addRange('2017-05-01', '2017-09-30', 'black', 'gold');
     formatter.format(data, 11);
     filterData();
   }
 
   function filterData() {
     view = new google.visualization.DataView(data);
-    view.setColumns([0,1,2,3,5,6,8,11,12]);
     table = new google.visualization.Table(document.getElementById('table_div'));
     
     filterList = [];
-
+    bookmarkUrl = window.location.href.split("?")[0];
+    
     // Filter on events in column '0'
     var eventNo = eventForm.eventList.selectedIndex;
     if (eventNo) {
         filterList.push({column:0, value:eventForm.eventList.options[eventNo].text});
+        bookmarkUrl = updateUrl(bookmarkUrl,'event',eventForm.eventList.options[eventNo].text);
     }
     
-    // Filter on class in column 6
+    // Filter on class in column 8
     var classNo = classForm.classList.selectedIndex;
     if (classNo) {
-        filterList.push({column:6, value:classForm.classList.options[classNo].text});
+        filterList.push({column:8, value:classForm.classList.options[classNo].text});
+        bookmarkUrl = updateUrl(bookmarkUrl,'class',classForm.classList.options[classNo].text);
     }
     
-    // Filter on season in column 8
+    // Filter on season in column 12
     var seasonNo = seasonForm.seasonList.selectedIndex;
     if (seasonNo) {
-        filterList.push({column:8, value:seasonForm.seasonList.options[seasonNo].text});
+        filterList.push({column:12, value:seasonForm.seasonList.options[seasonNo].text});
+        bookmarkUrl = updateUrl(bookmarkUrl,'season',seasonForm.seasonList.options[seasonNo].text);
     }    
 
     // Apply the filter, and draw the table
     if(filterList.length > 0){
       view.setRows(view.getFilteredRows(filterList));
+      console.log(bookmarkUrl);
     }
-    table.draw(view, {allowHtml: true});
+    document.getElementById('bookmarkUrl').innerHTML = '<a href="' + bookmarkUrl + '">' + bookmarkUrl + '</a>';
+    
+    table.draw(view, {allowHtml: true, showRowNumber: true});
     populateSelections();
   }
   
   function populateSelections() {
     populateEventSelections();
-    populateClassSelections(6);
-    populateSeasonSelections(8);
+    populateClassSelections();
+    populateSeasonSelections();
   }
+  
   </script>
 </head>
 
 <html>
-<body>
-    <nav class="w3-sidenav w3-card-2 w3-white w3-top" style="width:200px;display:none;right:0;z-index:2" id="sidenav">
-      <div class="w3-container w3-theme-d2">
-        <span onclick="w3_close()" class="w3-closenav w3-right w3-xlarge"><i class="fa fa-close"></i></span>
-      </div>
-      <br>
-      <a href="index.html"><i class="fa fa-list"></i> Alla resultat</a>
-      <a href="pb.html"><i class="fa fa-trophy"></i> Personbästa</a>
-      <a class="w3-red" href="records.html"><i class="fa fa-trophy"></i> Klubbrekord</a>
-      <a href="../records.html"><i class="fa fa-link"></i> Webversionen</a>
-    </nav>
+  <body onload="menu('6')">
+    <div id="menu"></div>
+    <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
+      <h3 id="page_header">Klubbrekord</h3>
+    </div>
 
-    <div class="w3-container" style="margin-top:60px"> </div>
-    
-    <header class="w3-display-container w3-red w3-top" style="height:60px;width:100%">
-      <div class="w3-padding w3-display-left"><img src="images/hanviken-rund.jpg" class="w3-circle" style="width:50px;height:50px;"></div>
-      <div class="w3-padding w3-display-middle"><h3>Klubbrekord</h3></div>
-      <div class="w3-padding w3-display-right"><h3><i class="w3-opennav fa fa-bars" onclick="w3_open()"></i></h3></div>
-    </header>    
-    
-  <div class="w3-container w3-round-large w3-light-grey w3-margin">
+    <div class="w3-container w3-round-large w3-light-grey w3-margin">
     <p></p>
-    <table width="50%" align="center">
-      <tr>
-        <td><b>Säsong:</b></td>
-        <td>
-          <form name="seasonForm">
-            <select id="seasonList" name="seasonList" title="Filtrera på Säsong" onChange="filterData()">
-              <option>- Alla säsonger -
-            </select>
-          </form>
-        </td>
-      </tr>
+    <table width="90%" align="center">
       <tr>
         <td><b>Klass:</b></td>
         <td>
@@ -117,8 +104,6 @@
             </select>
           </form>
         </td>
-      </tr>
-      <tr>
         <td><b>Gren:</b></td>
         <td>
           <form name="eventForm">
@@ -127,11 +112,21 @@
             </select>
           </form>
         </td>
+        <td><b>Säsong:</b></td>
+        <td>
+          <form name="seasonForm">
+            <select id="seasonList" name="seasonList" title="Filtrera på Säsong" onChange="filterData()">
+              <option>- Alla säsonger -
+            </select>
+          </form>
+        </td>
+        <td rowspan="2"><button class="w3-right w3-btn w3-white w3-border w3-border-green w3-round-xlarge" onClick="clearFilter()">Rensa alla filter</button></td>
       </tr>
     </table>
     <p></p>
+    <div id="bookmarkUrl" class="w3-tiny w3-right-align"></div>
     <div id="table_div" class="w3-center"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
     <p></p>
-  </div>
-</body>
+    </div>
+  </body>
 </html>
