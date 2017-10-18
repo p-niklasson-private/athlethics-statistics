@@ -30,6 +30,18 @@
     var formatter = new google.visualization.ColorFormat();
     formatter.addRange('2016-10-01', '2017-12-31', 'white', 'red');
     formatter.format(data, 11);
+    
+    // Set all old records to italic 
+    for (var i = 0; i < data.getNumberOfRows(); i++) {
+        if (data.getValue(i,12) && data.getValue(i,12).includes("Gammalt")) {
+            for (var j = 0; j < data.getNumberOfColumns(); j++) {
+                if (data.getValue(i,j)){
+                    data.setFormattedValue(i,j,"<i>" + data.getFormattedValue(i,j) + "</i>");
+                }
+            }
+        }
+    }
+    
     filterData();
   }
 
