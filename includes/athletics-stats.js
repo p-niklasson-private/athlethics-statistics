@@ -36,6 +36,8 @@ function getData(record){
                 "1BqJOFrOltG0OQSIAjwlXBvVwPDUTcyjVP_QpFryGHW0", // Inomhus 2011-2012
                 "1LQ84N0jwCASOfKPNCtWpiOYHT0lk1AVmQzfqWPOcfes", // Utomhus 2011
                 "10v4m2zphT8L8JhNyzWdperRUZh6qcnpbJA1EYaeR23M", // Inomhus 2010-2011
+                "1bH8aLZv1CIPyLyKpXnolFlMVDvjeHixNFpMJWAKlU7U", // Utomhus 2010
+                "1n9bIvkTSy-I0k_8fDGxDVIlAhIqOQAQALceeKvbMuxI", // Inomhus 2009-2010
                 "1CwBhPL13W4nqSMIZx_ZFhPcQXQm5LzpBQ6fTtj4po5Q", // Friidrottsmärken
                 "1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M", // Klubbrekord
             ];
@@ -56,6 +58,8 @@ function getData(record){
                 "1BqJOFrOltG0OQSIAjwlXBvVwPDUTcyjVP_QpFryGHW0", // Inomhus 2011-2012
                 "1LQ84N0jwCASOfKPNCtWpiOYHT0lk1AVmQzfqWPOcfes", // Utomhus 2011
                 "10v4m2zphT8L8JhNyzWdperRUZh6qcnpbJA1EYaeR23M", // Inomhus 2010-2011
+                "1bH8aLZv1CIPyLyKpXnolFlMVDvjeHixNFpMJWAKlU7U", // Utomhus 2010
+                "1n9bIvkTSy-I0k_8fDGxDVIlAhIqOQAQALceeKvbMuxI", // Inomhus 2009-2010
             ];
         }    
         else {
@@ -74,6 +78,8 @@ function getData(record){
                 "1BqJOFrOltG0OQSIAjwlXBvVwPDUTcyjVP_QpFryGHW0", // Inomhus 2011-2012
                 "1LQ84N0jwCASOfKPNCtWpiOYHT0lk1AVmQzfqWPOcfes", // Utomhus 2011
                 "10v4m2zphT8L8JhNyzWdperRUZh6qcnpbJA1EYaeR23M", // Inomhus 2010-2011
+                "1bH8aLZv1CIPyLyKpXnolFlMVDvjeHixNFpMJWAKlU7U", // Utomhus 2010
+                "1n9bIvkTSy-I0k_8fDGxDVIlAhIqOQAQALceeKvbMuxI", // Inomhus 2009-2010
                 "1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M", // Klubbrekord
             ];
         }
