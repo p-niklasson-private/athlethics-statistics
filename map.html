@@ -39,6 +39,13 @@
     docGid = "977426029";                                   // The tab 'Tävlingar'
   }
   
+  if (mapNo == 4) {
+    pageHeader = "Hanviken SK Friidrott - Tävlingar inomhus 2017-2018";
+    docId = "1MY3ND5wMBZkyTDm46-BKAfqFbf1252afn7zUTai5m2g"; // inomhus 2017-2018
+    docGid = "977426029";                                   // The tab 'Tävlingar'
+  }
+
+  
   var data;
   var competitions;
   var comp;
@@ -61,6 +68,10 @@
     if (mapNo == 3) {
       menu('4','43');
     }
+    if (mapNo == 4) {
+      menu('4','44');
+    }
+
   }
   
   function initiateMapData() {
@@ -123,6 +134,10 @@
     if (mapNo == 3) {
       pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2017";
       menu('4','43');
+    }
+    if (mapNo == 4) {
+      pageHeader = "Hanviken SK Friidrott - Tävlingar inomhus 2017-2018";
+      menu('4','44');
     }
 
     page_header.innerText = pageHeader;

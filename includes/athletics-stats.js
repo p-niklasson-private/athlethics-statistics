@@ -130,6 +130,30 @@ function dbGetJsonData(){
     });
 }
 
+function fileStoreJsonData() {
+    // Store the json data in an external file
+    var jsonData = new FormData();
+    jsonData.append("data" , data.toJSON());
+    var xhr = new XMLHttpRequest();
+    xhr.open( 'post', 'writeDataFile.php', true );
+    xhr.send(jsonData);
+}
+
+function fileGetJsonData() {
+    // Get the generated json data file from disc. easiest to do in PHP...
+    var jsonData, result;
+    $.ajax({
+       url: "readDataFile.php",
+       dataType: "json",
+       async: true,
+       success: function(result) {
+           jsonData = result;
+           data = new google.visualization.DataTable(jsonData);
+           finished();
+       }
+    });
+}
+
 function handleQueryResponse(response) {
     if (response.isError()) {
       alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
@@ -380,9 +404,11 @@ function menu () {
     var option_41 = ''; // Inomhus 2016-2017
     var option_42 = ''; // Utomhus 2016
     var option_43 = ''; // Utomhus 2017
+    var option_44 = ''; // Inomhus 2017-2018
     var option_5 = ''; // Namnlista
     var option_6 = ''; // Klubbrekord
     var option_7 = ''; // Utrustning
+    var option_8 = ''; // Årsbästa Sverige
     var active = 'class="w3-red"';
     
     for (i = 0; i < arguments.length; i++) {
@@ -398,9 +424,11 @@ function menu () {
         if (arguments[i] == '41') { option_41 = active; }
         if (arguments[i] == '42') { option_42 = active; }
         if (arguments[i] == '43') { option_43 = active; }
+        if (arguments[i] == '44') { option_44 = active; }
         if (arguments[i] == '5') { option_5 = active; }
         if (arguments[i] == '6') { option_6 = active; }
         if (arguments[i] == '7') { option_7 = active; }
+        if (arguments[i] == '8') { option_8 = active; }
     }  
       
     var menuString = 
@@ -409,6 +437,7 @@ function menu () {
         '<li><a ' + option_1 + 'href="index.html"><i class="fa fa-list"></i> Alla resultat</a></li>' +
         '<li><a ' + option_2 + 'href="pb.html?badges=true"><i class="fa fa-trophy"></i> Personbästa</a></li>' +
         '<li><a ' + option_6 + 'href="records.html"><i class="fa fa-trophy"></i> Klubbrekord</a></li>' +
+        '<li><a ' + option_8 + 'href="year-best.html"><i class="fa fa-trophy"></i> Årsbästa Sverige</a></li>' +
         '<li class="w3-dropdown-hover">' +
           '<a ' + option_3 + ' href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>' +
           '<div class="w3-dropdown-content w3-white w3-card-4">' +
@@ -422,6 +451,7 @@ function menu () {
         '<li class="w3-dropdown-hover">' +
           '<a ' + option_4 + 'href="#"><i class="fa fa-map-o"></i> Kartor <i class="fa fa-caret-down"></i></a>' +
           '<div class="w3-dropdown-content w3-white w3-card-4">' +
+            '<a ' + option_44 + 'href="map.html?map=4"><i class="fa fa-map-marker"></i> Inomhustävlingar 2017-2018</a>' +
             '<a ' + option_43 + 'href="map.html?map=3"><i class="fa fa-map-marker"></i> Utomhustävlingar 2017</a>' +
             '<a ' + option_41 + 'href="map.html?map=1"><i class="fa fa-map-marker"></i> Inomhustävlingar 2016-2017</a>' +
             '<a ' + option_42 + 'href="map.html?map=2"><i class="fa fa-map-marker"></i> Utomhustävlingar 2016</a>' +
