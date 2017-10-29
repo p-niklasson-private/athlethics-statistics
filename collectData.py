@@ -27,8 +27,8 @@ f.write("    {\"id\":\"F\",\"label\":\"Namn\",\"type\":\"string\"},\n")
 f.write("    {\"id\":\"G\",\"label\":\"Född\",\"type\":\"string\"},\n")
 f.write("    {\"id\":\"H\",\"label\":\"Klubb\",\"type\":\"string\"},\n")
 f.write("    {\"id\":\"I\",\"label\":\"Plats\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"J\",\"label\":\"Datum\",\"type\":\"string\"}\n")
-
+f.write("    {\"id\":\"J\",\"label\":\"Datum\",\"type\":\"string\"},\n")
+f.write("    {\"id\":\"K\",\"label\":\"Notering\",\"type\":\"string\"}\n")
 f.write("  ],\n")
 
 # Write the rows
@@ -45,9 +45,13 @@ for season_no in range(start_season, stop_season, -1):
             if '<h2>' in line:
                 season = remove_html_tags(line)
                 print season
-            if 'colspan="4"' in line and 'img' not in line and 'notis' not in line:
-                event = remove_html_tags(line)
-                place = 1
+            if 'colspan="4"' in line and 'img' not in line:
+                if 'notis' not in line:
+                    event = remove_html_tags(line)
+                    place = 1
+                    notis = ""
+                else:
+                    notis = remove_html_tags(line)
             if 'class="notis"' in line:
                 if 'width="50"' in line:
                     result = remove_html_tags(line)
@@ -85,7 +89,8 @@ for season_no in range(start_season, stop_season, -1):
                     f.write("      {\"v\": \"" + year + "\"},\n")
                     f.write("      {\"v\": \"" + club + "\"},\n")
                     f.write("      {\"v\": \"" + city + "\"},\n")   
-                    f.write("      {\"v\": \"" + date + "\"}\n")
+                    f.write("      {\"v\": \"" + date + "\"},\n")
+                    f.write("      {\"v\": \"" + notis + "\"}\n")
                     f.write("    ]}")
                     first = False
                     place += 1
