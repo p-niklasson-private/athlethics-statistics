@@ -5,8 +5,7 @@ import urllib
 import re
 
 base_url = "http://www.friidrott.se/rs/arsbasta.aspx"
-start_season  = 43 # Inomhus 2018
-stop_season = 35 # Inomhus 2015
+seasons  = [41,40,39,38,37,36,32,31] # Utomhus 2017 -> Inomhus 2014
 classes  = ["p14","p15","p16","p17","p19","m22","m","f14","f15","f16","f17","f19","k22","k"]
 
 def remove_html_tags(data):
@@ -34,7 +33,7 @@ f.write("  ],\n")
 # Write the rows
 f.write("  \"rows\":[\n")
 first = True
-for season_no in range(start_season, stop_season, -1):
+for season_no in seasons:
     for cl in classes:
         target_url = base_url + "?season=" + str(season_no) + "&class=" + cl
         # print target_url
@@ -44,7 +43,7 @@ for season_no in range(start_season, stop_season, -1):
             line = line.strip()
             if '<h2>' in line:
                 season = remove_html_tags(line)
-                print season
+                print str(season_no) + ": " + season
             if 'colspan="4"' in line and 'img' not in line:
                 if 'notis' not in line:
                     event = remove_html_tags(line)
