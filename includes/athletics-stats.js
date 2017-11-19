@@ -11,77 +11,40 @@ function getData(record){
         finished();
     }
     else {
-        if (docs == 'records') {
-            docList = [
-                "1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M", // Klubbrekord
-                "172sxdPUTWsKsPebJA3fKb9WWxie-75bvItAei5FPGlE", // Slagna klubbrekord
+        var seasons = [
+                "1pW3Ca1YEfCC6Wa2Ugho_a2GOGlQGo4WalLwRyPyHFB8", // Utomhus 2017
+                "1WbKxsWGzVrk48C5YrZ_KS-Aw9To4RZA42c0mJy4sALk", // Inomhus 2016-2017
+                "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto", // Utomhus 2016
+                "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8", // Inomhus 2015-2016
+                "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
+                "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
+                "1iVA7smot7jP2jgXbQws5n6gMpWPtuHV7IDyegFCqVsM", // Utomhus 2014
+                "1bVC4QJOLuRW5hk5lFeHO8UkqfL22kWwHX5MK2gAqBiI", // Inomhus 2013-2014
+                "1ivuZjjD3o21ejcoRtov7VIcoaZdm_fpwoqDCxk7Wk-E", // Utomhus 2013
+                "1CyqLx3YNUci24r-McL4l4-YCYeXjGpGqN0b_Hk1d5bc", // Inomhus 2012-2013
+                "1D2awcgNWKyWT8ioCQxl-jIPW96pb5Tw--u1Mju0LKeg", // Utomhus 2012
+                "1BqJOFrOltG0OQSIAjwlXBvVwPDUTcyjVP_QpFryGHW0", // Inomhus 2011-2012
+                "1LQ84N0jwCASOfKPNCtWpiOYHT0lk1AVmQzfqWPOcfes", // Utomhus 2011
+                "10v4m2zphT8L8JhNyzWdperRUZh6qcnpbJA1EYaeR23M", // Inomhus 2010-2011
+                "1bH8aLZv1CIPyLyKpXnolFlMVDvjeHixNFpMJWAKlU7U", // Utomhus 2010
+                "1n9bIvkTSy-I0k_8fDGxDVIlAhIqOQAQALceeKvbMuxI", // Inomhus 2009-2010
+                "1pk1TyA5ZyOkaqYd1SKwT9umd-ICwd_lYEs6-nzNv06w", // Utomhus 2009
             ];
+        if (docs == 'records') {
+            docList = ["1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M"]; // Klubbrekord nya och gamla
         }
         else if (docs == 'gear') {
             docList = ["1KZcvNjq7CPFxQuTS0lcHmFt1VmwQCYwo8Thk5Cvtiu0"]; // Redskap
         }
-        else if (docs == 'badges') {
-            docList = [
-                "1pW3Ca1YEfCC6Wa2Ugho_a2GOGlQGo4WalLwRyPyHFB8", // Utomhus 2017
-                "1WbKxsWGzVrk48C5YrZ_KS-Aw9To4RZA42c0mJy4sALk", // Inomhus 2016-2017
-                "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto", // Utomhus 2016
-                "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8", // Inomhus 2015-2016
-                "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
-                "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
-                "1iVA7smot7jP2jgXbQws5n6gMpWPtuHV7IDyegFCqVsM", // Utomhus 2014
-                "1bVC4QJOLuRW5hk5lFeHO8UkqfL22kWwHX5MK2gAqBiI", // Inomhus 2013-2014
-                "1ivuZjjD3o21ejcoRtov7VIcoaZdm_fpwoqDCxk7Wk-E", // Utomhus 2013
-                "1CyqLx3YNUci24r-McL4l4-YCYeXjGpGqN0b_Hk1d5bc", // Inomhus 2012-2013
-                "1D2awcgNWKyWT8ioCQxl-jIPW96pb5Tw--u1Mju0LKeg", // Utomhus 2012
-                "1BqJOFrOltG0OQSIAjwlXBvVwPDUTcyjVP_QpFryGHW0", // Inomhus 2011-2012
-                "1LQ84N0jwCASOfKPNCtWpiOYHT0lk1AVmQzfqWPOcfes", // Utomhus 2011
-                "10v4m2zphT8L8JhNyzWdperRUZh6qcnpbJA1EYaeR23M", // Inomhus 2010-2011
-                "1bH8aLZv1CIPyLyKpXnolFlMVDvjeHixNFpMJWAKlU7U", // Utomhus 2010
-                "1n9bIvkTSy-I0k_8fDGxDVIlAhIqOQAQALceeKvbMuxI", // Inomhus 2009-2010
-                "1CwBhPL13W4nqSMIZx_ZFhPcQXQm5LzpBQ6fTtj4po5Q", // Friidrottsmärken
-                "1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M", // Klubbrekord
-            ];
-        }
         else if (docs == 'seasons') {
-            docList = [
-                "1pW3Ca1YEfCC6Wa2Ugho_a2GOGlQGo4WalLwRyPyHFB8", // Utomhus 2017
-                "1WbKxsWGzVrk48C5YrZ_KS-Aw9To4RZA42c0mJy4sALk", // Inomhus 2016-2017
-                "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto", // Utomhus 2016
-                "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8", // Inomhus 2015-2016
-                "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
-                "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
-                "1iVA7smot7jP2jgXbQws5n6gMpWPtuHV7IDyegFCqVsM", // Utomhus 2014
-                "1bVC4QJOLuRW5hk5lFeHO8UkqfL22kWwHX5MK2gAqBiI", // Inomhus 2013-2014
-                "1ivuZjjD3o21ejcoRtov7VIcoaZdm_fpwoqDCxk7Wk-E", // Utomhus 2013
-                "1CyqLx3YNUci24r-McL4l4-YCYeXjGpGqN0b_Hk1d5bc", // Inomhus 2012-2013
-                "1D2awcgNWKyWT8ioCQxl-jIPW96pb5Tw--u1Mju0LKeg", // Utomhus 2012
-                "1BqJOFrOltG0OQSIAjwlXBvVwPDUTcyjVP_QpFryGHW0", // Inomhus 2011-2012
-                "1LQ84N0jwCASOfKPNCtWpiOYHT0lk1AVmQzfqWPOcfes", // Utomhus 2011
-                "10v4m2zphT8L8JhNyzWdperRUZh6qcnpbJA1EYaeR23M", // Inomhus 2010-2011
-                "1bH8aLZv1CIPyLyKpXnolFlMVDvjeHixNFpMJWAKlU7U", // Utomhus 2010
-                "1n9bIvkTSy-I0k_8fDGxDVIlAhIqOQAQALceeKvbMuxI", // Inomhus 2009-2010
-            ];
-        }    
+            docList = seasons;
+        }   
+        else if (docs == 'badges') {
+            docList = seasons.concat(["1CwBhPL13W4nqSMIZx_ZFhPcQXQm5LzpBQ6fTtj4po5Q",   // Friidrottsmärken
+                                      "1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M"]); // Klubbrekord
+        }
         else {
-            docList = [
-                "1pW3Ca1YEfCC6Wa2Ugho_a2GOGlQGo4WalLwRyPyHFB8", // Utomhus 2017
-                "1WbKxsWGzVrk48C5YrZ_KS-Aw9To4RZA42c0mJy4sALk", // Inomhus 2016-2017
-                "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto", // Utomhus 2016
-                "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8", // Inomhus 2015-2016
-                "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M", // Utomhus 2015
-                "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M", // Inomhus 2014-2015
-                "1iVA7smot7jP2jgXbQws5n6gMpWPtuHV7IDyegFCqVsM", // Utomhus 2014
-                "1bVC4QJOLuRW5hk5lFeHO8UkqfL22kWwHX5MK2gAqBiI", // Inomhus 2013-2014
-                "1ivuZjjD3o21ejcoRtov7VIcoaZdm_fpwoqDCxk7Wk-E", // Utomhus 2013
-                "1CyqLx3YNUci24r-McL4l4-YCYeXjGpGqN0b_Hk1d5bc", // Inomhus 2012-2013
-                "1D2awcgNWKyWT8ioCQxl-jIPW96pb5Tw--u1Mju0LKeg", // Utomhus 2012
-                "1BqJOFrOltG0OQSIAjwlXBvVwPDUTcyjVP_QpFryGHW0", // Inomhus 2011-2012
-                "1LQ84N0jwCASOfKPNCtWpiOYHT0lk1AVmQzfqWPOcfes", // Utomhus 2011
-                "10v4m2zphT8L8JhNyzWdperRUZh6qcnpbJA1EYaeR23M", // Inomhus 2010-2011
-                "1bH8aLZv1CIPyLyKpXnolFlMVDvjeHixNFpMJWAKlU7U", // Utomhus 2010
-                "1n9bIvkTSy-I0k_8fDGxDVIlAhIqOQAQALceeKvbMuxI", // Inomhus 2009-2010
-                "1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M", // Klubbrekord
-            ];
+            docList = seasons.concat(["1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M"]); // Klubbrekord
         }
 
         var queryString = encodeURIComponent('SELECT *');
