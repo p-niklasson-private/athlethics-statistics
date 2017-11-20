@@ -12,6 +12,7 @@ function getData(record){
     }
     else {
         var seasons = [
+                "1MY3ND5wMBZkyTDm46-BKAfqFbf1252afn7zUTai5m2g", // Inomhus 2017-2018
                 "1pW3Ca1YEfCC6Wa2Ugho_a2GOGlQGo4WalLwRyPyHFB8", // Utomhus 2017
                 "1WbKxsWGzVrk48C5YrZ_KS-Aw9To4RZA42c0mJy4sALk", // Inomhus 2016-2017
                 "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto", // Utomhus 2016
