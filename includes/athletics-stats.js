@@ -42,8 +42,7 @@ function getData(record){
             docList = seasons;
         }   
         else if (docs == 'badges') {
-            docList = seasons.concat(["1CwBhPL13W4nqSMIZx_ZFhPcQXQm5LzpBQ6fTtj4po5Q",   // Friidrottsmärken
-                                      "1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M"]); // Klubbrekord
+            docList = seasons.concat(["1CwBhPL13W4nqSMIZx_ZFhPcQXQm5LzpBQ6fTtj4po5Q"]); // Friidrottsmärken
         }
         else {
             docList = seasons.concat(["1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M"]); // Klubbrekord
