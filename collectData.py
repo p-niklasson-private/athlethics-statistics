@@ -5,7 +5,7 @@ import urllib
 import re
 
 base_url = "http://www.friidrott.se/rs/arsbasta.aspx"
-seasons  = [42,41,40,39,38,37,36,32,31] # Inomhus 2018 -> Inomhus 2014
+seasons  = [42,41,40,39,38,37,36,32,31,30,29,28,27,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2] # Inomhus 2018 -> Utomhus 2001
 classes  = ["p14","p15","p16","p17","p19","m22","m","f14","f15","f16","f17","f19","k22","k"]
 
 def remove_html_tags(data):
@@ -41,8 +41,10 @@ for season_no in seasons:
 
         for line in data:
             line = line.strip()
-            if '<h2>' in line:
+            if '<h2>' in line or 'class="rubrik"' in line:
                 season = remove_html_tags(line)
+                if 'Inget årsbästa finns' in season:
+                    continue
                 print str(season_no) + ": " + season
             if 'colspan="4"' in line and 'img' not in line:
                 if 'notis' not in line:
@@ -74,6 +76,9 @@ for season_no in seasons:
                 if 'width="40"' in line:
                     date = remove_html_tags(line)
                     # All data received, print the line
+                    if 'Hanviken' not in club:
+                        place += 1
+                        continue
                     cl = cl.upper()
                     season = season.replace(" " + cl,"")
                     if not first:
