@@ -103,12 +103,13 @@ function fileStoreJsonData() {
     xhr.send(jsonData);
 }
 
-function fileGetJsonData() {
+function fileGetJsonData(file_name) {
     // Get the generated json data file from disc. easiest to do in PHP...
     var jsonData, result;
     $.ajax({
        url: "readDataFile.php",
        dataType: "json",
+       data: {file_name: file_name},
        async: true,
        success: function(result) {
            jsonData = result;
