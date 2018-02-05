@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# -*- coding: iso-8859-1 -*-
-# -*- coding: latin-1 -*-
 
 import urllib
 import re
