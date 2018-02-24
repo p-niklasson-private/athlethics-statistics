@@ -31,6 +31,7 @@ function getData(record){
                 "1n9bIvkTSy-I0k_8fDGxDVIlAhIqOQAQALceeKvbMuxI", // Inomhus 2009-2010
                 "1pk1TyA5ZyOkaqYd1SKwT9umd-ICwd_lYEs6-nzNv06w", // Utomhus 2009
                 "1Igyp5Zfi3FTmzbZ8UHPBrA1N-H5cyZfrmBzLrwZ-JzU", // Inomhus 2008-2009
+                "1IvNDBkQc9Jl6MS8ZkCKtrKPk_klO_IbioTfKf_miJfI", // Utomhus 2008
             ];
         if (docs == 'records') {
             docList = ["1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M"]; // Klubbrekord nya och gamla
