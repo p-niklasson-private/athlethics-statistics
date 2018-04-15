@@ -12,6 +12,7 @@ function getData(record){
     }
     else {
         var seasons = [
+                "1M3IgsiTy-VEP_2HwcIUzssSEkV4h6NmJJ3ajMqBgLa0", // Utomhus 2018
                 "1MY3ND5wMBZkyTDm46-BKAfqFbf1252afn7zUTai5m2g", // Inomhus 2017-2018
                 "1pW3Ca1YEfCC6Wa2Ugho_a2GOGlQGo4WalLwRyPyHFB8", // Utomhus 2017
                 "1WbKxsWGzVrk48C5YrZ_KS-Aw9To4RZA42c0mJy4sALk", // Inomhus 2016-2017
@@ -371,6 +372,7 @@ function menu () {
     var option_42 = ''; // Utomhus 2016
     var option_43 = ''; // Utomhus 2017
     var option_44 = ''; // Inomhus 2017-2018
+    var option_45 = ''; // Utomhus 2018
     var option_5 = ''; // Namnlista
     var option_6 = ''; // Klubbrekord
     var option_7 = ''; // Utrustning
@@ -391,6 +393,7 @@ function menu () {
         if (arguments[i] == '42') { option_42 = active; }
         if (arguments[i] == '43') { option_43 = active; }
         if (arguments[i] == '44') { option_44 = active; }
+        if (arguments[i] == '45') { option_45 = active; }
         if (arguments[i] == '5') { option_5 = active; }
         if (arguments[i] == '6') { option_6 = active; }
         if (arguments[i] == '7') { option_7 = active; }
@@ -417,6 +420,7 @@ function menu () {
         '<li class="w3-dropdown-hover">' +
           '<a ' + option_4 + 'href="#"><i class="fa fa-map-o"></i> Kartor <i class="fa fa-caret-down"></i></a>' +
           '<div class="w3-dropdown-content w3-white w3-card-4">' +
+            '<a ' + option_45 + 'href="map.html?map=5"><i class="fa fa-map-marker"></i> Utomhustävlingar 2018</a>' +
             '<a ' + option_44 + 'href="map.html?map=4"><i class="fa fa-map-marker"></i> Inomhustävlingar 2017-2018</a>' +
             '<a ' + option_43 + 'href="map.html?map=3"><i class="fa fa-map-marker"></i> Utomhustävlingar 2017</a>' +
             '<a ' + option_41 + 'href="map.html?map=1"><i class="fa fa-map-marker"></i> Inomhustävlingar 2016-2017</a>' +
