@@ -18,6 +18,7 @@
   var docList;    
   var data;
   var dataList = [];
+  var bookmarkUrl = window.location.href;
 
   google.charts.load('visualization', '1', { packages : [ 'corechart', 'table', 'controls' ] });
   google.charts.setOnLoadCallback(initiateData);
@@ -40,7 +41,7 @@
     var resultTable = new google.visualization.ChartWrapper({
           'chartType': 'Table',
           'containerId': 'table_div',
-          'options': { showRowNumber: true, width: '90%', height: '100%' }
+          'options': { showRowNumber: true, width: '95%', height: '100%' }
         });
 
     dashboard.bind(seasonFilter, [nameFilter, eventFilter, yearFilter, classFilter, competitionFilter]);
@@ -73,11 +74,12 @@
     <div class="w3-container w3-round-large w3-light-grey w3-margin">
       <div id="dashboard_div">
         <p></p>
-        <table width="90%" align="center">
+        <table width="95%" align="center">
           <tr valign="top">
             <td>Säsong:</td><td><div id="season_filter"></div></td>
             <td>Tävling:</td><td><div id="competition_filter"></div></td>
             <td>Gren:</td><td><div id="event_filter"></div></td>
+            <td align="right"><a href="#" id="permaLink" title="Permanent link to this page with filters"><i class="fa fa-bookmark"></i></a></td>
           </tr>
           <tr valign="top">
             <td>Klass:</td><td><div id="class_filter"></div></td>

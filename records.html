@@ -7,6 +7,7 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript" src="includes/athletics-stats.js"></script>
   <script type="text/javascript" src="includes/ydn.db-is-core-qry.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
@@ -17,6 +18,7 @@
   var docList;    
   var data;
   var dataList = [];
+  var bookmarkUrl = window.location.href;
   
   google.charts.load('visualization', '1', { packages : [ 'corechart', 'table', 'controls' ] });
   google.charts.setOnLoadCallback(initiateData);
@@ -55,7 +57,7 @@
     var resultTable = new google.visualization.ChartWrapper({
           'chartType': 'Table',
           'containerId': 'table_div',
-          'options': { allowHtml: true, showRowNumber: true, width: '90%', height: '100%' }
+          'options': { allowHtml: true, showRowNumber: true, width: '95%', height: '100%' }
         });
 
     dashboard.bind(seasonFilter, [eventFilter, classFilter, nameFilter]);  
@@ -86,12 +88,13 @@
     <div class="w3-container w3-round-large w3-light-grey w3-margin">
       <div id="dashboard_div">
         <p></p>
-        <table width="90%" align="center">
+        <table width="95%" align="center">
           <tr valign="top">
             <td>Säsong:</td><td><div id="season_filter"></div></td>
             <td>Gren:</td><td><div id="event_filter"></div></td>
             <td>Klass:</td><td><div id="class_filter"></div></td>
             <td>Namn:</td><td><div id="name_filter"></div></td>
+            <td align="right"><a href="#" id="permaLink" title="Permanent link to this page with filters"><i class="fa fa-bookmark"></i></a></td>
           </tr>
         </table>
         <p></p>

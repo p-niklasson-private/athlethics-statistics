@@ -8,6 +8,7 @@
   <script type="text/javascript" src="includes/athletics-stats.js"></script>
   <script type="text/javascript" src="includes/ydn.db-is-core-qry.js"></script>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <link rel="stylesheet" href="includes/athletics-stats.css">
@@ -18,7 +19,7 @@
   var data;
   var dataList = [];
   var view;
-  var bookmarkUrl;
+  var bookmarkUrl = window.location.href;
   
   google.charts.load('visualization', '1', { packages : [ 'corechart', 'table', 'controls' ] });
   google.charts.setOnLoadCallback(initiateData);
@@ -33,32 +34,23 @@
   function drawDashboard() {
     var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
 
-    var eventFilter = new google.visualization.ControlWrapper({
-          'controlType': 'CategoryFilter',
-          'containerId': 'event_filter',
-          'options': {
-            'filterColumnIndex': 0,
-            'ui': {'selectedValuesLayout': 'belowStacked', 'label': ''}
-          }
-        });
+    var eventFilter = filter('event_filter', 0, 'events');
+    var classFilter = filter('class_filter', 1, 'classes');
 
-   var classFilter = new google.visualization.ControlWrapper({
-          'controlType': 'CategoryFilter',
-          'containerId': 'class_filter',
-          'options': {
-            'filterColumnIndex': 1,
-            'ui': {'selectedValuesLayout': 'belowStacked', 'label': ''}
-          }
-        });
-        
     var resultTable = new google.visualization.ChartWrapper({
           'chartType': 'Table',
           'containerId': 'table_div',
-          'options': { width: 800, height: '100%' }
+          'options': { width: '80%', height: '100%' }
         });
 
+    dashboard.bind(classFilter, [eventFilter]); 
     dashboard.bind([eventFilter,  classFilter], resultTable); 
     dashboard.draw(view);
+    
+    google.visualization.events.addListener(dashboard, 'ready', function() {
+        storeFilter(classFilter, 'classes');
+        storeFilter(eventFilter, 'events');
+    });   
   }
 
   </script>
@@ -73,10 +65,11 @@
     <div class="w3-container w3-round-large w3-light-grey w3-margin">
       <div id="dashboard_div">
         <p></p>
-        <table width="50%" align="center">
+        <table width="80%" align="center">
           <tr valign="top"> 
-            <td>Gren:</td><td><div id="event_filter"></div></td>
             <td>Klass:</td><td><div id="class_filter"></div></td>
+            <td>Gren:</td><td><div id="event_filter"></div></td>
+            <td align="right"><a href="#" id="permaLink" title="Permanent link to this page with filters"><i class="fa fa-bookmark"></i></a></td>
           </tr>
         </table>
         <p></p>

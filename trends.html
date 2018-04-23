@@ -20,7 +20,7 @@
   var filterList = [];
   var table;
   var chart;
-  var bookmarkUrl;
+  var bookmarkUrl = window.location.href;
 
   google.charts.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
   google.charts.setOnLoadCallback(initiateData);

@@ -204,7 +204,11 @@ function filter(container, column, name) {
             'ui': {'selectedValuesLayout': 'belowStacked', 'label': ''}
           }
         });
-    if (localStorage) {
+    var urlValue = findGetParameter(name);
+    if (urlValue) {
+        filter.setState({'selectedValues': urlValue.split(",")});
+    }
+    else if (localStorage) {
         var value = localStorage.getItem(name);
         if (value) {
             filter.setState({'selectedValues': value.split(",")});
@@ -218,6 +222,9 @@ function storeFilter(filter, name) {
         var values = filter.getState()['selectedValues'];
         localStorage.setItem(name, values);
         console.log("Stored values: " + name + ":" + values);
+        bookmarkUrl = updateUrl(bookmarkUrl,name,values);
+        console.log("bookmarkUrl: " + bookmarkUrl);
+        $("#permaLink").attr("href", bookmarkUrl);
     }
 }
 
