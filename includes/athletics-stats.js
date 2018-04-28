@@ -60,6 +60,15 @@ function getData(record){
     }
 }
 
+/**
+ * Store (cache) statistics data in browsers Session Storage
+ *
+ * @param   {number} a the first number
+ * @param   {number} b the second number
+ *
+ * @returns {number} the sum of a and b
+ */
+
 function sessionStoreJsonData() {
     // Store the json data in local sessionStorage
     var today = new Date().toJSON().slice(0,10);
@@ -145,10 +154,7 @@ function collectData() {
 
     addTimeColumn();
     addGenderColumn();
-
-    //sessionStoreJsonData();
     dbStoreJsonData();
-    
     finished();
 }
 
@@ -195,13 +201,51 @@ function addGenderColumn() {
     }    
 }
 
-function filter(container, column, name) {
+function filterOne(container, column, name, caption) {
+    var filter = new google.visualization.ControlWrapper({
+        'controlType': 'CategoryFilter',
+        'containerId': container,
+        'options': {
+            'filterColumnIndex': column,
+            'ui': {
+                'caption': caption,
+                'sortValues': true,
+                'allowNone': false,
+                'allowMultiple': false,
+                'allowTyping': false,
+                'label': ''
+            }
+        }
+     });
+
+    var urlValue = findGetParameter(name);
+    if (urlValue) {
+        filter.setState({'selectedValues': urlValue.split(",")});
+    }
+    else if (localStorage) {
+        var value = localStorage.getItem(name);
+        if (value) {
+            filter.setState({'selectedValues': value.split(",")});
+        }
+    }
+    return filter;
+}
+
+function filter(container, column, name, caption) {
     var filter = new google.visualization.ControlWrapper({
           'controlType': 'CategoryFilter',
           'containerId': container,
           'options': {
             'filterColumnIndex': column,
-            'ui': {'selectedValuesLayout': 'belowStacked', 'label': ''}
+            'ui': {
+                'caption': caption,
+                'sortValues': true,
+                'allowNone': true,
+                'allowMultiple': true,
+                'allowTyping': true,
+                'selectedValuesLayout': 'belowStacked', 
+                'label': ''
+            }
           }
         });
     var urlValue = findGetParameter(name);
@@ -292,37 +336,6 @@ function populateClassSelections(column) {
     }
 }
 
-function populateGenderSelections() {
-    var genderNo = genderForm.genderList.selectedIndex;
-    var genderSelectionList=document.getElementById('genderList');
-    genderSelectionList.innerHTML = '';
-    var genders = view.getDistinctValues(9);
-    genderSelectionList.add(new Option("- Alla kön -", 'all'));
-    for(var i = 0; i < genders.length; i++) {
-        genderSelectionList.add(new Option(genders[i], genders[i]));
-    }
-    if (genderSelectionList.length == 2){
-        if (genderNo) genderSelectionList.options.selectedIndex = 1;
-        else genderSelectionList.options.selectedIndex = 0;
-    }
-}
-
-function populateCompetitionSelections() {  
-    // Populating Competitions
-    var competitionNo = competitionForm.competitionList.selectedIndex;
-    var competitionSelectionList=document.getElementById('competitionList');
-    competitionSelectionList.innerHTML = '';
-    var competitions = view.getDistinctValues(10);
-    competitionSelectionList.add(new Option("- Alla tävlingar -", 'all'));
-    for(var i = 0; i < competitions.length; i++) {
-        competitionSelectionList.add(new Option(competitions[i], competitions[i]));
-    }
-    if (competitionSelectionList.length == 2){
-        if (competitionNo) competitionSelectionList.options.selectedIndex = 1;
-        else competitionSelectionList.options.selectedIndex = 0;
-    }
-}
-
 function populateSeasonSelections(column) {
     if (! column) { 
         column = 12;
@@ -341,19 +354,6 @@ function populateSeasonSelections(column) {
     }
 }
 
-function clearFilter() {
-    view = new google.visualization.DataView(data);
-
-    bookmarkUrl = window.location.href.split("?")[0];
-    document.getElementById('bookmarkUrl').innerHTML = '<a href="' + bookmarkUrl + '">' + bookmarkUrl + '</a>';
-    populateSelections();
-    if (arguments[0] == 'clear') {
-        view.setRows([]);   
-    }
-    table = new google.visualization.Table(document.getElementById('table_div'));
-    table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
-}
-  
 function findGetParameter(parameterName) {
     var result = null,
         tmp = [];

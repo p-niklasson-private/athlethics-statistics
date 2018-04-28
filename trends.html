@@ -7,9 +7,11 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript" src="includes/athletics-stats.js"></script>
   <script type="text/javascript" src="includes/ydn.db-is-core-qry.js"></script>
-
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="includes/athletics-stats.css">
   <script type="text/javascript">
 
   var docs = 'all';
@@ -17,147 +19,130 @@
   var data;
   var dataList = [];
   var view;
-  var filterList = [];
-  var table;
-  var chart;
+  var resultChart;
+  var eventFilter;
+  var nameFilter;
+  var yearFilter;
+  var classFilter;
   var bookmarkUrl = window.location.href;
 
-  google.charts.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
+  google.charts.load('visualization', '1', { packages : [ 'corechart', 'table', 'controls' ] });
   google.charts.setOnLoadCallback(initiateData);
   
   function finished() {
     data.sort([{column: 11},{column: 1}]);
-    filterData();
+    view = new google.visualization.DataView(data);
+    drawDashboard();
   }
 
-  function filterData() {
-    var event = '';
-    var name = '';
-    var year = '';
-    var klass = '';
-
-    view = new google.visualization.DataView(data);
-
-    filterList = [];
-    bookmarkUrl = window.location.href;
+  function drawDashboard() {
+    var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
     
-    // Filter on events in column '0'
-    var eventNo = eventForm.eventList.selectedIndex;
-    if (eventNo) {
-        event = eventForm.eventList.options[eventNo].text;
-        filterList.push({column:0, value:event});
-        bookmarkUrl = updateUrl(bookmarkUrl,'event',event);
-    }
+    eventFilter = filterOne('event_filter', 0, 'one_event', 'Gren:');     
+    nameFilter =  filter('name_filter', 1, 'names', 'Namn:');
+    yearFilter =  filter('year_filter', 2, 'years', 'Född:');
+    classFilter = filter('class_filter', 8, 'classes', 'Klass:');
 
-    // Filter on names in column 1
-    var nameNo = nameForm.nameList.selectedIndex;
-    if (nameNo) {
-       name = nameForm.nameList.options[nameNo].text;
-       filterList.push({column:1, value:name});
-       bookmarkUrl = updateUrl(bookmarkUrl,'name',name);
-    }
-    
-    // Filter on birth year in column 2
-    var yearNo = yearForm.yearList.selectedIndex;
-    if (yearNo) {
-        year = yearForm.yearList.options[yearNo].text;
-       filterList.push({column:2, value:year});
-       bookmarkUrl = updateUrl(bookmarkUrl,'year',year);
-    }
-    
-    // Filter on class in column 8
-    var classNo = classForm.classList.selectedIndex;
-    if (classNo) {
-        klass = classForm.classList.options[classNo].text;
-        filterList.push({column:8, value:klass});
-        bookmarkUrl = updateUrl(bookmarkUrl,'class',klass);
-    }
+    var resultTable = new google.visualization.ChartWrapper({
+          'chartType': 'Table',
+          'containerId': 'table_div',
+          'options': { allowHtml: true, showRowNumber: true, width: '95%', height: '100%' }
+        });
 
-    // Apply the filter
-    if(filterList.length > 0){
-      view.setRows(view.getFilteredRows(filterList));
-    }
+    resultChart = new google.visualization.ChartWrapper({
+          'chartType': 'LineChart',
+          'containerId': 'chart_div',
+          'options': { 
+            legend: 'none',
+            pointSize: 10,
+            pointShape: 'diamond',
+            hAxis: { title: 'Datum', showTextEvery: '1'},
+            vAxis: { title: 'Resultat'},
+            width: '95%', 
+            height: '400',              
+          },
+        });
 
-    populateSelections();
+    dashboard.bind(eventFilter, [yearFilter, classFilter, nameFilter]);
+    dashboard.bind(yearFilter,  [classFilter, nameFilter]);
+    dashboard.bind(classFilter, [nameFilter]);
+    dashboard.bind([nameFilter, eventFilter,  yearFilter, classFilter], [resultTable, resultChart]);   
+    dashboard.draw(view);
+  
+    google.visualization.events.addListener(eventFilter, 'statechange', setColumns);
+    google.visualization.events.addListener(eventFilter, 'ready', setColumns);  
+    google.visualization.events.addListener(yearFilter, 'statechange', setColumns);
+    google.visualization.events.addListener(yearFilter, 'ready', setColumns);
+    google.visualization.events.addListener(classFilter, 'statechange', setColumns);
+    google.visualization.events.addListener(classFilter, 'ready', setColumns);
+    google.visualization.events.addListener(nameFilter, 'statechange', setColumns);
+    google.visualization.events.addListener(nameFilter, 'ready', setColumns);
+    google.visualization.events.addListener(resultChart, 'select', selectHandler);
+    google.visualization.events.addListener(dashboard, 'ready', storeFilters);
+  }
 
-    var options = {
-      title: event + ' ' + name,
-      legend: 'none',
-      pointSize: 10,
-      pointShape: 'diamond',
-      hAxis: { title: 'Datum', showTextEvery: '1'},
-      vAxis: { title: 'Resultat'},
-      width: '100%', 
-      height: '400',
-    };
-    if (event) {
-        table = new google.visualization.Table(document.getElementById('table_div'));    
-        table.draw(view, {showRowNumber: true, width: '100%', height: '100%'});
-        
-        if (! name) {
-            tooltip_column = 1;
-        }
-        else {
-            tooltip_column = 10;
-        }
-        
-        if (event.match(/kamp/)){
-            result_column = 6;
-        }
-        else if (event.match(/meter|Stafett|Häck/)){
-            result_column = 4;
-        }
-        else {
-            result_column = 5;
-        }
-        
-        view.setColumns([11,result_column,
-                         {calc: "stringify", sourceColumn: result_column, role: "annotation", type: "string"},
-                         {sourceColumn: tooltip_column, role: "tooltip"}
-                        ]);
+  function storeFilters() {
+    storeFilter(eventFilter, 'one_event');
+    storeFilter(classFilter, 'classes');
+    storeFilter(yearFilter,  'years');
+    storeFilter(nameFilter,  'names');
+  }
 
-        document.getElementById('bookmarkUrl').innerHTML = '<a href="' + bookmarkUrl + '">' + bookmarkUrl + '</a>';
-        chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chart.draw(view, options);
-        
-        if (! name){
-            google.visualization.events.addListener(chart, 'select', selectHandler);
-        }
+  function setColumns() {
+    var event = eventFilter.getState().selectedValues[0];
+    var names = nameFilter.getState().selectedValues;
+    var years = yearFilter.getState().selectedValues;
+    var classes = classFilter.getState().selectedValues;
+
+    var tooltip_column;    
+    // Set tooltip column based on the names values
+    if (names && names.length == 1) {
+        tooltip_column = 10; // Competition
     }
     else {
-        view.setRows([]);
-        
-        table = new google.visualization.Table(document.getElementById('table_div'));    
-        table.draw(view, {showRowNumber: true, width: '100%', height: '100%'});
-
-        view.setColumns([11,5]);
-        chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chart.draw(view, options);
+        tooltip_column = 1; // Name
     }
+
+    // Set result column based on the event value
+    var result_column;
+    if (event.match(/kamp/)) {
+        result_column = 6; // Points
+    }
+    else if (event.match(/meter|Stafett|Häck|mile/)) {
+        result_column = 4; // Time
+    }
+    else {
+        result_column = 5; // Length
+    }
+    
+    // Set title based on the set values
+    var title;
+    if (names && names.length != 0) {
+        title = event + " - " + names;
+    }
+    else if (classes && classes.length != 0)  {
+        title = event + " - " + classes;
+    }
+    else if (years && years.length != 0)  {
+        title = event + " - Födda " + years;
+    }
+    else {
+        title = event;
+    }
+    
+    resultChart.setOption('title', title);
+    resultChart.setView({'columns': [11, result_column,{sourceColumn: tooltip_column, role: "tooltip"}]});
+    resultChart.draw();
   }
   
   function selectHandler() {
-    // Get the 'name' value of the selected chart point
-    var selectedItem = chart.getSelection()[0];
-    var selectedName = view.getValue(selectedItem.row, 3);
+    var selectedItem = resultChart.getChart().getSelection()[0];
+    var chartData = resultChart.getDataTable();
+    var selectedName = chartData.getValue(selectedItem.row, selectedItem.column);
     console.log(selectedName);
-
-    // Set the name as selected in the drop down box
-    var nameSelectionList=document.getElementById('nameList');
-    nameSelectionList.innerHTML = '';
-    nameSelectionList.add(new Option("- Alla namn -", 'all'));
-    nameSelectionList.add(new Option(selectedName, selectedName));
-    nameSelectionList.options.selectedIndex = 1;
-    
-    /// Run it through the filterData()
-    filterData();
-  }
-  
-  function populateSelections() {
-    populateEventSelections();
-    populateNameSelections();
-    populateYearSelections();
-    populateClassSelections();
+    nameFilter.setState({selectedValues: [selectedName]});
+    nameFilter.draw();
+    setColumns();
   }
   
   </script>
@@ -165,56 +150,29 @@
 
 <html>
   <body onload="menu('3','31')";>
-  <div id="menu"></div>
-  <p></p>
-  <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
-    <h3 id="page_header">Resultat och trender per tävlande och gren</h3>
-  </div>
-  <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
-  <p></p> 
-  <table width="90%" align="center">
-    <tr>
-      <td><b>Gren:</b></td>
-      <td>
-        <form name="eventForm">
-          <select id="eventList" name="eventList" onChange="filterData()">
-            <option>- Alla grenar -
-          </select>
-        </form>
-      </td>
-      <td><b>Född:</b></td>
-      <td>
-        <form name="yearForm">
-          <select id="yearList" name="yearList" onChange="filterData()">
-            <option>- Alla födelseår -
-          </select>
-        </form>
-      </td>
-      <td><b>Klass:</b></td>
-      <td>
-        <form name="classForm">
-          <select id="classList" name="classList" onChange="filterData()">
-            <option>- Alla klasser -
-          </select>
-        </form>
-      </td>
-      <td><b>Namn:</b></td>
-      <td>
-        <form name="nameForm">
-          <select id="nameList" name="nameList" onChange="filterData()">
-            <option>- Alla namn -
-          </select>
-        </form>
-      </td>
-      <td><button class="w3-right w3-btn w3-white w3-border w3-border-green w3-round-xlarge" onClick="clearFilter('clear')">Rensa alla filter</button></td>
-    </tr>
-  </table>
-  <p></p>
-  <div id="bookmarkUrl" class="w3-tiny w3-right-align"></div>
-  <div id="chart_div" class="w3-center"></div>
-  <p></p>
-  <div id="table_div" class="w3-center"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
-  <p></p>
-  </div>
+    <div id="menu"></div>
+    <p></p>
+    <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
+      <h3 id="page_header">Resultat och trender per tävlande och gren</h3>
+    </div>
+    <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
+      <div id="dashboard_div">
+        <p></p>
+        <table width="95%" align="center">
+          <tr valign="top">
+            <td>Gren:</td><td><div id="event_filter"></div></td>
+            <td>Född:</td><td><div id="year_filter"></div></td>
+            <td>Klass:</td><td><div id="class_filter"></div></td>
+            <td>Namn:</td><td><div id="name_filter"></div></td>
+            <td align="right"><a href="#" id="permaLink" title="Permanent link to this page with filters"><i class="fa fa-bookmark"></i></a></td>
+          </tr>
+        </table>
+        <p></p>
+        <div id="chart_div" class="w3-center"></div>
+        <p></p>
+        <div id="table_div" class="w3-center"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
+        <p></p>
+      </div>
+    </div>
   </body>
 </html>
