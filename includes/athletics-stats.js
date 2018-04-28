@@ -201,14 +201,13 @@ function addGenderColumn() {
     }    
 }
 
-function filterOne(container, column, name, caption) {
+function filterOne(container, column, name) {
     var filter = new google.visualization.ControlWrapper({
         'controlType': 'CategoryFilter',
         'containerId': container,
         'options': {
             'filterColumnIndex': column,
             'ui': {
-                'caption': caption,
                 'sortValues': true,
                 'allowNone': false,
                 'allowMultiple': false,
@@ -231,14 +230,13 @@ function filterOne(container, column, name, caption) {
     return filter;
 }
 
-function filter(container, column, name, caption) {
+function filter(container, column, name) {
     var filter = new google.visualization.ControlWrapper({
           'controlType': 'CategoryFilter',
           'containerId': container,
           'options': {
             'filterColumnIndex': column,
             'ui': {
-                'caption': caption,
                 'sortValues': true,
                 'allowNone': true,
                 'allowMultiple': true,

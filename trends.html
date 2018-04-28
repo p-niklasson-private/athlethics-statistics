@@ -38,10 +38,10 @@
   function drawDashboard() {
     var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
     
-    eventFilter = filterOne('event_filter', 0, 'one_event', 'Gren:');     
-    nameFilter =  filter('name_filter', 1, 'names', 'Namn:');
-    yearFilter =  filter('year_filter', 2, 'years', 'Född:');
-    classFilter = filter('class_filter', 8, 'classes', 'Klass:');
+    eventFilter = filterOne('event_filter', 0, 'events');     
+    nameFilter =  filter('name_filter', 1, 'names');
+    yearFilter =  filter('year_filter', 2, 'years');
+    classFilter = filter('class_filter', 8, 'classes');
 
     var resultTable = new google.visualization.ChartWrapper({
           'chartType': 'Table',
@@ -82,7 +82,7 @@
   }
 
   function storeFilters() {
-    storeFilter(eventFilter, 'one_event');
+    storeFilter(eventFilter, 'events');
     storeFilter(classFilter, 'classes');
     storeFilter(yearFilter,  'years');
     storeFilter(nameFilter,  'names');
