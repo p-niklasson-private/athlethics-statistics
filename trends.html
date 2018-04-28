@@ -63,9 +63,9 @@
           },
         });
 
-    dashboard.bind(eventFilter, [yearFilter, classFilter, nameFilter]);
-    dashboard.bind(yearFilter,  [classFilter, nameFilter]);
-    dashboard.bind(classFilter, [nameFilter]);
+    dashboard.bind(yearFilter,  [classFilter, nameFilter, eventFilter]);
+    dashboard.bind(classFilter, [nameFilter, eventFilter]);
+    dashboard.bind(nameFilter, [eventFilter]);
     dashboard.bind([nameFilter, eventFilter,  yearFilter, classFilter], [resultTable, resultChart]);   
     dashboard.draw(view);
   
@@ -159,10 +159,10 @@
         <p></p>
         <table width="95%" align="center">
           <tr valign="top">
-            <td>Gren:</td><td><div id="event_filter"></div></td>
             <td>Född:</td><td><div id="year_filter"></div></td>
             <td>Klass:</td><td><div id="class_filter"></div></td>
             <td>Namn:</td><td><div id="name_filter"></div></td>
+            <td>Gren:</td><td><div id="event_filter"></div></td>
             <td align="right"><a href="#" id="permaLink" title="Permanent link to this page with filters"><i class="fa fa-bookmark"></i></a></td>
           </tr>
         </table>
