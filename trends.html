@@ -99,15 +99,6 @@
     var years = yearFilter.getState().selectedValues;
     var classes = classFilter.getState().selectedValues;
 
-    var tooltip_column;    
-    // Set tooltip column based on the names values
-    if (names && names.length == 1) {
-        tooltip_column = 10; // Competition
-    }
-    else {
-        tooltip_column = 1; // Name
-    }
-
     // Set result column based on the event value
     var result_column;
     if (event.match(/kamp/)) {
@@ -136,7 +127,12 @@
     }
     
     resultChart.setOption('title', title);
-    resultChart.setView({'columns': [11, result_column,{sourceColumn: tooltip_column, role: "tooltip"}]});
+    if (names && names.length == 1) {
+        resultChart.setView({'columns': [11, result_column]});
+    }
+    else {
+        resultChart.setView({'columns': [11, result_column,{sourceColumn: 1, role: "tooltip"}]});        
+    }
     resultChart.draw();
   }
   
