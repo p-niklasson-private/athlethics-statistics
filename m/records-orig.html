@@ -8,12 +8,10 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript" src="includes/athletics-stats.js"></script>
   <script type="text/javascript" src="includes/ydn.db-is-core-qry.js"></script>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-red.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-  <link rel="stylesheet" href="includes/athletics-stats.css">
   <script type="text/javascript">
 
   var docs = 'records';
@@ -21,17 +19,19 @@
   var data;
   var dataList = [];
   var view;
-  var bookmarkUrl = window.location.href;
+  var filterList = [];
+  var table;
 
-  google.charts.load('visualization', '1', { packages : [ 'corechart', 'table', 'controls' ] });
+  google.charts.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
   google.charts.setOnLoadCallback(initiateData);
 
   function finished() {
+    data.sort([{column: 8},{column: 0}]);
     var formatter = new google.visualization.ColorFormat();
     formatter.addRange('2017-10-01', '2018-12-31', 'white', 'red');
     formatter.format(data, 11);
     
-    // Remove all old ercords from the 
+    // Set all old records to italic 
     for (var i = 0; i < data.getNumberOfRows(); i++) {
         if (data.getValue(i,12) && data.getValue(i,12).includes("Gammalt")) {
             for (var j = 0; j < data.getNumberOfColumns(); j++) {
@@ -41,52 +41,53 @@
             }
         }
     }
+    
     filterData();
-    drawDashboard();
   }
 
   function filterData() {
     view = new google.visualization.DataView(data);
     view.setColumns([0,1,2,3,5,6,8,11,12]);
-    var rows = view.getSortedRows([{column: 8},{column: 0}]);
-    var record_rows = [];
-    for (var i = 0; i < view.getNumberOfRows(); i++) {
-        if (view.getValue(rows[i],8) && ! view.getValue(rows[i],8).includes("Gammalt")) {
-          console.log(view.getValue(rows[i],8));
-          record_rows.push(rows[i]);
-        }
+    table = new google.visualization.Table(document.getElementById('table_div'));
+    
+    filterList = [];
+
+    // Filter on events in column '0'
+    var eventNo = eventForm.eventList.selectedIndex;
+    if (eventNo) {
+        filterList.push({column:0, value:eventForm.eventList.options[eventNo].text});
     }
-    view.setRows(record_rows);
-  }
-
-  function drawDashboard() {
-    var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
     
-    var classFilter = filterOne('class_filter', 6, 'classes');
-    var seasonFilter = filterOne('season_filter', 8, 'seasons');
-
-    var resultTable = new google.visualization.ChartWrapper({
-          'chartType': 'Table',
-          'containerId': 'table_div',
-          'options': { allowHtml: true, width: '95%', height: '100%' }
-        });
-
-    dashboard.bind(seasonFilter, [classFilter]);
-
-    dashboard.bind([seasonFilter, classFilter], resultTable); 
-    dashboard.draw(view);
+    // Filter on class in column 6
+    var classNo = classForm.classList.selectedIndex;
+    if (classNo) {
+        filterList.push({column:6, value:classForm.classList.options[classNo].text});
+    }
     
-    google.visualization.events.addListener(dashboard, 'ready', function() {
-        storeFilter(seasonFilter, 'seasons');
-        storeFilter(classFilter, 'classes');
-    });   
-  }
+    // Filter on season in column 8
+    var seasonNo = seasonForm.seasonList.selectedIndex;
+    if (seasonNo) {
+        filterList.push({column:8, value:seasonForm.seasonList.options[seasonNo].text});
+    }    
 
+    // Apply the filter, and draw the table
+    if(filterList.length > 0){
+      view.setRows(view.getFilteredRows(filterList));
+    }
+    table.draw(view, {allowHtml: true});
+    populateSelections();
+  }
+  
+  function populateSelections() {
+    populateEventSelections();
+    populateClassSelections(6);
+    populateSeasonSelections(8);
+  }
   </script>
 </head>
 
 <html>
-  <body>
+<body>
     <nav class="w3-sidenav w3-card-2 w3-white w3-top" style="width:200px;display:none;right:0;z-index:2" id="sidenav">
       <div class="w3-container w3-theme-d2">
         <span onclick="w3_close()" class="w3-closenav w3-right w3-xlarge"><i class="fa fa-close"></i></span>
@@ -106,18 +107,43 @@
       <div class="w3-padding w3-display-right"><h3><i class="w3-opennav fa fa-bars" onclick="w3_open()"></i></h3></div>
     </header>    
     
-    <div class="w3-container w3-round-large w3-light-grey w3-margin">
-      <p></p>
-      <table width="80%" align="center">
-        <tr>
-          <td>Säsong:</td><td><div id="season_filter"></div></td>
-          <td align="right"><a href="#" id="permaLink" title="Permanent link to this page with filters"><i class="fa fa-bookmark"></i></a></td>          
-        </tr>
-        <tr><td>Klass:</td><td><div id="class_filter"></div></td></tr>
-      </table>
-      <p></p>
-      <div id="table_div" class="w3-center"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
-      <p></p>
-    </div>
-  </body>
+  <div class="w3-container w3-round-large w3-light-grey w3-margin">
+    <p></p>
+    <table width="50%" align="center">
+      <tr>
+        <td><b>Säsong:</b></td>
+        <td>
+          <form name="seasonForm">
+            <select id="seasonList" name="seasonList" title="Filtrera på Säsong" onChange="filterData()">
+              <option>- Alla säsonger -
+            </select>
+          </form>
+        </td>
+      </tr>
+      <tr>
+        <td><b>Klass:</b></td>
+        <td>
+          <form name="classForm">
+            <select id="classList" name="classList" onChange="filterData()">
+              <option>- Alla klasser -
+            </select>
+          </form>
+        </td>
+      </tr>
+      <tr>
+        <td><b>Gren:</b></td>
+        <td>
+          <form name="eventForm">
+            <select id="eventList" name="eventList" onChange="filterData()">
+              <option>- Alla grenar -
+            </select>
+          </form>
+        </td>
+      </tr>
+    </table>
+    <p></p>
+    <div id="table_div" class="w3-center"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
+    <p></p>
+  </div>
+</body>
 </html>

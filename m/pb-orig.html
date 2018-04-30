@@ -1,0 +1,160 @@
+<!DOCTYPE HTML>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hanviken friidrott - Personbästa</title>
+  <link rel="icon" href="images/favicon.jpg" type="image/jpg" />
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" src="includes/athletics-stats.js"></script>
+  <script type="text/javascript" src="includes/ydn.db-is-core-qry.js"></script>
+
+  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-red.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+  <script type="text/javascript">
+
+  var docs = 'seasons';
+  var docList;
+  var data;
+  var dataList = [];
+  var view;
+  var filterList = [];
+  var table;
+  var chart;
+    
+  google.charts.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
+  google.charts.setOnLoadCallback(initiateData);
+
+  function finished() {
+    data.sort([{column: 1},{column: 0},{column: 4},{column: 5, desc: true},{column: 6, desc: true}]);
+    filterData();
+  }
+
+  function filterData() {
+    view = new google.visualization.DataView(data);
+    view.setColumns([0,1,2,3,5,6,10,11]);
+    var name;
+    var event;
+    var year;
+    var klass;
+    filterList = [];
+
+    // Filter on events in column '0'
+    var eventNo = eventForm.eventList.selectedIndex;
+    if (eventNo) {
+        event = eventForm.eventList.options[eventNo].text;
+        filterList.push({column:0, value:event});
+    }
+
+    // Filter on names in column 1
+    var nameNo = nameForm.nameList.selectedIndex;
+    if (nameNo) {
+       name = nameForm.nameList.options[nameNo].text;
+       filterList.push({column:1, value:name});
+    }
+    
+    // Filter on birth year in column 2
+    var yearNo = yearForm.yearList.selectedIndex;
+    if (yearNo) {
+        year = yearForm.yearList.options[yearNo].text;
+        filterList.push({column:2, value:year});
+    }
+    
+    if (event || name || year) {
+        var pb_rows = [];
+        var rows = view.getFilteredRows(filterList);
+        var current_event = 'start';
+        var current_name = 'start';
+        for(var i = 0; i < rows.length; i++) {
+            var event = view.getValue(rows[i],0);
+            var name = view.getValue(rows[i],1);
+            if (current_event != event || current_name != name) {
+                // First time we see this event or name. The first row will contain the PB!
+                pb_rows.push(rows[i]);
+                current_event = event;
+                current_name = name;
+            }
+        }
+        view.setRows(pb_rows);
+        populateSelections();
+    }
+    else {
+        populateSelections();   
+        view.setRows([]);
+    }
+
+    table = new google.visualization.Table(document.getElementById('table_div'));
+    table.draw(view);
+  }
+
+  function populateSelections() {
+    populateEventSelections();
+    populateNameSelections();
+    populateYearSelections();
+  }
+  
+  </script>
+</head>
+
+<html>
+  <body>
+    <nav class="w3-sidenav w3-card-2 w3-white w3-top" style="width:200px;display:none;right:0;z-index:2" id="sidenav">
+      <div class="w3-container w3-theme-d2">
+        <span onclick="w3_close()" class="w3-closenav w3-right w3-xlarge"><i class="fa fa-close"></i></span>
+      </div>
+      <br>
+      <a href="index.html"><i class="fa fa-list"></i> Alla resultat</a>
+      <a class="w3-red" href="pb.html"><i class="fa fa-trophy"></i> Personbästa</a>
+      <a href="records.html"><i class="fa fa-trophy"></i> Klubbrekord</a>
+      <a href="../pb.html"><i class="fa fa-link"></i> Webversionen</a>
+    </nav>
+
+    <div class="w3-container" style="margin-top:60px"> </div>
+    
+    <header class="w3-display-container w3-red w3-top" style="height:60px;width:100%">
+      <div class="w3-padding w3-display-left"><img src="images/hanviken-rund.jpg" class="w3-circle" style="width:50px;height:50px;"></div>
+      <div class="w3-padding w3-display-middle"><h3>Personbästa</h3></div>
+      <div class="w3-padding w3-display-right"><h3><i class="w3-opennav fa fa-bars" onclick="w3_open()"></i></h3></div>
+    </header> 
+
+    <div class="w3-container w3-round-large w3-light-grey w3-margin">
+      <p></p>
+      <table width="50%" align="center">
+        <tr>
+        <td><b>Född:</b></td>
+        <td>
+            <form name="yearForm">
+              <select id="yearList" name="yearList" onChange="filterData()">
+                <option>- Alla födelseår -
+              </select>
+            </form>
+        </td>
+        </tr>
+        <tr>
+        <td><b>Namn:</b></td>
+        <td>
+            <form name="nameForm">
+              <select id="nameList" name="nameList" onChange="filterData()">
+                <option>- Alla namn -
+              </select>
+            </form>
+        </td>
+        </tr>
+        <tr>
+        <td><b>Gren:</b></td>
+        <td>
+            <form name="eventForm">
+              <select id="eventList" name="eventList" onChange="filterData()">
+                <option>- Alla grenar -
+              </select>
+            </form>
+        </td>
+        </tr>
+      </table>
+      <p></p>
+      <div id="table_div" class="w3-center"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
+      <p></p>
+    </div>
+  </body>
+</html>

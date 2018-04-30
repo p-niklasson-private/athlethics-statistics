@@ -6,60 +6,68 @@
   <link rel="icon" href="images/favicon.jpg" type="image/jpg" />
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  
   <script type="text/javascript" src="includes/athletics-stats.js"></script>
   <script type="text/javascript" src="includes/ydn.db-is-core-qry.js"></script>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
+  
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-red.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-  <link rel="stylesheet" href="includes/athletics-stats.css">
   <script type="text/javascript">
 
-  var docs = 'seasons';
-  var docList;
+  var docs = 'all'; 
+  var docList;    
   var data;
   var dataList = [];
   var view;
-  var bookmarkUrl = window.location.href;
-    
-  google.charts.load('visualization', '1', { packages : [ 'corechart', 'table', 'controls' ] });
+  var filterList = [];
+  var table;
+
+  google.charts.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
   google.charts.setOnLoadCallback(initiateData);
 
   function finished() {
     data.sort([{column: 11, desc: true},{column: 1}]);
     filterData();
-    drawDashboard();
   }
 
   function filterData() {
     view = new google.visualization.DataView(data);
-    view.setColumns([0,1,2,3,5,6,10,11]);
+    view.setColumns([0,1,2,3,4,5,6,11]);
+    table = new google.visualization.Table(document.getElementById('table_div'));
+    
+    filterList = [];
+
+    // Filter on events in column '0'
+    var eventNo = eventForm.eventList.selectedIndex;
+    if (eventNo) {
+        filterList.push({column:0, value:eventForm.eventList.options[eventNo].text});
+    }
+    
+    // Filter on names in column 1
+    var nameNo = nameForm.nameList.selectedIndex;
+    if (nameNo) {
+       filterList.push({column:1, value:nameForm.nameList.options[nameNo].text});
+    }
+    // Filter on birth year in column 2
+    var yearNo = yearForm.yearList.selectedIndex;
+    if (yearNo) {
+       filterList.push({column:2, value:yearForm.yearList.options[yearNo].text});
+    }
+
+    // Apply the filter, and draw the table
+    if(filterList.length > 0){
+      view.setRows(view.getFilteredRows(filterList));
+    }
+    table.draw(view);
+    populateSelections();
   }
   
-  function drawDashboard() {
-    var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
-    
-    var nameFilter = filterOne('name_filter', 1, 'names');
-    var yearFilter = filterOne('year_filter', 2, 'years');
-
-    var resultTable = new google.visualization.ChartWrapper({
-          'chartType': 'Table',
-          'containerId': 'table_div',
-          'options': { allowHtml: true, width: '95%', height: '100%' }
-        });
-
-    dashboard.bind(yearFilter, [nameFilter]);
-
-    dashboard.bind([yearFilter, nameFilter], resultTable); 
-    dashboard.draw(view);
-    
-    google.visualization.events.addListener(dashboard, 'ready', function() {
-        storeFilter(nameFilter, 'names');
-        storeFilter(yearFilter, 'years');
-    });   
+  function populateSelections() {
+    populateEventSelections();
+    populateNameSelections();
+    populateYearSelections();
   }
-
   </script>
 </head>
 
@@ -80,19 +88,42 @@
     
     <header class="w3-display-container w3-red w3-top" style="height:60px;width:100%">
       <div class="w3-padding w3-display-left"><img src="images/hanviken-rund.jpg" class="w3-circle" style="width:50px;height:50px;"></div>
-      <div class="w3-padding w3-display-middle"><h3>Alla Resultat</h3></div>
+      <div class="w3-padding w3-display-middle"><h3>Alla resultat</h3></div>
       <div class="w3-padding w3-display-right"><h3><i class="w3-opennav fa fa-bars" onclick="w3_open()"></i></h3></div>
-    </header> 
-
+    </header>
+    
     <div class="w3-container w3-round-large w3-light-grey w3-margin">
       <p></p>
-      <table width="80%" align="center">
+      <table width="50%" align="center">
         <tr>
-          <td>Född:</td><td><div id="year_filter"></div></td>
-          <td align="right"><a href="#" id="permaLink" title="Permanent link to this page with filters"><i class="fa fa-bookmark"></i></a></td>
+          <td><b>Född:</b></td>
+          <td>
+            <form name="yearForm">
+              <select id="yearList" name="yearList" onChange="filterData()">
+                <option>- Alla födelseår -
+              </select>
+            </form>
+          </td>
         </tr>
         <tr>
-          <td>Namn:</td><td><div id="name_filter"></div></td>
+          <td><b>Namn:</b></td>
+          <td>
+            <form name="nameForm">
+              <select id="nameList" name="nameList" onChange="filterData()">
+                <option>- Alla namn -
+              </select>
+            </form>
+          </td>
+        </tr>
+        <tr>
+          <td><b>Gren:</b></td>
+          <td>
+            <form name="eventForm">
+              <select id="eventList" name="eventList" onChange="filterData()">
+                <option>- Alla grenar -
+              </select>
+            </form>
+          </td>
         </tr>
       </table>
       <p></p>

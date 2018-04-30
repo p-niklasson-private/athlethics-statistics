@@ -367,11 +367,10 @@ function menu () {
     var option_1 = '';  // Resultat
     var option_2 = '';  // Personbästa
     var option_3 = '';  // Statistik
-    var option_31 = ''; // Trender
-    var option_32 = ''; // Födelseår
-    var option_33 = ''; // Grenar
-    var option_34 = ''; // Tävlingar
-    var option_35 = ''; // Könsfördelning
+    var option_31 = ''; // Födelseår
+    var option_32 = ''; // Grenar
+    var option_33 = ''; // Tävlingar
+    var option_34 = ''; // Könsfördelning
     var option_4 = '';  // Kartor
     var option_41 = ''; // Inomhus 2016-2017
     var option_42 = ''; // Utomhus 2016
@@ -382,6 +381,7 @@ function menu () {
     var option_6 = ''; // Klubbrekord
     var option_7 = ''; // Utrustning
     var option_8 = ''; // Årsbästa Sverige
+    var option_9 = ''; // Trender
     var active = 'class="w3-red"';
     
     for (i = 0; i < arguments.length; i++) {
@@ -392,7 +392,6 @@ function menu () {
         if (arguments[i] == '32') { option_32 = active; }
         if (arguments[i] == '33') { option_33 = active; }
         if (arguments[i] == '34') { option_34 = active; }
-        if (arguments[i] == '35') { option_35 = active; }
         if (arguments[i] == '4') { option_4 = active; }
         if (arguments[i] == '41') { option_41 = active; }
         if (arguments[i] == '42') { option_42 = active; }
@@ -403,6 +402,7 @@ function menu () {
         if (arguments[i] == '6') { option_6 = active; }
         if (arguments[i] == '7') { option_7 = active; }
         if (arguments[i] == '8') { option_8 = active; }
+        if (arguments[i] == '9') { option_9 = active; }
     }  
       
     var menuString = 
@@ -412,14 +412,14 @@ function menu () {
         '<li><a ' + option_2 + 'href="pb.html?badges=true"><i class="fa fa-trophy"></i> Personbästa</a></li>' +
         '<li><a ' + option_6 + 'href="records.html"><i class="fa fa-trophy"></i> Klubbrekord</a></li>' +
         '<li><a ' + option_8 + 'href="year-best.html"><i class="fa fa-trophy"></i> Årsbästa Sverige</a></li>' +
+        '<li><a ' + option_9 + 'href="trends.html"><i class="fa fa-line-chart"></i> Trender</a></li>' +
         '<li class="w3-dropdown-hover">' +
           '<a ' + option_3 + ' href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>' +
           '<div class="w3-dropdown-content w3-white w3-card-4">' +
-            '<a ' + option_31 + 'href="trends.html"><i class="fa fa-line-chart"></i> Resultat, trender per tävlande och gren</a>' +
-            '<a ' + option_32 + 'href="stats.html?graph=1"><i class="fa fa-pie-chart"></i> Födelseår</a>' +
-            '<a ' + option_33 + 'href="stats.html?graph=2"><i class="fa fa-pie-chart"></i> Populära grenar</a>' +
-            '<a ' + option_34 + 'href="stats.html?graph=3"><i class="fa fa-pie-chart"></i> Populära tävlingar</a>' +
-            '<a ' + option_35 + 'href="stats.html?graph=4"><i class="fa fa-pie-chart"></i> Könsfördelning</a>' +
+            '<a ' + option_31 + 'href="stats.html?graph=1"><i class="fa fa-pie-chart"></i> Födelseår</a>' +
+            '<a ' + option_32 + 'href="stats.html?graph=2"><i class="fa fa-pie-chart"></i> Populära grenar</a>' +
+            '<a ' + option_33 + 'href="stats.html?graph=3"><i class="fa fa-pie-chart"></i> Populära tävlingar</a>' +
+            '<a ' + option_34 + 'href="stats.html?graph=4"><i class="fa fa-pie-chart"></i> Könsfördelning</a>' +
           '</div>' +
         '</li>' +    
         '<li class="w3-dropdown-hover">' +

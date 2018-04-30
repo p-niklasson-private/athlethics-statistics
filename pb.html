@@ -50,7 +50,7 @@
     for(var i = 0; i < rows.length; i++) {
         var event = view.getValue(rows[i],0);
         var name = view.getValue(rows[i],1);
-        if (current_event != event || current_name != name)  {
+        if (current_event != event || current_name != name) {
             // First time we see this event or name. The first row will contain the PB!
             pb_rows.push(rows[i]);
             current_event = event;
@@ -95,6 +95,7 @@
 <html>
   <body onload="menu('2')">
     <div id="menu"></div>
+    <p></p>
     <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
       <h3 id="page_header">Personbästa per åldersgrupp, tävlande och gren</h3>
     </div>

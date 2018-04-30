@@ -29,12 +29,12 @@
     function drawDashboard() {
         var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
     
-        var seasonFilter = filter('season_filter', 0, 'seasons');
-        var classFilter = filter('class_filter', 1, 'classes');
-        var eventFilter = filter('event_filter', 2, 'events');
-        var nameFilter = filter('name_filter', 5, 'names');
-        var yearFilter = filter('year_filter', 6, 'years');
-        var clubFilter = filter('club_filter', 7, 'clubs');
+        var seasonFilter = filter('season_filter', 0, 'yb_seasons');
+        var classFilter = filter('class_filter', 1, 'yb_classes');
+        var eventFilter = filter('event_filter', 2, 'yb_events');
+        var nameFilter = filter('name_filter', 5, 'yb_names');
+        var yearFilter = filter('year_filter', 6, 'yb_years');
+        var clubFilter = filter('club_filter', 7, 'yb_clubs');
     
         var resultTable = new google.visualization.ChartWrapper({
               'chartType': 'Table',
@@ -52,12 +52,12 @@
         dashboard.draw(data);
         
         google.visualization.events.addListener(dashboard, 'ready', function() {
-            storeFilter(seasonFilter, 'seasons');
-            storeFilter(classFilter, 'classes');
-            storeFilter(eventFilter, 'events');
-            storeFilter(clubFilter, 'clubs');
-            storeFilter(nameFilter, 'names');
-            storeFilter(yearFilter, 'years');
+            storeFilter(seasonFilter, 'yb_seasons');
+            storeFilter(classFilter, 'yb_classes');
+            storeFilter(eventFilter, 'yb_events');
+            storeFilter(clubFilter, 'yb_clubs');
+            storeFilter(nameFilter, 'yb_names');
+            storeFilter(yearFilter, 'yb_years');
         });   
       }
 

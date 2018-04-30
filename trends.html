@@ -63,8 +63,8 @@
           },
         });
 
-    dashboard.bind(yearFilter,  [classFilter, nameFilter, eventFilter]);
-    dashboard.bind(classFilter, [nameFilter, eventFilter]);
+    dashboard.bind(classFilter, [yearFilter, nameFilter, eventFilter]);
+    dashboard.bind(yearFilter, [nameFilter, eventFilter]);
     dashboard.bind(nameFilter, [eventFilter]);
     dashboard.bind([nameFilter, eventFilter,  yearFilter, classFilter], [resultTable, resultChart]);   
     dashboard.draw(view);
@@ -79,6 +79,11 @@
     google.visualization.events.addListener(nameFilter, 'ready', setColumns);
     google.visualization.events.addListener(resultChart, 'select', selectHandler);
     google.visualization.events.addListener(dashboard, 'ready', storeFilters);
+    
+    // Remove the error that flashes before all data is ready to be presented
+    google.visualization.events.addListener(resultChart, 'error', function (googleError) {
+      google.visualization.errors.removeError(googleError.id);
+    });
   }
 
   function storeFilters() {
@@ -148,19 +153,19 @@
 </head>
 
 <html>
-  <body onload="menu('3','31')";>
+  <body onload="menu('9')";>
     <div id="menu"></div>
     <p></p>
     <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
       <h3 id="page_header">Resultat och trender per tävlande och gren</h3>
     </div>
-    <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
+    <div class="w3-container w3-round-large w3-light-grey w3-margin">
       <div id="dashboard_div">
         <p></p>
         <table width="95%" align="center">
           <tr valign="top">
-            <td>Född:</td><td><div id="year_filter"></div></td>
             <td>Klass:</td><td><div id="class_filter"></div></td>
+            <td>Född:</td><td><div id="year_filter"></div></td>
             <td>Namn:</td><td><div id="name_filter"></div></td>
             <td>Gren:</td><td><div id="event_filter"></div></td>
             <td align="right"><a href="#" id="permaLink" title="Permanent link to this page with filters"><i class="fa fa-bookmark"></i></a></td>
