@@ -31,16 +31,6 @@
     formatter.addRange('2017-10-01', '2018-12-31', 'white', 'red');
     formatter.format(data, 11);
     
-    // Remove all old ercords from the 
-    for (var i = 0; i < data.getNumberOfRows(); i++) {
-        if (data.getValue(i,12) && data.getValue(i,12).includes("Gammalt")) {
-            for (var j = 0; j < data.getNumberOfColumns(); j++) {
-                if (data.getValue(i,j)){
-                    data.setFormattedValue(i,j,"<i>" + data.getFormattedValue(i,j) + "</i>");
-                }
-            }
-        }
-    }
     filterData();
     drawDashboard();
   }
@@ -50,6 +40,8 @@
     view.setColumns([0,1,2,3,5,6,8,11,12]);
     var rows = view.getSortedRows([{column: 8},{column: 0}]);
     var record_rows = [];
+    
+    // Remove all old records from the data
     for (var i = 0; i < view.getNumberOfRows(); i++) {
         if (view.getValue(rows[i],8) && ! view.getValue(rows[i],8).includes("Gammalt")) {
           console.log(view.getValue(rows[i],8));
