@@ -81,9 +81,16 @@
     google.visualization.events.addListener(dashboard, 'ready', storeFilters);
     
     // Remove the error that flashes before all data is ready to be presented
-    google.visualization.events.addListener(resultChart, 'error', function (googleError) {
-      google.visualization.errors.removeError(googleError.id);
-    });
+    google.visualization.events.addListener(resultChart, 'error', removeGoogleError);
+
+    // Remove errors for the filters
+    google.visualization.events.addListener(yearFilter, 'error', removeGoogleError);
+    google.visualization.events.addListener(classFilter, 'error', removeGoogleError);
+    google.visualization.events.addListener(nameFilter, 'error', removeGoogleError);
+  }
+
+  function removeGoogleError(googleError){
+      google.visualization.errors.removeError(googleError.id);      
   }
 
   function storeFilters() {
