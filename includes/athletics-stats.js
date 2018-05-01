@@ -257,33 +257,39 @@ function findGetParameter(parameterName) {
 
 function menu () {
     var option_1 = '';  // Resultat
-    var option_2 = '';  // Personbästa
+    var option_11 = ''; // Alla resultat   
+    var option_12 = ''; // Personbästa
+    var option_13 = ''; // Klubbrekord
+    var option_14 = ''; // Årsbästa Sverige
+    var option_15 = ''; // Trender
     var option_3 = '';  // Statistik
     var option_31 = ''; // Födelseår
     var option_32 = ''; // Grenar
     var option_33 = ''; // Tävlingar
     var option_34 = ''; // Könsfördelning
+    var option_35 = ''; // Namnlista
     var option_4 = '';  // Kartor
     var option_41 = ''; // Inomhus 2016-2017
     var option_42 = ''; // Utomhus 2016
     var option_43 = ''; // Utomhus 2017
     var option_44 = ''; // Inomhus 2017-2018
     var option_45 = ''; // Utomhus 2018
-    var option_5 = ''; // Namnlista
-    var option_6 = ''; // Klubbrekord
-    var option_7 = ''; // Utrustning
-    var option_8 = ''; // Årsbästa Sverige
-    var option_9 = ''; // Trender
+    var option_5 = ''; // Utrustning
     var active = 'class="w3-red"';
     
     for (i = 0; i < arguments.length; i++) {
         if (arguments[i] == '1') { option_1 = active; }
-        if (arguments[i] == '2') { option_2 = active; }
+        if (arguments[i] == '11') { option_11 = active; }
+        if (arguments[i] == '12') { option_12 = active; }
+        if (arguments[i] == '13') { option_13 = active; }
+        if (arguments[i] == '14') { option_14 = active; }
+        if (arguments[i] == '15') { option_15 = active; }
         if (arguments[i] == '3') { option_3 = active; }
         if (arguments[i] == '31') { option_31 = active; }
         if (arguments[i] == '32') { option_32 = active; }
         if (arguments[i] == '33') { option_33 = active; }
         if (arguments[i] == '34') { option_34 = active; }
+        if (arguments[i] == '35') { option_35 = active; }
         if (arguments[i] == '4') { option_4 = active; }
         if (arguments[i] == '41') { option_41 = active; }
         if (arguments[i] == '42') { option_42 = active; }
@@ -291,20 +297,19 @@ function menu () {
         if (arguments[i] == '44') { option_44 = active; }
         if (arguments[i] == '45') { option_45 = active; }
         if (arguments[i] == '5') { option_5 = active; }
-        if (arguments[i] == '6') { option_6 = active; }
-        if (arguments[i] == '7') { option_7 = active; }
-        if (arguments[i] == '8') { option_8 = active; }
-        if (arguments[i] == '9') { option_9 = active; }
     }  
       
     var menuString = 
         '<ul class="w3-navbar w3-round-large w3-light-grey w3-medium w3-margin">' +
         '<li></li>' +
-        '<li><a ' + option_1 + 'href="index.html"><i class="fa fa-list"></i> Alla resultat</a></li>' +
-        '<li><a ' + option_2 + 'href="pb.html?badges=true"><i class="fa fa-trophy"></i> Personbästa</a></li>' +
-        '<li><a ' + option_6 + 'href="records.html"><i class="fa fa-trophy"></i> Klubbrekord</a></li>' +
-        '<li><a ' + option_8 + 'href="year-best.html"><i class="fa fa-trophy"></i> Årsbästa Sverige</a></li>' +
-        '<li><a ' + option_9 + 'href="trends.html"><i class="fa fa-line-chart"></i> Trender</a></li>' +
+        '<li class="w3-dropdown-hover">' +
+          '<a ' + option_1 + ' href="#"><i class="fa fa-bar-chart"></i> Resultat <i class="fa fa-caret-down"></i></a>' +
+          '<div class="w3-dropdown-content w3-white w3-card-4">' +
+            '<a ' + option_11 + 'href="index.html"><i class="fa fa-list"></i> Alla resultat</a>' +
+            '<a ' + option_12 + 'href="pb.html?badges=true"><i class="fa fa-trophy"></i> Personbästa</a>' +
+            '<a ' + option_13 + 'href="records.html"><i class="fa fa-trophy"></i> Klubbrekord</a>' +
+            '<a ' + option_14 + 'href="year-best.html"><i class="fa fa-trophy"></i> Årsbästa Sverige</a>' +
+            '<a ' + option_15 + 'href="trends.html"><i class="fa fa-line-chart"></i> Trender</a>' +
         '<li class="w3-dropdown-hover">' +
           '<a ' + option_3 + ' href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>' +
           '<div class="w3-dropdown-content w3-white w3-card-4">' +
@@ -312,6 +317,7 @@ function menu () {
             '<a ' + option_32 + 'href="stats.html?graph=2"><i class="fa fa-pie-chart"></i> Populära grenar</a>' +
             '<a ' + option_33 + 'href="stats.html?graph=3"><i class="fa fa-pie-chart"></i> Populära tävlingar</a>' +
             '<a ' + option_34 + 'href="stats.html?graph=4"><i class="fa fa-pie-chart"></i> Könsfördelning</a>' +
+            '<a ' + option_35 + 'href="names.html"><i class="fa fa-user"></i> Namnlista</a>' +
           '</div>' +
         '</li>' +    
         '<li class="w3-dropdown-hover">' +
@@ -324,8 +330,21 @@ function menu () {
             '<a ' + option_42 + 'href="map.html?map=2"><i class="fa fa-map-marker"></i> Utomhustävlingar 2016</a>' +
           '</div>' +
         '</li>' +
-        '<li><a ' + option_5 + 'href="names.html"><i class="fa fa-user"></i> Namnlista</a></li>' +
-        '<li><a ' + option_7 + 'href="gear.html"><i class="fa fa-circle"></i> Utrustning</a></li>' +
+        '<li><a ' + option_5 + 'href="gear.html"><i class="fa fa-circle"></i> Utrustning</a></li>' +
+        '<li class="w3-dropdown-hover">' +
+          '<a href="#"><i class="fa fa-file-o"></i> Dokument <i class="fa fa-caret-down"></i></a>' +
+          '<div class="w3-dropdown-content w3-white w3-card-4">' +
+            '<a href="https://drive.google.com/open?id=1MWBaZGkyPhO0DcDmrkFnxKC_nO3iuM9j"><i class="fa fa-file-pdf-o"></i> Klubbrekord Utomhus - Män</a>' +
+            '<a href="https://drive.google.com/open?id=1MR5QNo9taPOshZy6HJx7HhlbBqi78Ds9"><i class="fa fa-file-pdf-o"></i> Klubbrekord Utomhus - Kvinnor</a>' +
+            '<a href="https://drive.google.com/open?id=1_SQdho_BI-JwasNdAjByslbseKsNkoLT"><i class="fa fa-file-pdf-o"></i> Klubbrekord Inomhus - Män</a>' +
+            '<a href="https://drive.google.com/open?id=19gaGWcOxacUfchOpRRBgbwLHIH4tzZRK"><i class="fa fa-file-pdf-o"></i> Klubbrekord Inomhus - Kvinnor</a>' +
+            '<hr style="width:100%; height:1px; background-color:rgb(0, 0, 0)">' +
+            '<a href="https://drive.google.com/open?id=1Z0I1PplvPX4wOTFHwuvI1BI3GX2uDVpp"><i class="fa fa-file-pdf-o"></i> Årsbästa Inomhus - Män 2017-2018</a>' +
+            '<a href="https://drive.google.com/open?id=1ydP1lt473q4WjdmTAQo_jvD9SH9eKqy6"><i class="fa fa-file-pdf-o"></i> Årsbästa Inomhus - Kvinnor 2017-2018</a>' +
+            '<a href="https://drive.google.com/open?id=0B2Tl1l1iIuPWUjh0eXV2NmhubGM"><i class="fa fa-file-pdf-o"></i> Årsbästa Utomhus - Män 2017</a>' +
+            '<a href="https://drive.google.com/open?id=0B2Tl1l1iIuPWNHViUlVCX3didHM"><i class="fa fa-file-pdf-o"></i> Årsbästa Utomhus - Kvinnor 2017</a>' +
+          '</div>' +
+        '</li>' +
         '<li class="w3-dropdown-hover">' +
           '<a href="#"><i class="fa fa-link"></i> Länkar <i class="fa fa-caret-down"></i></a>' +
           '<div class="w3-dropdown-content w3-white w3-card-4">' +
