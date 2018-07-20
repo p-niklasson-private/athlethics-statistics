@@ -37,9 +37,9 @@
     var name;  
     var filtered_rows = [];
     var current_name = 'start';
-    var rows = view.getSortedRows(1);
+    var rows = view.getSortedRows(col.name);
     for(var i = 0; i < rows.length; i++) {
-        var name = view.getValue(rows[i],1);
+        var name = view.getValue(rows[i],col.name);
         if (current_name != name) {
             // First time we see this name.
             filtered_rows.push(rows[i]);
@@ -47,7 +47,7 @@
         }
     }
     view.setRows(filtered_rows);
-    view.setColumns([1,2]);
+    view.setColumns([col.name, col.year]);
     table = new google.visualization.Table(document.getElementById('table_div'));
     table.draw(view, {showRowNumber: true, width: '80%', height: '100%'});
   }

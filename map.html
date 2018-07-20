@@ -106,6 +106,7 @@
       return;
     }
     data = response1.getDataTable();
+    initColumns();
     addTimeColumn();
     addGenderColumn();
   }
@@ -161,7 +162,7 @@
   function filterData() {
     handleRelayTeam();
     view = new google.visualization.DataView(data);
-    view.hideColumns([14]);
+    view.hideColumns([col.team]);
     table = new google.visualization.Table(document.getElementById('table_div'));
     filterList = [];
     
@@ -169,7 +170,7 @@
     
     var competition = compData.getValue(row,0);
     console.log(competition);
-    filterList.push({column:10, value:competition});
+    filterList.push({column:col.competition, value:competition});
     
     // Apply the filter, and draw the table
     if(filterList.length > 0){

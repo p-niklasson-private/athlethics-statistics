@@ -30,20 +30,20 @@
   google.charts.setOnLoadCallback(initiateData);
   
   function finished() {
-    data.sort([{column: 11},{column: 1}]);
+    data.sort([{column: col.date},{column: col.name}]);
     handleRelayTeam();
     view = new google.visualization.DataView(data);
-    view.hideColumns([14]);
+    view.hideColumns([col.team]);
     drawDashboard();
   }
 
   function drawDashboard() {
     var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
     
-    eventFilter = filterOne('event_filter', 0, 'events');     
-    nameFilter =  filter('name_filter', 1, 'names');
-    yearFilter =  filter('year_filter', 2, 'years');
-    classFilter = filter('class_filter', 8, 'classes');
+    eventFilter = filterOne('event_filter', col.event, 'events');     
+    nameFilter =  filter('name_filter', col.name, 'names');
+    yearFilter =  filter('year_filter', col.year, 'years');
+    classFilter = filter('class_filter', col.cl, 'classes');
 
     var resultTable = new google.visualization.ChartWrapper({
           'chartType': 'Table',
@@ -111,13 +111,13 @@
     // Set result column based on the event value
     var result_column;
     if (event.match(/kamp/)) {
-        result_column = 6; // Points
+        result_column = col.points;
     }
     else if (event.match(/meter|Stafett|Häck|mile/)) {
-        result_column = 4; // Time
+        result_column = col.seconds;
     }
     else {
-        result_column = 5; // Length
+        result_column = col.meters;
     }
     
     // Set title based on the set values
@@ -137,10 +137,10 @@
     
     resultChart.setOption('title', title);
     if (names && names.length == 1) {
-        resultChart.setView({'columns': [11, result_column]});
+        resultChart.setView({'columns': [col.date, result_column]});
     }
     else {
-        resultChart.setView({'columns': [11, result_column,{sourceColumn: 1, role: "tooltip"}]});        
+        resultChart.setView({'columns': [col.date, result_column,{sourceColumn: col.name, role: "tooltip"}]});        
     }
     resultChart.draw();
   }

@@ -25,9 +25,9 @@
   google.charts.setOnLoadCallback(initiateData);
 
   function finished() {
-    data.sort([{column: 8}]);
+    data.sort([{column: col.cl}]);
     view= new google.visualization.DataView(data);
-    view.setColumns([0,8,9]);
+    view.setColumns([col.event, col.cl, col.sex]);
     drawDashboard();
   }
 

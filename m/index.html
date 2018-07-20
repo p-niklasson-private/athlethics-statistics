@@ -27,7 +27,7 @@
     google.charts.setOnLoadCallback(initiateData);
 
     function finished() {
-        data.sort([{column: 11, desc: true},{column: 1}]);
+        data.sort([{column: col.date, desc: true},{column: col.name}]);
         handleRelayTeam();
         filterData();
         drawDashboard();
@@ -35,14 +35,24 @@
 
     function filterData() {
         view = new google.visualization.DataView(data);
-        view.setColumns([0,1,2,3,5,6,10,11]);
+        view.setColumns([
+            col.event,
+            col.name,
+            col.year,
+            col.time,
+            col.seconds,
+            col.meters,
+            col.points,
+            col.competition,
+            col.date,
+        ]);
     }
 
     function drawDashboard() {
         var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
 
-        var nameFilter = filterOne('name_filter', 1, 'names');
-        var yearFilter = filterOne('year_filter', 2, 'years');
+        var nameFilter = filterOne('name_filter', col.name, 'names');
+        var yearFilter = filterOne('year_filter', col.year, 'years');
 
         var resultTable = new google.visualization.ChartWrapper({
             'chartType': 'Table',

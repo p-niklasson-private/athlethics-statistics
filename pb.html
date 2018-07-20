@@ -36,7 +36,7 @@
     badgesFormatter.addRange('Guld', 'Gulda', 'black', 'gold');
     badgesFormatter.addRange('Silver', 'Silvera', 'black', 'silver');
     badgesFormatter.addRange('Brons', 'Bronsa', 'black', 'peru');
-    badgesFormatter.format(data, 1);
+    badgesFormatter.format(data, col.name);
     handleRelayTeam();
     filterData();
     drawDashboard();
@@ -44,14 +44,14 @@
 
   function filterData() {
     view = new google.visualization.DataView(data);
-    view.hideColumns([14]);    
-    var rows = view.getSortedRows([{column: 1},{column: 0},{column: 4},{column: 5, desc: true},{column: 6, desc: true}]);
+    view.hideColumns([col.team]);    
+    var rows = view.getSortedRows([{column: col.name},{column: col.event},{column: col.seconds},{column: col.meters, desc: true},{column: col.points, desc: true}]);
     var pb_rows = [];
     var current_event = 'start';
     var current_name = 'start';
     for(var i = 0; i < rows.length; i++) {
-        var event = view.getValue(rows[i],0);
-        var name = view.getValue(rows[i],1);
+        var event = view.getValue(rows[i], col.event);
+        var name =  view.getValue(rows[i], col.name);
         if (current_event != event || current_name != name) {
             // First time we see this event or name. The first row will contain the PB!
             pb_rows.push(rows[i]);
@@ -65,10 +65,10 @@
   function drawDashboard() {
     var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
     
-    var eventFilter = filter('event_filter', 0, 'events');
-    var nameFilter = filter('name_filter', 1, 'names');
-    var yearFilter = filter('year_filter', 2, 'years');
-    var classFilter = filter('class_filter', 8, 'classes');
+    var eventFilter = filter('event_filter', col.event, 'events');
+    var nameFilter =  filter('name_filter', col.name, 'names');
+    var yearFilter =  filter('year_filter', col.year, 'years');
+    var classFilter = filter('class_filter', col.cl, 'classes');
 
     var resultTable = new google.visualization.ChartWrapper({
           'chartType': 'Table',

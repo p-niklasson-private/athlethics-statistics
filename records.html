@@ -25,20 +25,20 @@
   google.charts.setOnLoadCallback(initiateData);
 
   function finished() {
-    data.sort([{column: 8},{column: 0}]);
+    data.sort([{column: col.cl},{column: col.event}]);
     var formatter = new google.visualization.ColorFormat();
 
     // Adding colors to the last 3 record seasons
     formatter.addRange('2017-05-01', '2017-09-30', 'black', 'peru');
     formatter.addRange('2017-10-01', '2018-04-31', 'black', 'silver');
     formatter.addRange('2018-05-01', '2018-09-30', 'black', 'gold');
-    formatter.format(data, 11);
+    formatter.format(data, col.date);
 
     handleRelayTeam();
 
     // Set all old records to italic 
     for (var i = 0; i < data.getNumberOfRows(); i++) {
-        if (data.getValue(i,12) && data.getValue(i,12).includes("Gammalt")) {
+        if (data.getValue(i, col.season) && data.getValue(i,col.season).includes("Gammalt")) {
             for (var j = 0; j < data.getNumberOfColumns(); j++) {
                 if (data.getValue(i,j)){
                     data.setFormattedValue(i,j,"<i>" + data.getFormattedValue(i,j) + "</i>");
@@ -52,14 +52,14 @@
   
   function drawDashboard() {
     view = new google.visualization.DataView(data);
-    view.hideColumns([14]);
+    view.hideColumns([col.team]);
     
     var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
     
-    var eventFilter = filter('event_filter', 0, 'events');
-    var nameFilter = filter('name_filter', 1, 'names');
-    var classFilter = filter('class_filter', 8, 'classes');
-    var seasonFilter = filter('season_filter', 12, 'seasons');
+    var eventFilter = filter('event_filter', col.event, 'events');
+    var nameFilter = filter('name_filter', col.name, 'names');
+    var classFilter = filter('class_filter', col.cl, 'classes');
+    var seasonFilter = filter('season_filter', col.season, 'seasons');
     
     var resultTable = new google.visualization.ChartWrapper({
           'chartType': 'Table',

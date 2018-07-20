@@ -25,23 +25,23 @@
     google.charts.setOnLoadCallback(initiateData);
 
     function finished() {
-        data.sort([{column: 11, desc: true},{column: 1}]);
+        data.sort([{column: col.date, desc: true},{column: col.name}]);
         handleRelayTeam();
         drawDashboard();
     }
 
     function drawDashboard() {
         view = new google.visualization.DataView(data);
-        view.hideColumns([14]);
+        view.hideColumns([col.teams]);
 
         var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
 
-        var eventFilter = filter('event_filter', 0, 'events');
-        var nameFilter = filter('name_filter', 1, 'names');
-        var yearFilter = filter('year_filter', 2, 'years');
-        var classFilter = filter('class_filter', 8, 'classes');
-        var competitionFilter = filter('competition_filter', 10, 'competitions');
-        var seasonFilter = filter('season_filter', 12, 'seasons');
+        var eventFilter       = filter('event_filter', col.event, 'events');
+        var nameFilter        = filter('name_filter', col.name, 'names');
+        var yearFilter        = filter('year_filter', col.year, 'years');
+        var classFilter       = filter('class_filter', col.cl, 'classes');
+        var competitionFilter = filter('competition_filter', col.competition, 'competitions');
+        var seasonFilter      = filter('season_filter', col.season, 'seasons');
 
         var resultTable = new google.visualization.ChartWrapper({
             'chartType': 'Table',

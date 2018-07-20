@@ -1,5 +1,26 @@
 function initiateData() {
+    initColumns();
     dbGetJsonData();
+}
+
+function initColumns() {
+    col = {
+        event: 0,
+        name: 1,
+        year: 2,
+        time: 3,
+        seconds: 4,
+        meters: 5,
+        points: 6,
+        wind: 7,
+        cl: 8,
+        sex: 9,
+        competition: 10,
+        date: 11,
+        season: 12,
+        comment: 13,
+        team: 14,
+    }
 }
 
 function getData(record){
@@ -133,16 +154,16 @@ function collectData() {
 }
 
 function addTimeColumn() {
-    data.insertColumn(4, 'number', 'Tid [s,h]');
+    data.insertColumn(col.seconds, 'number', 'Tid [s,h]');
       
     var formatter = new google.visualization.NumberFormat({pattern:'###,##'});  
-    formatter.format(data, 2);
+    formatter.format(data, col.seconds);
       
     var rows = data.getNumberOfRows();
     var time;
     for(var i = 0; i < rows; i++) {
-        if (data.getValue(i,3)) {
-            var time_string = data.getValue(i,3);
+        if (data.getValue(i,col.time)) {
+            var time_string = data.getValue(i,col.time);
             var time_array = time_string.split(/[,.]/);
             if (time_array.length == 3) {
                 time = Number(time_array[0])*60 + Number(time_array[1]) + Number(time_array[2])/100;
@@ -150,27 +171,27 @@ function addTimeColumn() {
             else {
                 time = Number(time_array[0]) + Number(time_array[1])/100;
             }
-            data.setValue(i,4,time);
+            data.setValue(i,col.seconds,time);
         }
     }
 }
 
 function addGenderColumn() {
-    data.insertColumn(9, 'string', 'Kön');
+    data.insertColumn(col.sex, 'string', 'Kön');
     var rows = data.getNumberOfRows();
     var gender;
     for(var i = 0; i < rows; i++) {
-        if (data.getValue(i,8)) {
-            if (data.getValue(i,8).match(/P\/F/)) {
+        if (data.getValue(i,col.cl)) {
+            if (data.getValue(i,col.cl).match(/P\/F/)) {
                 gender = 'Mixed';
             }
-            else if (data.getValue(i,8).match(/P|M/)) {
+            else if (data.getValue(i,col.cl).match(/P|M/)) {
                 gender = 'Män';
             }
-            else if (data.getValue(i,8).match(/F|K/)) {
+            else if (data.getValue(i,col.cl).match(/F|K/)) {
                 gender = 'Kvinnor';
             }
-            data.setValue(i,9,gender);
+            data.setValue(i,col.sex,gender);
         }
     }    
 }
@@ -178,11 +199,11 @@ function addGenderColumn() {
 function handleRelayTeam() {
     // Handle relay team members
     for (var i = 0; i < data.getNumberOfRows(); i++) {
-        if (data.getValue(i,14)) {
-            var team_name = data.getValue(i,1);
-            var team_members = data.getValue(i,14);
+        if (data.getValue(i,col.team)) {
+            var team_name = data.getValue(i,col.name);
+            var team_members = data.getValue(i,col.team);
             team_members = team_members.replace(/(\d+)/g, "$1<br>");
-            data.setFormattedValue(i,1,"<b>" + team_name + "</b><br>" + team_members);
+            data.setFormattedValue(i,col.name,"<b>" + team_name + "</b><br>" + team_members);
         }
     }
 }
