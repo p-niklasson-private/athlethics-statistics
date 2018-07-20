@@ -18,6 +18,7 @@
   var docList;    
   var data;
   var dataList = [];
+  var view;
   var bookmarkUrl = window.location.href;
   
   google.charts.load('visualization', '1', { packages : [ 'corechart', 'table', 'controls' ] });
@@ -32,7 +33,9 @@
     formatter.addRange('2017-10-01', '2018-04-31', 'black', 'silver');
     formatter.addRange('2018-05-01', '2018-09-30', 'black', 'gold');
     formatter.format(data, 11);
-    
+
+    handleRelayTeam();
+
     // Set all old records to italic 
     for (var i = 0; i < data.getNumberOfRows(); i++) {
         if (data.getValue(i,12) && data.getValue(i,12).includes("Gammalt")) {
@@ -43,10 +46,14 @@
             }
         }
     }
+    
     drawDashboard();
   }
   
   function drawDashboard() {
+    view = new google.visualization.DataView(data);
+    view.hideColumns([14]);
+    
     var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
     
     var eventFilter = filter('event_filter', 0, 'events');
@@ -65,7 +72,7 @@
     dashboard.bind(classFilter, [nameFilter]);    
   
     dashboard.bind([eventFilter,  seasonFilter, classFilter, nameFilter], resultTable); 
-    dashboard.draw(data);
+    dashboard.draw(view);
     
     google.visualization.events.addListener(dashboard, 'ready', function() {
         storeFilter(eventFilter, 'events');

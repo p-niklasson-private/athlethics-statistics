@@ -31,7 +31,9 @@
   
   function finished() {
     data.sort([{column: 11},{column: 1}]);
+    handleRelayTeam();
     view = new google.visualization.DataView(data);
+    view.hideColumns([14]);
     drawDashboard();
   }
 

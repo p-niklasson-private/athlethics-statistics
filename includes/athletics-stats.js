@@ -175,6 +175,18 @@ function addGenderColumn() {
     }    
 }
 
+function handleRelayTeam() {
+    // Handle relay team members
+    for (var i = 0; i < data.getNumberOfRows(); i++) {
+        if (data.getValue(i,14)) {
+            var team_name = data.getValue(i,1);
+            var team_members = data.getValue(i,14);
+            team_members = team_members.replace(/(\d+)/g, "$1<br>");
+            data.setFormattedValue(i,1,"<b>" + team_name + "</b><br>" + team_members);
+        }
+    }
+}
+
 function filterOne(container, column, name) {
     var filter = new google.visualization.ControlWrapper({
         'controlType': 'CategoryFilter',

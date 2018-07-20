@@ -159,7 +159,9 @@
   }
   
   function filterData() {
+    handleRelayTeam();
     view = new google.visualization.DataView(data);
+    view.hideColumns([14]);
     table = new google.visualization.Table(document.getElementById('table_div'));
     filterList = [];
     
@@ -173,7 +175,7 @@
     if(filterList.length > 0){
       view.setRows(view.getFilteredRows(filterList));
       header.innerText = competition;
-      table.draw(view, {showRowNumber: true, width: '1800', height: '100%'});
+      table.draw(view, {allowHtml: true, showRowNumber: true, width: '1800', height: '100%'});
     }
   }
 

@@ -37,12 +37,14 @@
     badgesFormatter.addRange('Silver', 'Silvera', 'black', 'silver');
     badgesFormatter.addRange('Brons', 'Bronsa', 'black', 'peru');
     badgesFormatter.format(data, 1);
+    handleRelayTeam();
     filterData();
     drawDashboard();
   }
 
   function filterData() {
     view = new google.visualization.DataView(data);
+    view.hideColumns([14]);    
     var rows = view.getSortedRows([{column: 1},{column: 0},{column: 4},{column: 5, desc: true},{column: 6, desc: true}]);
     var pb_rows = [];
     var current_event = 'start';
