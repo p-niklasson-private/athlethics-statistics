@@ -52,7 +52,7 @@
 
     function drawDashboard() {
         view = new google.visualization.DataView(data);
-        view.hideColumns([col.team]);
+        view.hideColumns([col.sex, col.team]);
 
         var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
 

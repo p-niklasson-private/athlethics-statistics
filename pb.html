@@ -44,7 +44,7 @@
 
     function filterData() {
         view = new google.visualization.DataView(data);
-        view.hideColumns([col.team]);
+        view.hideColumns([col.sex, col.team]);
         var rows = view.getSortedRows([{column: col.name},{column: col.event},{column: col.seconds},{column: col.meters, desc: true},{column: col.points, desc: true}]);
         var pb_rows = [];
         var current_event = 'start';
