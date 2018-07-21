@@ -1,168 +1,168 @@
 <!DOCTYPE HTML>
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <title>Hanviken Friidrott - Statistik</title>
-  <link rel="icon" href="images/favicon.jpg" type="image/jpg" />
-  
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript" src="includes/athletics-stats.js"></script>
-  <script type="text/javascript" src="includes/ydn.db-is-core-qry.js"></script>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Hanviken Friidrott - Statistik</title>
+    <link rel="icon" href="images/favicon.jpg" type="image/jpg" />
 
-  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-  <script type="text/javascript">
-  
-  // Get the number of the graph to display
-  var graphNo = findGetParameter('graph');
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="includes/athletics-stats.js"></script>
+    <script type="text/javascript" src="includes/ydn.db-is-core-qry.js"></script>
 
-  // Initiate variables
-  var docs = 'all';
-  var docList;
-  var data;
-  var dataList = [];
-  var view;
-  var filterList = [];
-  var table;
-  
-  // Load the google visualization APIs
-  google.charts.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
-  google.charts.setOnLoadCallback(initiateData);
-  
-  // Optimized to load the menu as soon as possible
-  function myMenu() {
-    if (graphNo == 1) {
-      page_header.innerText = "Hanviken SK Friidrott - Antal starter per födelseår";
-      menu(['3','31']);
-    }
-    if (graphNo == 2) {
-      page_header.innerText = "Hanviken SK Friidrott - Populära grenar";
-      menu(['3','32']);
-    }
-    if (graphNo == 3) {
-      page_header.innerText = "Hanviken SK Friidrott - Populära tävlingar";
-      menu(['3','33']);
-    }
-    if (graphNo == 4) {
-      page_header.innerText = "Hanviken SK Friidrott - Könsfördelning";
-      menu(['3','34']);
-    }  
-  }
-  
-  // Callback function for the common Data initiation
-  function finished() {
-    if (graphNo == 1) { 
-         displayChart1();
-    }
-    if (graphNo == 2) { 
-         displayChart2();
-    }
-    if (graphNo == 3) { 
-        displayChart3(); 
-    }
-    if (graphNo == 4) { 
-        displayChart4(); 
-    }
-  }
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <script type="text/javascript">
 
-  // Display chart number 1
-  function displayChart1() {
-    var result = google.visualization.data.group(data, [col.year], [{'column': col.name, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
-    result.sort({column: col.name, desc: true, unique: true}); 
-    
-    var options = {
-          title: 'Antalet starter per födelseår',
-          is3D: true,
-          pieSliceText: 'value',
+    // Get the number of the graph to display
+    var graphNo = findGetParameter('graph');
+
+    // Initiate variables
+    var docs = 'all';
+    var docList;
+    var data;
+    var dataList = [];
+    var view;
+    var filterList = [];
+    var table;
+
+    // Load the google visualization APIs
+    google.charts.load('visualization', '1', { packages : [ 'corechart', 'table' ] });
+    google.charts.setOnLoadCallback(initiateData);
+
+    // Optimized to load the menu as soon as possible
+    function myMenu() {
+        if (graphNo == 1) {
+            page_header.innerText = "Hanviken SK Friidrott - Antal starter per födelseår";
+            menu(['3','31']);
+        }
+        if (graphNo == 2) {
+            page_header.innerText = "Hanviken SK Friidrott - Populära grenar";
+            menu(['3','32']);
+        }
+        if (graphNo == 3) {
+            page_header.innerText = "Hanviken SK Friidrott - Populära tävlingar";
+            menu(['3','33']);
+        }
+        if (graphNo == 4) {
+            page_header.innerText = "Hanviken SK Friidrott - Könsfördelning";
+            menu(['3','34']);
+        }
+    }
+
+    // Callback function for the common Data initiation
+    function finished() {
+        if (graphNo == 1) {
+            displayChart1();
+        }
+        if (graphNo == 2) {
+            displayChart2();
+        }
+        if (graphNo == 3) {
+            displayChart3();
+        }
+        if (graphNo == 4) {
+            displayChart4();
+        }
+    }
+
+    // Display chart number 1
+    function displayChart1() {
+        var result = google.visualization.data.group(data, [col.year], [{'column': col.name, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
+        result.sort({column: col.name, desc: true, unique: true});
+
+        var options = {
+            title: 'Antalet starter per födelseår',
+            is3D: true,
+            pieSliceText: 'value',
         };
 
-    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-    chart.draw(result, options);
-    
-    table = new google.visualization.Table(document.getElementById('table_div'));
-    table.draw(result, {showRowNumber: true, width: '1000', height: '100%'});
-  }
-  
-  // Display chart number 2
-  function displayChart2() {
-    var result = google.visualization.data.group(data, [col.event], [{'column': col.name, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
-    result.sort({column: col.name, desc: true, unique: true}); 
-    
-    var options = {
-          title: 'Antalet starter per gren',
-          is3D: true,
-          pieSliceText: 'value',
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(result, options);
+
+        table = new google.visualization.Table(document.getElementById('table_div'));
+        table.draw(result, {showRowNumber: true, width: '1000', height: '100%'});
+    }
+
+    // Display chart number 2
+    function displayChart2() {
+        var result = google.visualization.data.group(data, [col.event], [{'column': col.name, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
+        result.sort({column: col.name, desc: true, unique: true});
+
+        var options = {
+            title: 'Antalet starter per gren',
+            is3D: true,
+            pieSliceText: 'value',
         };
 
-    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-    chart.draw(result, options);
-    
-    table = new google.visualization.Table(document.getElementById('table_div'));
-    table.draw(result, {showRowNumber: true, width: '1000', height: '100%'});
-  }
-  
-  // Display chart number 3
-  function displayChart3() {
-    var result = google.visualization.data.group(data, [col.competition], [{'column': col.name, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
-    result.sort({column: col.name, desc: true, unique: true}); 
-    
-    var options = {
-          title: 'Antalet starter per tävling',
-          is3D: true,
-          pieSliceText: 'value',
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(result, options);
+
+        table = new google.visualization.Table(document.getElementById('table_div'));
+        table.draw(result, {showRowNumber: true, width: '1000', height: '100%'});
+    }
+
+    // Display chart number 3
+    function displayChart3() {
+        var result = google.visualization.data.group(data, [col.competition], [{'column': col.name, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
+        result.sort({column: col.name, desc: true, unique: true});
+
+        var options = {
+            title: 'Antalet starter per tävling',
+            is3D: true,
+            pieSliceText: 'value',
         };
 
-    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-    chart.draw(result, options);
-    
-    table = new google.visualization.Table(document.getElementById('table_div'));
-    table.draw(result, {showRowNumber: true, width: '100%', height: '100%'});
-  }
-  
-  // Display chart number 4
-  function displayChart4() {
-    var result = google.visualization.data.group(data, [col.sex], [{'column': col.name, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
-    result.sort({column: col.name, desc: true, unique: true}); 
-    
-    var options = {
-          title: 'Könsfördelning tävlingsstarter',
-          is3D: true,
-          pieSliceText: 'value',
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(result, options);
+
+        table = new google.visualization.Table(document.getElementById('table_div'));
+        table.draw(result, {showRowNumber: true, width: '100%', height: '100%'});
+    }
+
+    // Display chart number 4
+    function displayChart4() {
+        var result = google.visualization.data.group(data, [col.sex], [{'column': col.name, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
+        result.sort({column: col.name, desc: true, unique: true});
+
+        var options = {
+            title: 'Könsfördelning tävlingsstarter',
+            is3D: true,
+            pieSliceText: 'value',
         };
 
-    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-    chart.draw(result, options);
-    
-    table = new google.visualization.Table(document.getElementById('table_div'));
-    table.draw(result, {showRowNumber: true, width: '100%', height: '150'});
-  }
-  
-  </script>
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(result, options);
+
+        table = new google.visualization.Table(document.getElementById('table_div'));
+        table.draw(result, {showRowNumber: true, width: '100%', height: '150'});
+    }
+
+    </script>
 </head>
 
 <html>
-  <body onload="myMenu()">
+<body onload="myMenu()">
     <div id="menu"></div>
     <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
-      <h3 id="page_header"></h3>
+        <h3 id="page_header"></h3>
     </div>
-      <table width="100%" height="100%">
-          <tr>
-              <td>
-              <div class="w3-container w3-round-large w3-light-grey w3-margin-left w3-margin-right">
-                <p></p>
-                <div id="chart_div" style="width: 900px; height: 500px; margin: auto;"></div>
-                <p></p>
-              </div>
-              </td>
-              <td>
-              <div class="w3-container w3-round-large w3-light-grey w3-margin-right">
-                <p></p>
-                <div id="table_div" style="width: 450px; height: 500px; margin: auto;"></div>
-                <p></p>
-              </div>
-              </td>
-          </tr>
-      </table>
-  </body>
+    <table width="100%" height="100%">
+        <tr>
+            <td>
+                <div class="w3-container w3-round-large w3-light-grey w3-margin-left w3-margin-right">
+                    <p></p>
+                    <div id="chart_div" style="width: 900px; height: 500px; margin: auto;"></div>
+                    <p></p>
+                </div>
+            </td>
+            <td>
+                <div class="w3-container w3-round-large w3-light-grey w3-margin-right">
+                    <p></p>
+                    <div id="table_div" style="width: 450px; height: 500px; margin: auto;"></div>
+                    <p></p>
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
 </html>

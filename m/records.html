@@ -1,128 +1,128 @@
 <!DOCTYPE HTML>
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hanviken friidrott - Resultat</title>
-  <link rel="icon" href="images/favicon.jpg" type="image/jpg" />
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript" src="includes/athletics-stats.js"></script>
-  <script type="text/javascript" src="includes/ydn.db-is-core-qry.js"></script>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  
-  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-red.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-  <link rel="stylesheet" href="includes/athletics-stats.css">
-  <script type="text/javascript">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hanviken friidrott - Resultat</title>
+    <link rel="icon" href="images/favicon.jpg" type="image/jpg" />
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="includes/athletics-stats.js"></script>
+    <script type="text/javascript" src="includes/ydn.db-is-core-qry.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-  var docs = 'records';
-  var docList;    
-  var data;
-  var dataList = [];
-  var view;
-  var bookmarkUrl = window.location.href;
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-red.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="includes/athletics-stats.css">
+    <script type="text/javascript">
 
-  google.charts.load('visualization', '1', { packages : [ 'corechart', 'table', 'controls' ] });
-  google.charts.setOnLoadCallback(initiateData);
+    var docs = 'records';
+    var docList;
+    var data;
+    var dataList = [];
+    var view;
+    var bookmarkUrl = window.location.href;
 
-  function finished() {
-    var formatter = new google.visualization.ColorFormat();
-    formatter.addRange('2017-10-01', '2018-12-31', 'white', 'red');
-    formatter.format(data, col.date);
-    
-    handleRelayTeam();
-    filterData();
-    drawDashboard();
-  }
+    google.charts.load('visualization', '1', { packages : [ 'corechart', 'table', 'controls' ] });
+    google.charts.setOnLoadCallback(initiateData);
 
-  function filterData() {
-    view = new google.visualization.DataView(data);
+    function finished() {
+        var formatter = new google.visualization.ColorFormat();
+        formatter.addRange('2017-10-01', '2018-12-31', 'white', 'red');
+        formatter.format(data, col.date);
 
-    var rows = view.getSortedRows([{column: col.event}]);
-    var record_rows = [];
-    
-    // Remove all old records from the data
-    for (var i = 0; i < view.getNumberOfRows(); i++) {
-        if (view.getValue(rows[i],col.season) && ! view.getValue(rows[i],col.season).includes("Gammalt")) {
-          record_rows.push(rows[i]);
-        }
+        handleRelayTeam();
+        filterData();
+        drawDashboard();
     }
-    view.setRows(record_rows);
-  }
 
-  function drawDashboard() {
-    var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
+    function filterData() {
+        view = new google.visualization.DataView(data);
 
-    view.setColumns([
-        col.event,
-        col.name,
-        col.year,
-        col.time,
-        col.meters,
-        col.points,
-        col.cl,
-        col.date,
-        col.season,
-    ]);
+        var rows = view.getSortedRows([{column: col.event}]);
+        var record_rows = [];
 
-    // column numbers based on the views columns
-    var classFilter =  filterOne('class_filter', 6, 'classes'); 
-    var seasonFilter = filterOne('season_filter', 8, 'seasons');
+        // Remove all old records from the data
+        for (var i = 0; i < view.getNumberOfRows(); i++) {
+            if (view.getValue(rows[i],col.season) && ! view.getValue(rows[i],col.season).includes("Gammalt")) {
+                record_rows.push(rows[i]);
+            }
+        }
+        view.setRows(record_rows);
+    }
 
-    var resultTable = new google.visualization.ChartWrapper({
-          'chartType': 'Table',
-          'containerId': 'table_div',
-          'options': { allowHtml: true, width: '95%', height: '100%' }
+    function drawDashboard() {
+        var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
+
+        view.setColumns([
+            col.event,
+            col.name,
+            col.year,
+            col.time,
+            col.meters,
+            col.points,
+            col.cl,
+            col.date,
+            col.season,
+        ]);
+
+        // column numbers based on the views columns
+        var classFilter =  filterOne('class_filter', 6, 'classes');
+        var seasonFilter = filterOne('season_filter', 8, 'seasons');
+
+        var resultTable = new google.visualization.ChartWrapper({
+            'chartType': 'Table',
+            'containerId': 'table_div',
+            'options': { allowHtml: true, width: '95%', height: '100%' }
         });
 
-    dashboard.bind(seasonFilter, [classFilter]);
+        dashboard.bind(seasonFilter, [classFilter]);
 
-    dashboard.bind([seasonFilter, classFilter], resultTable);
-    dashboard.draw(view);
-    
-    google.visualization.events.addListener(dashboard, 'ready', function() {
-        storeFilter(seasonFilter, 'seasons');
-        storeFilter(classFilter, 'classes');
-    });   
-  }
+        dashboard.bind([seasonFilter, classFilter], resultTable);
+        dashboard.draw(view);
 
-  </script>
+        google.visualization.events.addListener(dashboard, 'ready', function() {
+            storeFilter(seasonFilter, 'seasons');
+            storeFilter(classFilter, 'classes');
+        });
+    }
+
+    </script>
 </head>
 
 <html>
-  <body>
+<body>
     <nav class="w3-sidenav w3-card-2 w3-white w3-top" style="width:200px;display:none;right:0;z-index:2" id="sidenav">
-      <div class="w3-container w3-theme-d2">
-        <span onclick="w3_close()" class="w3-closenav w3-right w3-xlarge"><i class="fa fa-close"></i></span>
-      </div>
-      <br>
-      <a href="index.html"><i class="fa fa-list"></i> Alla resultat</a>
-      <a href="pb.html"><i class="fa fa-trophy"></i> Personbästa</a>
-      <a class="w3-red" href="records.html"><i class="fa fa-trophy"></i> Klubbrekord</a>
-      <a href="../records.html"><i class="fa fa-link"></i> Webversionen</a>
+        <div class="w3-container w3-theme-d2">
+            <span onclick="w3_close()" class="w3-closenav w3-right w3-xlarge"><i class="fa fa-close"></i></span>
+        </div>
+        <br>
+        <a href="index.html"><i class="fa fa-list"></i> Alla resultat</a>
+        <a href="pb.html"><i class="fa fa-trophy"></i> Personbästa</a>
+        <a class="w3-red" href="records.html"><i class="fa fa-trophy"></i> Klubbrekord</a>
+        <a href="../records.html"><i class="fa fa-link"></i> Webversionen</a>
     </nav>
 
     <div class="w3-container" style="margin-top:60px"> </div>
-    
+
     <header class="w3-display-container w3-red w3-top" style="height:60px;width:100%">
-      <div class="w3-padding w3-display-left"><img src="images/hanviken-rund.jpg" class="w3-circle" style="width:50px;height:50px;"></div>
-      <div class="w3-padding w3-display-middle"><h3>Klubbrekord</h3></div>
-      <div class="w3-padding w3-display-right"><h3><i class="w3-opennav fa fa-bars" onclick="w3_open()"></i></h3></div>
-    </header>    
-    
+        <div class="w3-padding w3-display-left"><img src="images/hanviken-rund.jpg" class="w3-circle" style="width:50px;height:50px;"></div>
+        <div class="w3-padding w3-display-middle"><h3>Klubbrekord</h3></div>
+        <div class="w3-padding w3-display-right"><h3><i class="w3-opennav fa fa-bars" onclick="w3_open()"></i></h3></div>
+    </header>
+
     <div class="w3-container w3-round-large w3-light-grey w3-margin">
-      <p></p>
-      <table width="80%" align="center">
-        <tr>
-          <td>Säsong:</td><td><div id="season_filter"></div></td>
-          <td align="right"><a href="#" id="permaLink" title="Permanent link to this page with filters"><i class="fa fa-bookmark"></i></a></td>          
-        </tr>
-        <tr><td>Klass:</td><td><div id="class_filter"></div></td></tr>
-      </table>
-      <p></p>
-      <div id="table_div" class="w3-center"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
-      <p></p>
+        <p></p>
+        <table width="80%" align="center">
+            <tr>
+                <td>Säsong:</td><td><div id="season_filter"></div></td>
+                <td align="right"><a href="#" id="permaLink" title="Permanent link to this page with filters"><i class="fa fa-bookmark"></i></a></td>
+            </tr>
+            <tr><td>Klass:</td><td><div id="class_filter"></div></td></tr>
+        </table>
+        <p></p>
+        <div id="table_div" class="w3-center"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
+        <p></p>
     </div>
-  </body>
+</body>
 </html>

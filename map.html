@@ -1,219 +1,219 @@
 <!DOCTYPE HTML>
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <title>Hanviken SK friidrott</title>
-  <link rel="icon" href="images/favicon.jpg" type="image/jpg" />
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript" src="includes/athletics-stats.js"></script>
-  <script type="text/javascript" src="includes/ydn.db-is-core-qry.js"></script>
- 
-  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDo0DbHrfNufjlT0En0v91B8mbyjiFXxP8&callback=initMap" type="text/javascript"></script>
-  <script type="text/javascript">
-  
-  // Get the number of the map to display
-  var mapNo = findGetParameter('map');
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Hanviken SK friidrott</title>
+    <link rel="icon" href="images/favicon.jpg" type="image/jpg" />
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="includes/athletics-stats.js"></script>
+    <script type="text/javascript" src="includes/ydn.db-is-core-qry.js"></script>
 
-  google.charts.load('visualization', '1', { packages : [ 'corechart', 'map', 'table' ] });
-  google.charts.setOnLoadCallback(initiateMapData);
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDo0DbHrfNufjlT0En0v91B8mbyjiFXxP8&callback=initMap" type="text/javascript"></script>
+    <script type="text/javascript">
 
-  var docId;
-  var docGid;
-  var pageHeader;
-  
-  if (mapNo == 1) {
-    pageHeader = "Hanviken SK Friidrott - Tävlingar inomhus 2014-2015";
-    docId = "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M"; // Inomhus 2014-2015
-    docGid = "977426029";                                   // The tab 'Tävlingar'
-  }
-  if (mapNo == 2) {
-    pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2015";
-    docId = "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M"; // Utomhus 2015
-    docGid = "977426029";                                   // The tab 'Tävlingar'
-  }
-  if (mapNo == 3) {
-    pageHeader = "Hanviken SK Friidrott - Tävlingar inomhus 2015-2016";
-    docId = "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8"; // Inomhus 2015-2016
-    docGid = "977426029";                                   // The tab 'Tävlingar'
-  }
-  if (mapNo == 4) {
-    pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2016";
-    docId = "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto"; // Utomhus 2016
-    docGid = "977426029";                                   // The tab 'Tävlingar'
-  }
-  if (mapNo == 5) {
-    pageHeader = "Hanviken SK Friidrott - Tävlingar inomhus 2016-2017";
-    docId = "1WbKxsWGzVrk48C5YrZ_KS-Aw9To4RZA42c0mJy4sALk"; // Inomhus 2016-2017
-    docGid = "977426029";                                   // The tab 'Tävlingar'
-  }
-  if (mapNo == 6) {
-    pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2017";
-    docId = "1pW3Ca1YEfCC6Wa2Ugho_a2GOGlQGo4WalLwRyPyHFB8"; // Utomhus 2017
-    docGid = "977426029";                                   // The tab 'Tävlingar'
-  }
-  
-  if (mapNo == 7) {
-    pageHeader = "Hanviken SK Friidrott - Tävlingar inomhus 2017-2018";
-    docId = "1MY3ND5wMBZkyTDm46-BKAfqFbf1252afn7zUTai5m2g"; // inomhus 2017-2018
-    docGid = "977426029";                                   // The tab 'Tävlingar'
-  }
+    // Get the number of the map to display
+    var mapNo = findGetParameter('map');
 
-  if (mapNo == 8) {
-    pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2018";
-    docId = "1M3IgsiTy-VEP_2HwcIUzssSEkV4h6NmJJ3ajMqBgLa0"; // utomhus 2018
-    docGid = "977426029";                                   // The tab 'Tävlingar'
-  }
+    google.charts.load('visualization', '1', { packages : [ 'corechart', 'map', 'table' ] });
+    google.charts.setOnLoadCallback(initiateMapData);
 
-  
-  var data;
-  var competitions;
-  var comp;
-  var compData;
-  var map;
-  var view;
-  var filterList = [];
-  var table;
-  
-  function initMap() {
-    // Do nothing...
-  }
-  
-  function myMenu() {
-     menu(['4', '4' + mapNo]);
-  }
+    var docId;
+    var docGid;
+    var pageHeader;
 
-  function initiateMapData() {
-    if (docId) {
-      // Fetch the result table
-      var queryString = encodeURIComponent('SELECT *');
-      var queryUrl = "https://docs.google.com/spreadsheets/d/" + docId + "/gviz/tq?headers=1&tq=" + queryString;
-      var query = new google.visualization.Query(queryUrl);
-      query.send(handleQueryResponse1);
-    
-      // Fetch the 'Tävlingar' info
-      var queryString2 = encodeURIComponent('SELECT B,C,D,E,F,G');
-      var queryUrl2 = "https://docs.google.com/spreadsheets/d/" + docId + "/gviz/tq?gid=" + docGid + "&headers=1&tq=" + queryString2;
-      var query2 = new google.visualization.Query(queryUrl2);
-      query2.send(handleQueryResponse2);
+    if (mapNo == 1) {
+        pageHeader = "Hanviken SK Friidrott - Tävlingar inomhus 2014-2015";
+        docId = "1lUsY9HwXjM3mxrQ_YVfhSw1JvJJdaU8Jmj53xUn9U_M"; // Inomhus 2014-2015
+        docGid = "977426029";                                   // The tab 'Tävlingar'
     }
-  }
-
-  function handleQueryResponse1(response1) {
-    if (response1.isError()) {
-      alert('Error in query: ' + response1.getMessage() + ' ' + response1.getDetailedMessage());
-      return;
+    if (mapNo == 2) {
+        pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2015";
+        docId = "13qz03TyakxsCM4Bsr_HDjePukusZ_TV7d_aKwGO2l9M"; // Utomhus 2015
+        docGid = "977426029";                                   // The tab 'Tävlingar'
     }
-    data = response1.getDataTable();
-    initColumns();
-    addTimeColumn();
-    addGenderColumn();
-  }
-
-  function handleQueryResponse2(response2) {
-    if (response2.isError()) {
-      alert('Error in query: ' + response2.getMessage() + ' ' + response2.getDetailedMessage());
-      return;
+    if (mapNo == 3) {
+        pageHeader = "Hanviken SK Friidrott - Tävlingar inomhus 2015-2016";
+        docId = "1TB8Bwit9Qxdvl1QnaRyMX5fhKaZaQtrltjfubab4tN8"; // Inomhus 2015-2016
+        docGid = "977426029";                                   // The tab 'Tävlingar'
     }
-    competitions = response2.getDataTable();
-    displayMap();
-  }
+    if (mapNo == 4) {
+        pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2016";
+        docId = "1kgJxJ8skKZ5bGXEiIht3FTnTVRjAFPvlitZEFEK-Eto"; // Utomhus 2016
+        docGid = "977426029";                                   // The tab 'Tävlingar'
+    }
+    if (mapNo == 5) {
+        pageHeader = "Hanviken SK Friidrott - Tävlingar inomhus 2016-2017";
+        docId = "1WbKxsWGzVrk48C5YrZ_KS-Aw9To4RZA42c0mJy4sALk"; // Inomhus 2016-2017
+        docGid = "977426029";                                   // The tab 'Tävlingar'
+    }
+    if (mapNo == 6) {
+        pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2017";
+        docId = "1pW3Ca1YEfCC6Wa2Ugho_a2GOGlQGo4WalLwRyPyHFB8"; // Utomhus 2017
+        docGid = "977426029";                                   // The tab 'Tävlingar'
+    }
 
-  function displayMap() {
-    var geoData = new google.visualization.DataView(competitions);
-    geoData.setColumns([2,3,1]);
+    if (mapNo == 7) {
+        pageHeader = "Hanviken SK Friidrott - Tävlingar inomhus 2017-2018";
+        docId = "1MY3ND5wMBZkyTDm46-BKAfqFbf1252afn7zUTai5m2g"; // inomhus 2017-2018
+        docGid = "977426029";                                   // The tab 'Tävlingar'
+    }
 
-    compData = new google.visualization.DataView(competitions);
-    compData.setColumns([0,1,4,5]);
+    if (mapNo == 8) {
+        pageHeader = "Hanviken SK Friidrott - Tävlingar utomhus 2018";
+        docId = "1M3IgsiTy-VEP_2HwcIUzssSEkV4h6NmJJ3ajMqBgLa0"; // utomhus 2018
+        docGid = "977426029";                                   // The tab 'Tävlingar'
+    }
 
-    var options = {
-      showTooltip: true,
-      showInfoWindow: true,
-      enableScrollWheel: true,
-      useMapTypeControl: true,
-      };
 
-    page_header.innerText = pageHeader;
-      
-    map = new google.visualization.Map(document.getElementById('map_div'));
-    map.draw(geoData, options);
-    
-    comp = new google.visualization.Table(document.getElementById('comp_div'));
-    comp.draw(compData, {showRowNumber: true, width: '900px', height: '100%'});
-    
-    // Set a 'select' event listener for the table.
-    // When the comp is selected, we set the selection on the map.
-    google.visualization.events.addListener(comp, 'select',
+    var data;
+    var competitions;
+    var comp;
+    var compData;
+    var map;
+    var view;
+    var filterList = [];
+    var table;
+
+    function initMap() {
+        // Do nothing...
+    }
+
+    function myMenu() {
+        menu(['4', '4' + mapNo]);
+    }
+
+    function initiateMapData() {
+        if (docId) {
+            // Fetch the result table
+            var queryString = encodeURIComponent('SELECT *');
+            var queryUrl = "https://docs.google.com/spreadsheets/d/" + docId + "/gviz/tq?headers=1&tq=" + queryString;
+            var query = new google.visualization.Query(queryUrl);
+            query.send(handleQueryResponse1);
+
+            // Fetch the 'Tävlingar' info
+            var queryString2 = encodeURIComponent('SELECT B,C,D,E,F,G');
+            var queryUrl2 = "https://docs.google.com/spreadsheets/d/" + docId + "/gviz/tq?gid=" + docGid + "&headers=1&tq=" + queryString2;
+            var query2 = new google.visualization.Query(queryUrl2);
+            query2.send(handleQueryResponse2);
+        }
+    }
+
+    function handleQueryResponse1(response1) {
+        if (response1.isError()) {
+            alert('Error in query: ' + response1.getMessage() + ' ' + response1.getDetailedMessage());
+            return;
+        }
+        data = response1.getDataTable();
+        initColumns();
+        addTimeColumn();
+        addGenderColumn();
+    }
+
+    function handleQueryResponse2(response2) {
+        if (response2.isError()) {
+            alert('Error in query: ' + response2.getMessage() + ' ' + response2.getDetailedMessage());
+            return;
+        }
+        competitions = response2.getDataTable();
+        displayMap();
+    }
+
+    function displayMap() {
+        var geoData = new google.visualization.DataView(competitions);
+        geoData.setColumns([2,3,1]);
+
+        compData = new google.visualization.DataView(competitions);
+        compData.setColumns([0,1,4,5]);
+
+        var options = {
+            showTooltip: true,
+            showInfoWindow: true,
+            enableScrollWheel: true,
+            useMapTypeControl: true,
+        };
+
+        page_header.innerText = pageHeader;
+
+        map = new google.visualization.Map(document.getElementById('map_div'));
+        map.draw(geoData, options);
+
+        comp = new google.visualization.Table(document.getElementById('comp_div'));
+        comp.draw(compData, {showRowNumber: true, width: '900px', height: '100%'});
+
+        // Set a 'select' event listener for the table.
+        // When the comp is selected, we set the selection on the map.
+        google.visualization.events.addListener(comp, 'select',
         function() {
-          map.setSelection(comp.getSelection());
-          filterData();
+            map.setSelection(comp.getSelection());
+            filterData();
         });
 
-    // Set a 'select' event listener for the map.
-    // When the map is selected, we set the selection on the comp.
-    google.visualization.events.addListener(map, 'select',
+        // Set a 'select' event listener for the map.
+        // When the map is selected, we set the selection on the comp.
+        google.visualization.events.addListener(map, 'select',
         function() {
-          comp.setSelection(map.getSelection());
-          filterData();
+            comp.setSelection(map.getSelection());
+            filterData();
         });
-  }
-  
-  function filterData() {
-    handleRelayTeam();
-    view = new google.visualization.DataView(data);
-    view.hideColumns([col.team]);
-    table = new google.visualization.Table(document.getElementById('table_div'));
-    filterList = [];
-    
-    var row = comp.getSelection()[0].row;
-    
-    var competition = compData.getValue(row,0);
-    console.log(competition);
-    filterList.push({column:col.competition, value:competition});
-    
-    // Apply the filter, and draw the table
-    if(filterList.length > 0){
-      view.setRows(view.getFilteredRows(filterList));
-      header.innerText = competition;
-      table.draw(view, {allowHtml: true, showRowNumber: true, width: '1800', height: '100%'});
     }
-  }
 
-  </script>
+    function filterData() {
+        handleRelayTeam();
+        view = new google.visualization.DataView(data);
+        view.hideColumns([col.team]);
+        table = new google.visualization.Table(document.getElementById('table_div'));
+        filterList = [];
+
+        var row = comp.getSelection()[0].row;
+
+        var competition = compData.getValue(row,0);
+        console.log(competition);
+        filterList.push({column:col.competition, value:competition});
+
+        // Apply the filter, and draw the table
+        if(filterList.length > 0){
+            view.setRows(view.getFilteredRows(filterList));
+            header.innerText = competition;
+            table.draw(view, {allowHtml: true, showRowNumber: true, width: '1800', height: '100%'});
+        }
+    }
+
+    </script>
 </head>
 
 <html>
-  <body onload="myMenu()">
+<body onload="myMenu()">
     <div id="menu"></div>
     <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
-      <h3 id="page_header"></h3>
+        <h3 id="page_header"></h3>
     </div>
-      <table width="100%" height="100%">
-          <tr>
-              <td>
-              <div class="w3-container w3-round-large w3-light-grey w3-margin-left w3-margin-right">
-                <p></p>
-                <div id="map_div" style="width: 750px; height: 500px; margin: auto; align: center;"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
-                <p></p>
-              </div>
-              </td>
-              <td>
-              <div class="w3-container w3-round-large w3-light-grey w3-margin-right">
-                <p></p>
-                <div id="comp_div" style="width: 750px; height: 500px; margin: auto; align: center;"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
-                <p></p>
-              </div>
-              </td>
-          </tr>
-      </table>
-      <p></p>
-      <div class="w3-container w3-round-large w3-light-grey w3-margin-left w3-margin-right w3-center">
+    <table width="100%" height="100%">
+        <tr>
+            <td>
+                <div class="w3-container w3-round-large w3-light-grey w3-margin-left w3-margin-right">
+                    <p></p>
+                    <div id="map_div" style="width: 750px; height: 500px; margin: auto; align: center;"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
+                    <p></p>
+                </div>
+            </td>
+            <td>
+                <div class="w3-container w3-round-large w3-light-grey w3-margin-right">
+                    <p></p>
+                    <div id="comp_div" style="width: 750px; height: 500px; margin: auto; align: center;"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
+                    <p></p>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <p></p>
+    <div class="w3-container w3-round-large w3-light-grey w3-margin-left w3-margin-right w3-center">
         <p></p>
         <h3 id="header"></h3>
         <div id="table_div"></div>
         <p></p>
-      </div>
     </div>
-  </body>
+</div>
+</body>
 </html>

@@ -52,7 +52,7 @@ function populateYearSelections() {
     var yearSelectionList=document.getElementById('yearList');
     yearSelectionList.innerHTML = '';
     var years = view.getDistinctValues(2).reverse();
-    
+
     yearSelectionList.add(new Option("- Alla födelseår -", 'all'));
     for(var i = 0; i < years.length; i++) {
         yearSelectionList.add(new Option(years[i], years[i]));
@@ -64,7 +64,7 @@ function populateYearSelections() {
 }
 
 function populateClassSelections(column) {
-    if (! column) { 
+    if (! column) {
         column = 8;
     }
     var classNo = classForm.classList.selectedIndex;
@@ -82,7 +82,7 @@ function populateClassSelections(column) {
 }
 
 function populateSeasonSelections(column) {
-    if (! column) { 
+    if (! column) {
         column = 12;
     }
     var seasonNo = seasonForm.seasonList.selectedIndex;
