@@ -272,7 +272,6 @@ function storeFilter(filter, name) {
         localStorage.setItem(name, values);
         console.log("Stored values: " + name + ":" + values);
         bookmarkUrl = updateUrl(bookmarkUrl,name,values);
-        console.log("bookmarkUrl: " + bookmarkUrl);
         $("#permaLink").attr("href", bookmarkUrl);
     }
 }
@@ -289,7 +288,6 @@ function findGetParameter(parameterName) {
 }
 
 function option(item, active) {
-    console.log('Active: ' + active);
     if (active.indexOf(item) >= 0) {
         return 'class="w3-red"';
     }

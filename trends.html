@@ -149,7 +149,6 @@
         var selectedItem = resultChart.getChart().getSelection()[0];
         var chartData = resultChart.getDataTable();
         var selectedName = chartData.getValue(selectedItem.row, selectedItem.column);
-        console.log(selectedName);
         nameFilter.setState({selectedValues: [selectedName]});
         nameFilter.draw();
     }
