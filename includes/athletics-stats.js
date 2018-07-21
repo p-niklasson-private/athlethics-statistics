@@ -18,8 +18,8 @@ function initColumns() {
         date: 10,
         season: 11,
         comment: 12,
-        sex: 13,
-        team: 14,
+        team: 13,
+        gender: 14,
     }
 }
 
@@ -148,7 +148,6 @@ function collectData() {
     data = new google.visualization.DataTable(json);
 
     addTimeColumn();
-    addGenderColumn();
     dbStoreJsonData();
     finished();
 }
@@ -177,7 +176,7 @@ function addTimeColumn() {
 }
 
 function addGenderColumn() {
-    data.insertColumn(col.sex, 'string', 'Kön');
+    data.insertColumn(col.gender, 'string', 'Kön');
     var rows = data.getNumberOfRows();
     var gender;
     for(var i = 0; i < rows; i++) {
@@ -191,7 +190,7 @@ function addGenderColumn() {
             else if (data.getValue(i,col.cl).match(/F|K/)) {
                 gender = 'Kvinnor';
             }
-            data.setValue(i,col.sex,gender);
+            data.setValue(i,col.gender,gender);
         }
     }
 }

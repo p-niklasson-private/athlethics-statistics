@@ -26,8 +26,9 @@
 
     function finished() {
         data.sort([{column: col.cl}]);
+        addGenderColumn();
         view= new google.visualization.DataView(data);
-        view.setColumns([col.event, col.cl, col.sex]);
+        view.setColumns([col.event, col.cl, col.gender]);
         drawDashboard();
     }
 

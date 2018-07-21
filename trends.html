@@ -33,7 +33,7 @@
         data.sort([{column: col.date},{column: col.name}]);
         handleRelayTeam();
         view = new google.visualization.DataView(data);
-        view.hideColumns([col.sex, col.team]);
+        view.hideColumns([col.team]);
         drawDashboard();
     }
 
