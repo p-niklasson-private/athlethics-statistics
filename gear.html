@@ -25,9 +25,9 @@
     google.charts.setOnLoadCallback(initiateData);
 
     function finished() {
-        data.sort([{column: col.cl}]);
         addGenderColumn();
-        view= new google.visualization.DataView(data);
+        data.sort([{column: col.cl}]);
+        view = new google.visualization.DataView(data);
         view.setColumns([col.event, col.cl, col.gender]);
         drawDashboard();
     }
@@ -37,6 +37,7 @@
 
         var eventFilter = filter('event_filter', 0, 'events');
         var classFilter = filter('class_filter', 1, 'classes');
+        var genderFilter = filter('gender_filter', 2, 'genders');
 
         var resultTable = new google.visualization.ChartWrapper({
             'chartType': 'Table',
@@ -44,11 +45,13 @@
             'options': { width: '80%', height: '100%' }
         });
 
+        dashboard.bind(genderFilter, [classFilter,eventFilter]);
         dashboard.bind(classFilter, [eventFilter]);
-        dashboard.bind([eventFilter,  classFilter], resultTable);
+        dashboard.bind([eventFilter, classFilter, genderFilter], resultTable);
         dashboard.draw(view);
 
         google.visualization.events.addListener(dashboard, 'ready', function() {
+            storeFilter(genderFilter, 'genders');
             storeFilter(classFilter, 'classes');
             storeFilter(eventFilter, 'events');
         });
@@ -68,6 +71,7 @@
             <p></p>
             <table width="80%" align="center">
                 <tr valign="top">
+                    <td>Kön:</td><td><div id="gender_filter"></div></td>
                     <td>Klass:</td><td><div id="class_filter"></div></td>
                     <td>Gren:</td><td><div id="event_filter"></div></td>
                     <td align="right"><a href="#" id="permaLink" title="Permanent link to this page with filters"><i class="fa fa-bookmark"></i></a></td>

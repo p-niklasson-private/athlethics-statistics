@@ -69,7 +69,7 @@
     // Display chart number 1
     function displayChart1() {
         var result = google.visualization.data.group(data, [col.year], [{'column': col.name, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
-        result.sort({column: col.name, desc: true, unique: true});
+        result.sort({column: 1, desc: true, unique: true});
 
         var options = {
             title: 'Antalet starter per födelseår',
@@ -87,7 +87,7 @@
     // Display chart number 2
     function displayChart2() {
         var result = google.visualization.data.group(data, [col.event], [{'column': col.name, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
-        result.sort({column: col.name, desc: true, unique: true});
+        result.sort({column: 1, desc: true, unique: true});
 
         var options = {
             title: 'Antalet starter per gren',
@@ -105,7 +105,7 @@
     // Display chart number 3
     function displayChart3() {
         var result = google.visualization.data.group(data, [col.competition], [{'column': col.name, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
-        result.sort({column: col.name, desc: true, unique: true});
+        result.sort({column: 1, desc: true, unique: true});
 
         var options = {
             title: 'Antalet starter per tävling',
@@ -122,8 +122,8 @@
 
     // Display chart number 4
     function displayChart4() {
-        var result = google.visualization.data.group(data, [col.sex], [{'column': col.name, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
-        result.sort({column: col.name, desc: true, unique: true});
+        var result = google.visualization.data.group(data, [col.gender], [{'column': col.name, 'aggregation': google.visualization.data.count, 'type': 'number'}]);
+        result.sort({column: 1, desc: true, unique: true});
 
         var options = {
             title: 'Könsfördelning tävlingsstarter',
