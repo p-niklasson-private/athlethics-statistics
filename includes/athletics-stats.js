@@ -265,12 +265,46 @@ function filter(container, column, name) {
     return filter;
 }
 
+function stringFilter(container, column, name) {
+    var filter = new google.visualization.ControlWrapper({
+        'controlType': 'StringFilter',
+        'containerId': container,
+        'options': {
+            'filterColumnIndex': column,
+            'ui': {
+                'label': ''
+            }
+        }
+    });
+    var urlValue = findGetParameter(name);
+    if (urlValue) {
+        filter.setState({'value': urlValue});
+    }
+    else if (localStorage) {
+        var value = localStorage.getItem(name);
+        if (value) {
+            filter.setState({'value': value});
+        }
+    }
+    return filter;
+}
+
 function storeFilter(filter, name) {
     if (localStorage) {
         var values = filter.getState()['selectedValues'];
         localStorage.setItem(name, values);
         console.log("Stored values: " + name + ":" + values);
         bookmarkUrl = updateUrl(bookmarkUrl,name,values);
+        $("#permaLink").attr("href", bookmarkUrl);
+    }
+}
+
+function storeStringFilter(filter, name) {
+    if (localStorage) {
+        var value = filter.getState()['value'];
+        localStorage.setItem(name, value);
+        console.log("Stored value: " + name + ":" + value);
+        bookmarkUrl = updateUrl(bookmarkUrl,name,value);
         $("#permaLink").attr("href", bookmarkUrl);
     }
 }
