@@ -45,13 +45,13 @@
             col.competition,
             col.date,
         ]);
-        var rows = view.getSortedRows([{column: col.name},{column: col.event},{column: col.seconds},{column: col.meters, desc: true},{column: col.points, desc: true}]);
+        var rows = view.getSortedRows([{column: 1},{column: 0},{column: 4},{column: 5, desc: true},{column: 6, desc: true}]);
         var pb_rows = [];
         var current_event = 'start';
         var current_name = 'start';
         for(var i = 0; i < rows.length; i++) {
-            var event = view.getValue(rows[i],col.event);
-            var name = view.getValue(rows[i],col.name);
+            var event = view.getValue(rows[i],0);
+            var name = view.getValue(rows[i],1);
             if (current_event != event || current_name != name) {
                 // First time we see this event or name. The first row will contain the PB!
                 pb_rows.push(rows[i]);
@@ -75,8 +75,8 @@
     function drawDashboard() {
         var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
 
-        var nameFilter = filterOne('name_filter', col.name, 'names');
-        var yearFilter = filterOne('year_filter', col.year, 'years');
+        var nameFilter = filterOne('name_filter', 1, 'names');
+        var yearFilter = filterOne('year_filter', 2, 'years');
 
         var resultTable = new google.visualization.ChartWrapper({
             'chartType': 'Table',

@@ -56,18 +56,18 @@
 
         view.setColumns([
             col.event,
+            col.cl,
             col.name,
             col.year,
             col.time,
             col.meters,
             col.points,
-            col.cl,
             col.date,
             col.season,
         ]);
 
         // column numbers based on the views columns
-        var classFilter =  filterOne('class_filter', 6, 'classes');
+        var classFilter =  filterOne('class_filter', 1, 'classes');
         var seasonFilter = filterOne('season_filter', 8, 'seasons');
 
         var resultTable = new google.visualization.ChartWrapper({

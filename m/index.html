@@ -50,8 +50,8 @@
     function drawDashboard() {
         var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
 
-        var nameFilter = filterOne('name_filter', col.name, 'names');
-        var yearFilter = filterOne('year_filter', col.year, 'years');
+        var nameFilter = filterOne('name_filter', 1, 'names');
+        var yearFilter = filterOne('year_filter', 2, 'years');
 
         var resultTable = new google.visualization.ChartWrapper({
             'chartType': 'Table',
