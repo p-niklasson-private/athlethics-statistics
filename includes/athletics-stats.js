@@ -14,12 +14,15 @@ function initColumns() {
         meters: 6,
         points: 7,
         wind: 8,
-        competition: 9,
-        date: 10,
-        season: 11,
-        comment: 12,
-        team: 13,
-        gender: 14,
+        note: 9,
+        place: 10,
+        round: 11,
+        competition: 12,
+        date: 13,
+        season: 14,
+        comment: 15,
+        team: 16,
+        gender: 17,
     }
 }
 
