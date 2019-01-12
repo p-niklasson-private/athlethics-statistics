@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <title>Hanviken friidrott - Hitta nya klubbrekord</title>
+  <link rel="icon" href="images/favicon.jpg" type="image/jpg" />
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" src="includes/athletics-stats.js"></script>
+  <script type="text/javascript" src="includes/ydn.db-is-core-qry.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="includes/athletics-stats.css">
+  <script type="text/javascript">
+  
+  var docs = 'all';
+  
+  var docList;
+  var data;
+  var dataList = [];
+  var view;
+  var bookmarkUrl = window.location.href;
+
+  google.charts.load('visualization', '1', { packages : [ 'corechart', 'table' ,'controls'] });
+  google.charts.setOnLoadCallback(initiateData);
+  
+  function finished() {
+    filterData();
+    drawDashboard();
+  }
+
+  function filterData() {
+    view = new google.visualization.DataView(data);
+    var rows = view.getSortedRows([{column: 8},{column: 0},{column: 4},{column: 5, desc: true},{column: 6, desc: true}]);
+    var new_record_rows = [];
+    var current_event = 'start';
+    var current_class = 'start';
+    for(var i = 0; i < rows.length; i++) {
+        var event = view.getValue(rows[i],0);
+        var cl = view.getValue(rows[i],8);
+        var season = view.getValue(rows[i],12);
+        if (current_event != event || current_class != cl) {
+            // First time we see this event or class. The first row will contain the new record, unless it is already the record!
+            if (season && ! season.includes("rekord")) {
+                new_record_rows.push(rows[i]);
+            }
+            current_event = event;
+            current_class = cl;
+        }
+    }
+    view.setRows(new_record_rows);
+  }
+
+  function drawDashboard() {
+    var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
+    
+    var classFilter = filter('class_filter', 8, 'classes');
+
+    var resultTable = new google.visualization.ChartWrapper({
+          'chartType': 'Table',
+          'containerId': 'table_div',
+          'options': { allowHtml: true, showRowNumber: true, width: '95%', height: '100%' }
+        });
+
+    dashboard.bind([classFilter], resultTable); 
+    dashboard.draw(view);
+    
+    google.visualization.events.addListener(dashboard, 'ready', function() {
+        storeFilter(classFilter, 'classes');
+    });   
+  }
+  
+  </script>
+</head>
+
+<html>
+  <body onload="menu(['1','12'])">
+    <div id="menu"></div>
+    <p></p>
+    <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
+      <h3 id="page_header">Hitta nya klubbrekord</h3>
+    </div>
+    
+    <div class="w3-container w3-round-large w3-light-grey w3-margin">
+      <div id="dashboard_div">
+        <p></p>
+        <table width="95%" align="center">
+          <tr valign="top">
+            <td>Klass:</td><td><div id="class_filter"></div></td>
+            <td align="right"><a href="#" id="permaLink" title="Permanent link to this page with filters"><i class="fa fa-bookmark"></i></a></td>
+          </tr>
+        </table>
+        <p></p>
+        <div id="table_div" class="w3-center"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
+        <p></p>
+      </div>
+    </div>
+  </body>
+</html>

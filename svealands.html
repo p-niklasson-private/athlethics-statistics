@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Hanviken SK friidrott - Svealandsmästerskapen 2018</title>
+    <link rel="icon" href="images/favicon.jpg" type="image/jpg" />
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <script type="text/javascript">
+
+    google.charts.load('visualization', '1', { packages : [ 'corechart', 'controls', 'table' ] });
+    google.charts.setOnLoadCallback(initiateData);
+
+    function initiateData() {
+        var queryString = encodeURIComponent('SELECT *');
+        var queryUrl = "https://docs.google.com/spreadsheets/d/1A064NSvG5ZqobZKg7vzz60IeQOSN9zt1nfG8xTf0XvE/gviz/tq?gid=374418424&headers=1&tq=" + queryString;
+        var query = new google.visualization.Query(queryUrl);
+        query.send(handleQueryResponse);
+    }    
+
+    function handleQueryResponse(response) {
+        if (response.isError()) {
+            alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+            return;
+        }
+        var data = response.getDataTable();
+        data.sort([{column: 5, desc: true}]);
+        console.log(data.toJSON());
+
+        var table = new google.visualization.Table(document.getElementById('table_div'));
+        table.draw(data, {allowHtml: true, showRowNumber: true, width: '800', height: '100%'});
+    }
+
+    </script>
+</head>
+
+<html>
+<body>
+    <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
+        <h3 id="page_header">Lagpoäng - Svealandsmästerskapen 2018</h3>
+    </div>
+    <div class="w3-container w3-round-large w3-light-grey w3-margin">
+        <p></p>
+        <div id="table_div" class="w3-center"><p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p></div>
+        <p></p>
+    </div>            
+</body>
+</html>

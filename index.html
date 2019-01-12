@@ -47,7 +47,7 @@
         var resultTable = new google.visualization.ChartWrapper({
             'chartType': 'Table',
             'containerId': 'table_div',
-            'options': { allowHtml: true, showRowNumber: true, width: '95%', height: '100%' }
+            'options': { allowHtml: true, showRowNumber: true, width: '95%', height: '100%', page: 'enable', pageSize: '100' }
         });
 
         dashboard.bind(seasonFilter, [nameFilter, eventFilter, yearFilter, classFilter, competitionFilter]);
