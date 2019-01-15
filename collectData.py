@@ -5,7 +5,7 @@ import urllib
 import re
 
 base_url = "http://www.friidrott.se/rs/arsbasta.aspx"
-seasons  = [43,42,41,40,39,38,37,36,32,31,30,29,28,27,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2] # Inomhus 2018 -> Utomhus 2001
+seasons  = [44,43,42,41,40,39,38,37,36,32,31,30,29,28,27,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2] # Inomhus 2019 -> Utomhus 2001
 classes  = ["p14","p15","p16","p17","p19","m22","m","f14","f15","f16","f17","f19","k22","k"]
 
 def remove_html_tags(data):
