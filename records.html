@@ -25,7 +25,7 @@
     google.charts.setOnLoadCallback(initiateData);
 
     function finished() {
-        data.sort([{column: col.cl},{column: col.event}]);
+        data.sort([{column: col.date, desc: true},{column: col.cl},{column: col.event}]);
         var formatter = new google.visualization.ColorFormat();
 
         // Adding colors to the last 3 record seasons
