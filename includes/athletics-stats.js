@@ -206,7 +206,12 @@ function handleRelayTeam() {
         if (data.getValue(i,col.team)) {
             var team_name = data.getValue(i,col.name);
             var team_members = data.getValue(i,col.team);
-            team_members = team_members.replace(/(\d+)/g, "$1<br>");
+            if (team_members.match(/\)/)) {
+                team_members = team_members.replace(/\)/g, ")<br>");
+            }
+            else {
+                team_members = team_members.replace(/(\d+)/g, "$1<br>");                
+            }
             data.setFormattedValue(i,col.name,"<b>" + team_name + "</b><br>" + team_members);
         }
     }
