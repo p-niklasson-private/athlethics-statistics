@@ -359,6 +359,7 @@ function menu(active) {
     '<a ' + option('33',active) + 'href="stats.html?graph=3"><i class="fa fa-pie-chart"></i> Populära tävlingar</a>' +
     '<a ' + option('34',active) + 'href="stats.html?graph=4"><i class="fa fa-pie-chart"></i> Könsfördelning</a>' +
     '<a ' + option('35',active) + 'href="names.html"><i class="fa fa-user"></i> Namnlista</a>' +
+    '<a ' + option('36',active) + 'href="competitions.html"><i class="fa fa-user"></i> Tävlingslista</a>' +
     '</div>' +
     '</li>' +
     '<li class="w3-dropdown-hover">' +

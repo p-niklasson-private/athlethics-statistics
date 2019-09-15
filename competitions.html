@@ -20,7 +20,7 @@
     google.charts.setOnLoadCallback(initiateData);
 
     // Initiate variables
-    var docs = 'all';
+    var docs = 'seasons';
     var docList;
     var data;
     var dataList = [];
@@ -35,27 +35,27 @@
 
     function filterData(){
         view = new google.visualization.DataView(data);
-        var name;
+        var competition;
         var filtered_rows = [];
-        var current_name = 'start';
-        var rows = view.getSortedRows(col.name);
+        var current_competition = 'start';
+        var rows = view.getSortedRows(col.competition);
         for(var i = 0; i < rows.length; i++) {
-            var name = view.getValue(rows[i],col.name);
-            if (current_name != name) {
-                // First time we see this name.
+            var competition = view.getValue(rows[i],col.competition);
+            if (current_competition != competition) {
+                // First time we see this competition.
                 filtered_rows.push(rows[i]);
-                current_name = name;
+                current_competition = competition;
             }
         }
         view.setRows(filtered_rows);
     }
 
     function drawDashboard() {
-        view.setColumns([col.name, col.year]);
+        view.setColumns([col.competition]);
 
         var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
 
-        var nameFilter = stringFilter('name_filter', 0, 'name_string_filter');
+        var competitionFilter = stringFilter('competition_filter', 0, 'competition_string_filter');
 
         var resultTable = new google.visualization.ChartWrapper({
             'chartType': 'Table',
@@ -63,11 +63,11 @@
             'options': { allowHtml: true, showRowNumber: true, width: '50%', height: '100%' , page: 'enable', pageSize: '100' }
         });
 
-        dashboard.bind([nameFilter], resultTable);
+        dashboard.bind([competitionFilter], resultTable);
         dashboard.draw(view);
 
         google.visualization.events.addListener(dashboard, 'ready', function() {
-            storeStringFilter(nameFilter, 'name_string_filter');
+            storeStringFilter(competitionFilter, 'competition_string_filter');
         });
     }
 
@@ -75,10 +75,10 @@
 </head>
 
 <html>
-<body onload="menu(['3','35'])">
+<body onload="menu(['3','36'])">
     <div id="menu"></div>
     <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
-        <h3 id="page_header">Lista över aktiva i Hanvikens SK</h3>
+        <h3 id="page_header">Lista över Tävlingar</h3>
     </div>
     <div class="w3-container w3-round-large w3-light-grey w3-margin">
         <div id="dashboard_div">
@@ -86,7 +86,7 @@
             <div id="dashboard_div">
                 <table width="50%" align="center">
                     <tr valign="top">
-                        <td>Filter:</td><td><div id="name_filter"></div></td>
+                        <td>Filter:</td><td><div id="competition_filter"></div></td>
                         <td align="right"><a href="#" id="permaLink" title="Permanent link to this page with filters"><i class="fa fa-bookmark"></i></a></td>
                     </tr>
                 </table>
