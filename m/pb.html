@@ -44,6 +44,7 @@
             col.points,
             col.competition,
             col.date,
+            col.note,
         ]);
         var rows = view.getSortedRows([{column: 1},{column: 0},{column: 4},{column: 5, desc: true},{column: 6, desc: true}]);
         var pb_rows = [];
@@ -52,11 +53,20 @@
         for(var i = 0; i < rows.length; i++) {
             var event = view.getValue(rows[i],0);
             var name = view.getValue(rows[i],1);
+            var note = view.getValue(rows[i], 9);
             if (current_event != event || current_name != name) {
                 // First time we see this event or name. The first row will contain the PB!
-                pb_rows.push(rows[i]);
-                current_event = event;
-                current_name = name;
+
+                // Check the Note column for 'w' or 'm' indicating a faulty PB due to Wind or Manual timer
+                if (note == 'w' || note == 'm') {
+                    // Skip, and continue finding a valid PB
+                }
+                else {
+                    // The PB is valid
+                    pb_rows.push(rows[i]);
+                    current_event = event;
+                    current_name = name;
+                }
             }
         }
         view.setRows(pb_rows);
@@ -107,6 +117,7 @@
         <br>
         <a href="index.html"><i class="fa fa-list"></i> Alla resultat</a>
         <a class="w3-red" href="pb.html"><i class="fa fa-trophy"></i> Personbästa</a>
+        <a href="sb.html"><i class="fa fa-trophy"></i> Säsongsbästa</a>
         <a href="records.html"><i class="fa fa-trophy"></i> Klubbrekord</a>
         <a href="../pb.html"><i class="fa fa-link"></i> Webversionen</a>
     </nav>

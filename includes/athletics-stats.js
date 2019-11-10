@@ -350,8 +350,9 @@ function menu(active) {
     '<a ' + option('11',active) + 'href="index.html"><i class="fa fa-list"></i> Alla resultat</a>' +
     '<a ' + option('12',active) + 'href="pb.html?badges=true"><i class="fa fa-trophy"></i> Personbästa</a>' +
     '<a ' + option('13',active) + 'href="records.html"><i class="fa fa-trophy"></i> Klubbrekord</a>' +
-    '<a ' + option('14',active) + 'href="year-best.html"><i class="fa fa-trophy"></i> Årsbästa Sverige</a>' +
-    '<a ' + option('15',active) + 'href="trends.html"><i class="fa fa-line-chart"></i> Trender</a>' +
+    '<a ' + option('14',active) + 'href="sweden-best.html"><i class="fa fa-trophy"></i> Årsbästa Sverige</a>' +
+    '<a ' + option('15',active) + 'href="sb.html"><i class="fa fa-line-chart"></i> Säsongsbästa Hanviken</a>' +  
+    '<a ' + option('16',active) + 'href="trends.html"><i class="fa fa-line-chart"></i> Trender</a>' +
     '<li class="w3-dropdown-hover">' +
     '<a ' + option('3',active) + ' href="#"><i class="fa fa-bar-chart"></i> Statistik <i class="fa fa-caret-down"></i></a>' +
     '<div class="w3-dropdown-content w3-white w3-card-4">' +

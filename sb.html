@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <title>Hanviken friidrott - Personbästa</title>
+    <title>Hanviken friidrott - Årsbästa</title>
     <link rel="icon" href="images/favicon.jpg" type="image/jpg" />
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -14,17 +14,11 @@
     <link rel="stylesheet" href="includes/athletics-stats.css">
     <script type="text/javascript">
 
-    var docs;
-    var badges = findGetParameter('badges');
-    if (badges == 'true') {
-        docs = 'badges';
-    }
-    else {
-        docs = 'seasons';
-    }
+    var docs = 'seasons';
     var docList;
     var data;
     var dataList = [];
+    var sortview;
     var view;
     var bookmarkUrl = window.location.href;
 
@@ -32,51 +26,53 @@
     google.charts.setOnLoadCallback(initiateData);
 
     function finished() {
-        var badgesFormatter = new google.visualization.ColorFormat();
-        badgesFormatter.addRange('Guld', 'Gulda', 'black', 'gold');
-        badgesFormatter.addRange('Silver', 'Silvera', 'black', 'silver');
-        badgesFormatter.addRange('Brons', 'Bronsa', 'black', 'peru');
-        badgesFormatter.format(data, col.name);
         handleRelayTeam();
         filterData();
         drawDashboard();
     }
 
     function filterData() {
-        view = new google.visualization.DataView(data);
-        view.hideColumns([col.team]);
-        var rows = view.getSortedRows([{column: col.name},{column: col.event},{column: col.seconds},{column: col.meters, desc: true},{column: col.points, desc: true}]);
-        var pb_rows = [];
+        data.sort([{column: col.season, desc: true},{column: col.event},{column: col.name},{column: col.seconds},{column: col.meters, desc: true},{column: col.points, desc: true}]);
+        sortview = new google.visualization.DataView(data);
+        sortview.hideColumns([col.team]);
+        var sb_rows = [];
+        var current_season = 'start'
         var current_event = 'start';
         var current_name = 'start';
-        for(var i = 0; i < rows.length; i++) {
-            var event = view.getValue(rows[i], col.event);
-            var name = view.getValue(rows[i], col.name);
-            var note = view.getValue(rows[i], col.note);
-            if (current_event != event || current_name != name) {
-                // First time we see this event or name. The first row will contain the PB!
-
-                // Check the Note column for 'w' or 'm' indicating a faulty PB due to Wind or Manual timer
+        for(var row = 0; row < sortview.getNumberOfRows(); row++) {
+            var season = sortview.getValue(row, col.season);
+            var event = sortview.getValue(row, col.event);
+            var name = sortview.getValue(row, col.name);
+            var note = sortview.getValue(row, col.note);
+            if (current_season != season || current_event != event || current_name != name) {
+                // First time we see this season, event or name. The first row will contain the year best!
+                
+                // Check the Note column for 'w' or 'm' indicating a faulty SB due to Wind or Manual timer
                 if (note == 'w' || note == 'm') {
-                    // Skip, and continue finding a valid PB
+                    // Skip, and continue finding a valid SB
                 }
                 else {
-                    // The PB is valid
-                    pb_rows.push(rows[i]);
+                    // The SB is valid
+                    sb_rows.push(row);
+                    current_season = season;
                     current_event = event;
                     current_name = name;
+                    found_faulty_sb = false;
                 }
             }
         }
-        view.setRows(pb_rows);
+        sortview.setRows(sb_rows);
+        view = new google.visualization.DataView(sortview);
+        var sorted_sb_rows = view.getSortedRows([{column: col.season, desc: true},{column: col.event},{column: col.seconds},{column: col.meters, desc: true},{column: col.points, desc: true}]);
+        view.setRows(sorted_sb_rows);        
     }
 
     function drawDashboard() {
         var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
-
+        
+        var seasonFilter = filter('season_filter', col.season, 'seasons');
         var eventFilter = filter('event_filter', col.event, 'events');
         var nameFilter =  filter('name_filter', col.name, 'names');
-        var yearFilter =  filter('year_filter', col.year, 'years');
         var classFilter = filter('class_filter', col.cl, 'classes');
 
         var resultTable = new google.visualization.ChartWrapper({
@@ -85,17 +81,17 @@
             'options': { allowHtml: true, showRowNumber: true, width: '95%', height: '100%', page: 'enable', pageSize: '100' }
         });
 
-        dashboard.bind(classFilter, [yearFilter, nameFilter, eventFilter]);
-        dashboard.bind(yearFilter, [nameFilter, eventFilter]);
+        dashboard.bind(seasonFilter, [classFilter, nameFilter, eventFilter]);
+        dashboard.bind(classFilter, [nameFilter, eventFilter]);
         dashboard.bind(nameFilter, [eventFilter]);
 
-        dashboard.bind([eventFilter, yearFilter, classFilter, nameFilter], resultTable);
+        dashboard.bind([seasonFilter, classFilter, nameFilter, eventFilter], resultTable);
         dashboard.draw(view);
 
         google.visualization.events.addListener(dashboard, 'ready', function() {
+            storeFilter(seasonFilter, 'seasons');
             storeFilter(eventFilter, 'events');
             storeFilter(classFilter, 'classes');
-            storeFilter(yearFilter, 'years');
             storeFilter(nameFilter, 'names');
         });
     }
@@ -104,11 +100,11 @@
 </head>
 
 <html>
-<body onload="menu(['1','12'])">
+<body onload="menu(['1','15'])">
     <div id="menu"></div>
     <p></p>
     <div class="w3-container w3-round-large w3-light-grey w3-margin w3-center">
-        <h3 id="page_header">Personbästa per åldersgrupp, tävlande och gren</h3>
+        <h3 id="page_header">Årsbästalista</h3>
     </div>
 
     <div class="w3-container w3-round-large w3-light-grey w3-margin">
@@ -116,8 +112,8 @@
             <p></p>
             <table width="95%" align="center">
                 <tr valign="top">
+                    <td>Säsong:</td><td><div id="season_filter"></div></td>
                     <td>Klass:</td><td><div id="class_filter"></div></td>
-                    <td>Född:</td><td><div id="year_filter"></div></td>
                     <td>Namn:</td><td><div id="name_filter"></div></td>
                     <td>Gren:</td><td><div id="event_filter"></div></td>
                     <td align="right"><a href="#" id="permaLink" title="Permanent link to this page with filters"><i class="fa fa-bookmark"></i></a></td>
