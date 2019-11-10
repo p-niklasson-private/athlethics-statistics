@@ -107,6 +107,7 @@
         dashboard.draw(view);
 
         google.visualization.events.addListener(dashboard, 'ready', function() {
+            storeFilter(seasonFilter, 'seasons');
             storeFilter(nameFilter, 'names');
             storeFilter(yearFilter, 'years');
         });
