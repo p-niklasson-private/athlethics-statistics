@@ -14,25 +14,6 @@ def remove_html_tags(data):
 
 f = open("data/DataOldSeasons.json","w")
 
-# Write the columns
-f.write("{\n")
-f.write("  \"cols\":[\n")
-f.write("    {\"id\":\"A\",\"label\":\"Säsong\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"B\",\"label\":\"Klass\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"C\",\"label\":\"Gren\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"D\",\"label\":\"Placering\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"E\",\"label\":\"Resultat\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"F\",\"label\":\"Namn\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"G\",\"label\":\"Född\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"H\",\"label\":\"Klubb\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"I\",\"label\":\"Plats\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"J\",\"label\":\"Datum\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"K\",\"label\":\"Notering\",\"type\":\"string\"}\n")
-f.write("  ],\n")
-
-# Write the rows
-f.write("  \"rows\":[\n")
-first = True
 for season_no in seasons:
     for cl in classes:
         target_url = base_url + "?season=" + str(season_no) + "&class=" + cl
@@ -92,8 +73,7 @@ for season_no in seasons:
                         continue
                     cl = cl.upper()
                     season = season.replace(" " + cl,"")
-                    if not first:
-                        f.write(",\n")
+                    f.write(",\n")
                     f.write("    {\"c\":[\n")
                     f.write("      {\"v\": \"" + season + "\"},\n")
                     f.write("      {\"v\": \"" + cl + "\"},\n")
@@ -109,4 +89,7 @@ for season_no in seasons:
                     f.write("    ]}")
                     first = False
                     place += 1
+f.write("\n")
+f.write("  ]\n")
+f.write("}\n")
 f.close()
