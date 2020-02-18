@@ -3,36 +3,21 @@
 
 import urllib
 import re
+import shutil
 
 base_url = "https://www.friidrott.se/rs/arsbasta.aspx"
-seasons  = [46,45,44,43,42,41,40,39,38,37,36,32,31,30,29,28,27,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2] # Inomhus 2020 -> Utomhus 2001
+seasons  = [46] # Inomhus 2020
 classes  = ["p14","p15","p16","p17","p19","m22","m","f14","f15","f16","f17","f19","k22","k"]
 
 def remove_html_tags(data):
     p = re.compile(r'<.*?>')
     return p.sub('', data)
+    
+shutil.copy2('data/DataOldSeasons.json', 'data/NewData.json')
 
-f = open("data/Data.json","w")
-
-# Write the columns
-f.write("{\n")
-f.write("  \"cols\":[\n")
-f.write("    {\"id\":\"A\",\"label\":\"Säsong\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"B\",\"label\":\"Klass\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"C\",\"label\":\"Gren\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"D\",\"label\":\"Placering\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"E\",\"label\":\"Resultat\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"F\",\"label\":\"Namn\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"G\",\"label\":\"Född\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"H\",\"label\":\"Klubb\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"I\",\"label\":\"Plats\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"J\",\"label\":\"Datum\",\"type\":\"string\"},\n")
-f.write("    {\"id\":\"K\",\"label\":\"Notering\",\"type\":\"string\"}\n")
-f.write("  ],\n")
-
-# Write the rows
-f.write("  \"rows\":[\n")
-first = True
+# Open data file and start adding new posts
+f = open("data/NewData.json","a")
+    
 for season_no in seasons:
     for cl in classes:
         target_url = base_url + "?season=" + str(season_no) + "&class=" + cl
@@ -92,8 +77,8 @@ for season_no in seasons:
                         continue
                     cl = cl.upper()
                     season = season.replace(" " + cl,"")
-                    if not first:
-                        f.write(",\n")
+                    
+                    f.write(",\n")
                     f.write("    {\"c\":[\n")
                     f.write("      {\"v\": \"" + season + "\"},\n")
                     f.write("      {\"v\": \"" + cl + "\"},\n")
@@ -107,10 +92,12 @@ for season_no in seasons:
                     f.write("      {\"v\": \"" + date + "\"},\n")
                     f.write("      {\"v\": \"" + notis + "\"}\n")
                     f.write("    ]}")
-                    first = False
                     place += 1
 f.write("\n")
 f.write("  ]\n")
 f.write("}\n")
 f.close()
+
+# Move the temporary file to the real Data.json file
+shutil.move('data/NewData.json', 'data/Data.json')
 
