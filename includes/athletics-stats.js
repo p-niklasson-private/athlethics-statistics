@@ -35,6 +35,7 @@ function getData(record){
     }
     else {
         var seasons = [
+            "1hOoVb_UMixC38fwJ6om53Cy1AiXspBQ00TROzc-ld44", // Utomhus 2020
             "1SMdvkDP-A_p0ewEUYSjkk6CYbH9ZWbPjjcm8Cy_QupQ", // Inomhus 2019-2020
             "1uF7ZLpFoFBcM7XTqRhotY3tgqMgbQb7XU0Jd4sRcPHw", // Utomhus 2019
             "168N-Ui2KVeaqXg6GR1vgrFipavVYnrjppt59A3b1Zgk", // Inomhus 2018-2019
@@ -368,6 +369,7 @@ function menu(active) {
     '<li class="w3-dropdown-hover">' +
     '<a ' + option('4',active) + 'href="#"><i class="fa fa-map-o"></i> Kartor <i class="fa fa-caret-down"></i></a>' +
     '<div class="w3-dropdown-content w3-white w3-card-4">' +
+    '<a ' + option('412',active) + 'href="map.html?map=12"><i class="fa fa-map-marker"></i> Utomhustävlingar 2020</a>' +
     '<a ' + option('411',active) + 'href="map.html?map=11"><i class="fa fa-map-marker"></i> Inomhustävlingar 2019-2020</a>' +
     '<a ' + option('410',active) + 'href="map.html?map=10"><i class="fa fa-map-marker"></i> Utomhustävlingar 2019</a>' +
     '<a ' + option('49',active) + 'href="map.html?map=9"><i class="fa fa-map-marker"></i> Inomhustävlingar 2018-2019</a>' +
