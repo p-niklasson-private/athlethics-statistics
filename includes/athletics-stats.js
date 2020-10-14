@@ -1,6 +1,7 @@
 function initiateData() {
     initColumns();
-    dbGetJsonData();
+    //dbGetJsonData();
+    getData('');
 }
 
 function initColumns() {
@@ -28,6 +29,8 @@ function initColumns() {
 
 function getData(record){
     var today = new Date().toJSON().slice(0,10);
+    var allAges = findGetParameter('all-ages');
+    var queryString;
     if (record && record.date == today) {
         console.log("Cached data for '" + docs + "' is up-to-date: " + record.date);
         data = new google.visualization.DataTable(record.data);
@@ -76,8 +79,15 @@ function getData(record){
         else {
             docList = seasons.concat(["1QhmK7Lw-RpYGoiOQq1bh7Yl_75Vm2YWVDCM6AtitE3M"]); // Klubbrekord
         }
-
-        var queryString = encodeURIComponent('SELECT *');
+        
+        if (allAges == 'true') {
+            queryString = encodeURIComponent('select *');
+        }
+        else {
+            // Filter away results for athletes below 12 years old
+            queryString = encodeURIComponent('select * where B matches "[MK].*|.*1[23456789]"');
+        }
+        
         for (i = 0; i < docList.length; i++) {
             var queryUrl = "https://docs.google.com/spreadsheets/d/" + docList[i] + "/gviz/tq?headers=1&tq=" + queryString;
             var query = new google.visualization.Query(queryUrl);

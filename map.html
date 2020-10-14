@@ -15,6 +15,7 @@
 
     // Get the number of the map to display
     var mapNo = findGetParameter('map');
+    var allAges = findGetParameter('all-ages');
 
     google.charts.load('visualization', '1', { packages : [ 'corechart', 'map', 'table' ] });
     google.charts.setOnLoadCallback(initiateMapData);
@@ -100,6 +101,7 @@
     var view;
     var filterList = [];
     var table;
+    var queryString;
 
     function initMap() {
         // Do nothing...
@@ -112,7 +114,13 @@
     function initiateMapData() {
         if (docId) {
             // Fetch the result table
-            var queryString = encodeURIComponent('SELECT *');
+            if (allAges == 'true') {
+                queryString = encodeURIComponent('select *');
+            }
+            else {
+                // Filter away results for athletes below 12 years old
+                queryString = encodeURIComponent('select * where B matches "[MK].*|.*1[23456789]"');
+            }
             var queryUrl = "https://docs.google.com/spreadsheets/d/" + docId + "/gviz/tq?headers=1&tq=" + queryString;
             var query = new google.visualization.Query(queryUrl);
             query.send(handleQueryResponse1);
