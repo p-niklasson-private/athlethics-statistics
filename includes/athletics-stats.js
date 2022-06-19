@@ -38,6 +38,7 @@ function getData(record){
     }
     else {
         var seasons = [
+            "1KMHMJs9rjpskf2QeenTQhdKDfHrDtfY-l0E9JjT4AX4", // Utomhus 2022
             "1aVjZX8NI3wkIH0X_XCynWPgDrMYOjXzRJFmUlbZuUaI", // Inomhus 2021-2022
             "1ZZYQriJ42jGgG9gg56wlNQbD3pWgtjVT3nSJsE5lUDk", // Utomhus 2021
             "12S316Vsv5jNlClno72ZANjsTFkCmdFvWPSrDPR9Q1SM", // Inomhus 2020-2021
